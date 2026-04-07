@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--
+  Framegen Phase-4 sim: Electric Circuit with animated current flow
+  URL params:
+    type     ("series" | "parallel", default "series")
+    voltage  (V, default 12)
+    r1       (Ω, default 4)
+    r2       (Ω, default 6)
+    duration (s, default 10)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Electric Circuit</title>
+<style>* { margin:0; padding:0; } body { background:#f8f9fa; width:1280px; height:720px; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+const P       = new URLSearchParams(location.search);
+const type    = P.get('type') || 'series';
+const voltage = parseFloat(P.get('voltage') || 12);
+const R1      = parseFloat(P.get('r1') || 4);
+const R2      = parseFloat(P.get('r2') || 6);
+const dur     = parseFloat(P.get('duration') || 10) * 1000;
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const W = 1280, H = 720;
+
+// ── Circuit topology ──────────────────────────────────────────────────────────
+// Series circuit: battery → R1 → R2 → back
+// All paths are arrays of [x,y] waypoints defining the wire
+
+const SCALE = 1;
+const CX = W / 2, CY = H / 2;
+
+// Series layout
+const BATTERY_X = 220, L = 260, T = 230, R = 1060, B = 490;
+
+const seriesPath = [
+  [BATTERY_X, T], [BATTERY_X, B],          // left wire (battery negative terminal down)
+  [R, B],                                    // bottom wire
+  [R, T],                                    // right wire
+  [BATTERY_X, T],                           // top wire back to battery positive
+];
+
+// Waypoints including component positions
+const series_waypoints = [
+  { x: BATTERY_X, y: T },
+  { x: CX - 40,   y: T },    // midway top (before R1)
+  { x: CX + 180,  y: T },    // after R1 (before R2)
+  { x: R,         y: T },
+  { x: R,         y: B },
+  { x: CX,        y: B },
+  { x: BATTERY_X, y: B },
+  { x: BATTERY_X, y: T },
+];
+
+// ── Electron particle class ───────────────────────────────────────────────────
+class Electron {
+  constructor(offset) {
+    this.t      = offset;   // 0..1 position along path
+    this.alpha  = 1;
+    this.trail  = [];
+  }
+
+  update(speed) {
+    this.t = (this.t + speed) % 1;
+  }
+
+  getPos(path) {
+    // Interpolate along the closed path
+    const pts = path;
+    const n   = pts.length - 1;
+    const seg = this.t * n;
+    const i   = Math.floor(seg);
+    const frac= seg - i;
+    const a   = pts[i % pts.length];
+    const b   = pts[(i + 1) % pts.length];
+    return {
+      x: a.x + (b.x - a.x) * frac,
+      y: a.y + (b.y - a.y) * frac,
+    };
+  }
+
+  draw(ctx, path) {
+    const pos = this.getPos(path);
+    const grad = ctx.createRadialGradient(pos.x - 1, pos.y - 1, 1, pos.x, pos.y, 7);
+    grad.addColorStop(0, '#fff59d');
+    grad.addColorStop(1, '#f57f17');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, 7, 0, Math.PI * 2); ctx.fill();
+  }
+}
+
+// Create electrons
+const electrons = Array.from({ length: 14 }, (_, i) => new Electron(i / 14));
+
+// ── Draw helpers ──────────────────────────────────────────────────────────────
+function drawWire(path, color = '#455a64', width = 4) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = width;
+  ctx.lineJoin    = 'round';
+  ctx.beginPath();
+  path.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+  ctx.stroke();
+}
+
+function drawBattery(x, y1, y2) {
+  const cy = (y1 + y2) / 2;
+  ctx.strokeStyle = '#212121'; ctx.lineWidth = 3;
+
+  // Positive terminal (long line)
+  ctx.beginPath(); ctx.moveTo(x - 22, cy - 28); ctx.lineTo(x + 22, cy - 28); ctx.stroke();
+  // Negative terminal (short line)
+  ctx.beginPath(); ctx.moveTo(x - 14, cy + 14); ctx.lineTo(x + 14, cy + 14); ctx.stroke();
+  // Connecting wires inside symbol
+  ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, cy - 28); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, cy + 14); ctx.lineTo(x, y2); ctx.stroke();
+
+  // + / - labels
+  ctx.fillStyle = '#d32f2f'; ctx.font = 'bold 20px Courier New'; ctx.textAlign = 'center';
+  ctx.fillText('+', x + 36, cy - 22);
+  ctx.fillStyle = '#1565c0';
+  ctx.fillText('−', x + 36, cy + 22);
+
+  // Voltage label
+  ctx.fillStyle = '#1a237e'; ctx.font = 'bold 18px Segoe UI';
+  ctx.fillText(`${voltage} V`, x - 50, cy + 5);
+}
+
+function drawResistor(x, y, label, resistance, current) {
+  const W2 = 80, H2 = 28;
+  ctx.fillStyle = '#fffde7';
+  ctx.fillRect(x - W2 / 2, y - H2 / 2, W2, H2);
+  ctx.strokeStyle = '#e65100'; ctx.lineWidth = 2.5;
+  ctx.strokeRect(x - W2 / 2, y - H2 / 2, W2, H2);
+
+  // Zigzag
+  const zz = 8;
+  ctx.beginPath(); ctx.moveTo(x - W2 / 2, y);
+  for (let i = 0; i < 7; i++) {
+    ctx.lineTo(x - W2 / 2 + (i + 0.5) * (W2 / 7), y + (i % 2 === 0 ? -zz : zz));
+  }
+  ctx.lineTo(x + W2 / 2, y);
+  ctx.strokeStyle = '#bf360c'; ctx.lineWidth = 2; ctx.stroke();
+
+  ctx.fillStyle = '#212121'; ctx.font = 'bold 15px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText(`${label} = ${resistance}Ω`, x, y - H2 / 2 - 8);
+  ctx.fillStyle = '#1565c0'; ctx.font = '13px Segoe UI';
+  ctx.fillText(`I = ${current.toFixed(2)} A`, x, y + H2 / 2 + 18);
+}
+
+function drawArrow(x1, y1, x2, y2, color = '#f57f17') {
+  ctx.strokeStyle = color; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 12 * Math.cos(angle - 0.4), y2 - 12 * Math.sin(angle - 0.4));
+  ctx.lineTo(x2 - 12 * Math.cos(angle + 0.4), y2 - 12 * Math.sin(angle + 0.4));
+  ctx.fill();
+}
+
+// ── Calculations ──────────────────────────────────────────────────────────────
+const totalR  = type === 'series' ? R1 + R2 : (R1 * R2) / (R1 + R2);
+const totalI  = voltage / totalR;
+const I1      = type === 'series' ? totalI : voltage / R1;
+const I2      = type === 'series' ? totalI : voltage / R2;
+const V1      = I1 * R1;
+const V2      = I2 * R2;
+const speed   = 0.0018;
+
+const wirePath = series_waypoints;
+
+let startTime = null;
+
+function draw(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = ts - startTime;
+
+  // Background
+  ctx.fillStyle = '#f8f9fa'; ctx.fillRect(0, 0, W, H);
+
+  // Title
+  ctx.fillStyle = '#1a237e'; ctx.font = 'bold 26px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText(`${type === 'series' ? 'Series' : 'Parallel'} Circuit  —  Ohm's Law: V = IR`, W / 2, 55);
+
+  // Wire
+  drawWire(wirePath, '#546e7a', 5);
+
+  // Battery
+  drawBattery(BATTERY_X, T, B);
+
+  // Resistors
+  drawResistor(CX - 80, T, 'R₁', R1, I1);
+  drawResistor(CX + 240, T, 'R₂', R2, I2);
+
+  // Current direction arrow
+  drawArrow(BATTERY_X + 40, T - 20, BATTERY_X + 90, T - 20, '#e63946');
+  ctx.fillStyle = '#e63946'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'left';
+  ctx.fillText('I →', BATTERY_X + 94, T - 14);
+
+  // Summary box
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  ctx.roundRect(W - 300, 90, 268, 180, 10); ctx.fill();
+  ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  const info = [
+    `Total R = ${totalR.toFixed(2)} Ω`,
+    `Total I = ${totalI.toFixed(2)} A`,
+    `V₁ = ${V1.toFixed(2)} V`,
+    `V₂ = ${V2.toFixed(2)} V`,
+    `Power = ${(voltage * totalI).toFixed(2)} W`,
+  ];
+  ctx.textAlign = 'left';
+  info.forEach((l, i) => {
+    ctx.fillStyle = i < 2 ? '#1a237e' : '#455a64';
+    ctx.font = i < 2 ? 'bold 16px Segoe UI' : '15px Segoe UI';
+    ctx.fillText(l, W - 288, 118 + i * 28);
+  });
+
+  // Electrons
+  electrons.forEach(e => {
+    e.update(speed);
+    e.draw(ctx, wirePath);
+  });
+
+  if (elapsed < dur + 1000) requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

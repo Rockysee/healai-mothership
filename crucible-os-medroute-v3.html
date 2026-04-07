@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crucible OS | MedRoute V3.0</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fafafa;overflow-x:hidden}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:#0a0a0a}
+    ::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+    .glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.07)}
+    .glass-card{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08)}
+    .glass-hover:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.15)}
+    .glow-border{border:1px solid rgba(168,85,247,0.4);box-shadow:0 0 30px rgba(168,85,247,0.1),inset 0 0 30px rgba(168,85,247,0.03)}
+    .pulse-dot{animation:pulse-g 2s ease-in-out infinite}
+    @keyframes pulse-g{0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,197,94,0.6)}50%{opacity:0.5;box-shadow:0 0 20px rgba(34,197,94,0.9)}}
+    .fade-up{opacity:0;transform:translateY(16px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+    .fade-up.visible{opacity:1;transform:translateY(0)}
+    .card-delayed-1{transition-delay:0.8s}
+    .card-delayed-2{transition-delay:1.0s}
+    .card-delayed-3{transition-delay:1.2s}
+    .tarot-card{min-height:200px;cursor:pointer;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+    .tarot-card:hover{transform:translateY(-6px) scale(1.02);background:rgba(255,255,255,0.07);border-color:rgba(168,85,247,0.3)}
+    .tarot-card.selected{border-color:rgba(168,85,247,0.6);background:rgba(168,85,247,0.08);box-shadow:0 0 40px rgba(168,85,247,0.12)}
+    .processing-ring{width:80px;height:80px;border:2px solid rgba(255,255,255,0.05);border-top-color:rgba(168,85,247,0.7);border-radius:50%;animation:spin 1.2s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .radar-ring{border:1px solid rgba(34,197,94,0.15);border-radius:50%;position:absolute}
+    .radar-sweep{position:absolute;width:50%;height:2px;background:linear-gradient(90deg,rgba(34,197,94,0.5),transparent);top:50%;left:50%;transform-origin:left center;animation:sweep 4s linear infinite}
+    @keyframes sweep{to{transform:rotate(360deg)}}
+    .bar-animate{transition:width 1.2s cubic-bezier(0.16,1,0.3,1)}
+    .nav-item{position:relative}
+    .nav-item.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:rgba(168,85,247,0.8);border-radius:1px}
+    .scenario-pill{transition:all 0.3s ease}
+    .scenario-pill:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2)}
+    .scenario-pill.picked{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.4);color:rgba(216,180,254,0.9)}
+    .scenario-pill.answered{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.3);color:rgba(52,211,153,0.7)}
+  </style>
+  <script>
+    tailwind.config={theme:{extend:{colors:{neutral:{950:'#0a0a0a',900:'#171717',850:'#1a1a1a',800:'#262626'}}}}}
+  </script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect}=React;
+
+/* ═══════════════════════════════════════════════════
+   INLINE SVG ICON SYSTEM
+   ═══════════════════════════════════════════════════ */
+const IP={
+  Hexagon:"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z",
+  Brain:"M12 2a5 5 0 0 0-4.8 3.6A4 4 0 0 0 4 9.5a4.5 4.5 0 0 0 1.2 8A5 5 0 0 0 12 22a5 5 0 0 0 6.8-4.5 4.5 4.5 0 0 0 1.2-8A4 4 0 0 0 16.8 5.6 5 5 0 0 0 12 2z",
+  HeartPulse:"M19.5 13.6 12 21l-7.5-7.4C2.7 11.7 2.7 8.3 4.5 6.5a5 5 0 0 1 7.04-.46L12 6.5l.46-.46a5 5 0 0 1 7.04.46c1.78 1.78 1.78 5.22 0 7.1zM3.22 12H8l1.5-3 3 6 1.5-3h5.28",
+  Radio:"M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M4.93 19.07A10 10 0 0 1 2 12 10 10 0 0 1 4.93 4.93M19.07 4.93A10 10 0 0 1 22 12a10 10 0 0 1-2.93 7.07M7.76 16.24A6 6 0 0 1 6 12a6 6 0 0 1 1.76-4.24M16.24 7.76A6 6 0 0 1 18 12a6 6 0 0 1-1.76 4.24",
+  BarChart3:"M3 3v18h18M7 16v-3m4 3V8m4 8v-5m4 5V4",
+  Cpu:"M9 2v2m6-2v2M9 20v2m6-2v2M2 9h2m-2 6h2m18-6h2m-2 6h2M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5h6v6H9V9z",
+  Shield:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+  Network:"M6 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm12 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM9 12h6M12 15v4m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
+  ArrowRight:"M5 12h14m-7-7 7 7-7 7",
+  ArrowLeft:"M19 12H5m7-7-7 7 7 7",
+  AlertTriangle:"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4m0 4h.01",
+  Fingerprint:"M12 10a2 2 0 0 0-2 2c0 1.02.76 2 2 2M7 12a5 5 0 0 1 10 0M4.26 10.15A8 8 0 0 1 20 12M12 2a10 10 0 0 0-8 4M2 12a10 10 0 0 0 2.26 6.33M12 22a10 10 0 0 0 7.74-3.67",
+  Dna:"M2 15c6.667-6 13.333 0 20-6M2 9c6.667 6 13.333 0 20 6",
+  Check:"M20 6 9 17l-5-5",
+  Crown:"M2 4l3 12h14l3-12-6 7-4-9-4 9-6-7z",
+  Baby:"M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5zM9 13h.01M15 13h.01M10 17a2 2 0 0 0 4 0",
+  CircleDot:"M12 12m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M12 12m-9 0a9 9 0 1 0 18 0 9 9 0 1 0-18 0",
+  Navigation:"M3 11l19-9-9 19-2-8-8-2z",
+  Map:"M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z",
+  Plus:"M12 5v14m-7-7h14",
+  Users:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm10 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+  Timer:"M12 12m-9 0a9 9 0 1 0 18 0 9 9 0 1 0-18 0M12 6v6l4 2",
+  ShieldOff:"M19.7 14c.2-.6.3-1.3.3-2V5l-8-3-3.2 1.2M4.7 4.7 4 5v7c0 6 8 10 8 10s2.4-1.2 4.3-3.3M1 1l22 22",
+  Building2:"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18zM6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2",
+  Lightbulb:"M15 14c.2-1 .7-1.7 1.5-2.5A5 5 0 1 0 7.5 11.5c.8.8 1.3 1.5 1.5 2.5M9 18h6m-5 4h4",
+  TrendingDown:"M22 17l-5-5-4 4-7-7M22 17h-6v-6",
+  Target:"M12 12m-9 0a9 9 0 1 0 18 0 9 9 0 1 0-18 0M12 12m-5 0a5 5 0 1 0 10 0 5 5 0 1 0-10 0M12 12m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0",
+  Zap:"M13 2 3 14h9l-1 8 10-12h-9l1-8z",
+  ListChecks:"M10 6h11m-11 6h11m-11 6h11M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2",
+  Play:"M5 3l14 9-14 9V3z",
+  RotateCcw:"M1 4v6h6M3.51 15a9 9 0 1 0 .49-7.54",
+  Trophy:"M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M6 4h12v5a6 6 0 1 1-12 0V4zm3 17h6m-3-3v3",
+  Hash:"M4 9h16M4 15h16M10 3v18M14 3v18",
+  Shuffle:"M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5",
+};
+
+function Icon({name,size=24,className="",style={}}){
+  const d=IP[name];
+  if(!d)return <span className={`inline-flex items-center justify-center ${className}`} style={{width:size,height:size,...style}}/>;
+  return(<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`inline-block ${className}`} style={style}><path d={d}/></svg>);
+}
+
+function FadeUp({children,delay=0,className=""}){
+  const[v,setV]=useState(false);
+  useEffect(()=>{const t=setTimeout(()=>setV(true),delay);return()=>clearTimeout(t)},[delay]);
+  return <div className={`fade-up ${v?'visible':''} ${className}`}>{children}</div>;
+}
+
+/* ═══════════════════════════════════════════════════
+   DATA — 20 SCENARIOS PER THEME, STRAIGHTFORWARD OPTIONS
+   ═══════════════════════════════════════════════════ */
+const THEMES = {
+  ai_productivity: {
+    title: "Enterprise AI & Workplace Automation",
+    subtitle: "How you handle AI decisions in business — ethics, speed, accountability",
+    icon: "Cpu",
+    questions: [
+      {id:1,text:"Your AI saves $4M via a contract loophole, but it would bankrupt a long-term vendor.",cards:[
+        {title:"Keep the savings",trait:"optimizer",desc:"Prioritize your company's bottom line."},
+        {title:"Reverse the action",trait:"guardian",desc:"Protect the vendor relationship and trust."},
+        {title:"Pause and rewrite AI rules",trait:"architect",desc:"Fix the system so this can't happen again."}]},
+      {id:2,text:"AI wrongly fires 50 people due to a data error. Media finds out in 1 hour.",cards:[
+        {title:"Spin it as a system error",trait:"optimizer",desc:"Control the narrative, rehire quietly."},
+        {title:"Publicly admit the AI failed",trait:"guardian",desc:"Full transparency, shut down the system."},
+        {title:"Open-source the error logs",trait:"architect",desc:"Radical transparency to rebuild trust."}]},
+      {id:3,text:"An AI tool increases team output 40%, but employee satisfaction drops 25%.",cards:[
+        {title:"Keep the AI tool running",trait:"optimizer",desc:"Output gains outweigh morale dips."},
+        {title:"Remove the tool immediately",trait:"guardian",desc:"Employee wellbeing comes first."},
+        {title:"Redesign the tool with employee input",trait:"architect",desc:"Find a balanced approach."}]},
+      {id:4,text:"Your AI assistant starts giving biased recommendations in hiring.",cards:[
+        {title:"Patch it quickly and move on",trait:"optimizer",desc:"Fix the bug, minimize disruption."},
+        {title:"Stop all AI-assisted hiring",trait:"guardian",desc:"Revert to human-only until fully audited."},
+        {title:"Build a bias detection layer",trait:"architect",desc:"Add a new system to catch future bias."}]},
+      {id:5,text:"A competitor launches a faster AI product. Your team wants to skip testing to match them.",cards:[
+        {title:"Ship fast, fix later",trait:"optimizer",desc:"Speed-to-market is everything."},
+        {title:"Stick to the testing plan",trait:"guardian",desc:"Quality and safety can't be rushed."},
+        {title:"Run parallel tracks",trait:"architect",desc:"Ship a lite version, keep testing the full one."}]},
+      {id:6,text:"Your AI customer service bot resolves 80% of tickets but gives wrong answers 5% of the time.",cards:[
+        {title:"Keep it — 80% is great",trait:"optimizer",desc:"The efficiency gains far outweigh errors."},
+        {title:"Pull it back to human agents",trait:"guardian",desc:"5% wrong answers is too many."},
+        {title:"Add human review for flagged cases",trait:"architect",desc:"Hybrid approach — AI + human oversight."}]},
+      {id:7,text:"Your AI predicts 3 employees will quit. HR wants to preemptively replace them.",cards:[
+        {title:"Start recruiting replacements",trait:"optimizer",desc:"Be prepared, don't lose productivity."},
+        {title:"Talk to the employees first",trait:"guardian",desc:"Predictions shouldn't replace conversations."},
+        {title:"Use it to improve retention",trait:"architect",desc:"Address the root causes the AI flagged."}]},
+      {id:8,text:"An AI audit reveals your biggest client's data was used in model training without consent.",cards:[
+        {title:"Quietly remove the data",trait:"optimizer",desc:"Fix it before they find out."},
+        {title:"Disclose to the client immediately",trait:"guardian",desc:"Honesty even if it costs the account."},
+        {title:"Build a consent framework going forward",trait:"architect",desc:"Systemic fix plus disclosure."}]},
+      {id:9,text:"Your CEO wants to use AI to monitor employee productivity via screen recordings.",cards:[
+        {title:"Implement it — data drives performance",trait:"optimizer",desc:"Measurement enables improvement."},
+        {title:"Refuse — it violates trust",trait:"guardian",desc:"Surveillance destroys team culture."},
+        {title:"Propose anonymized metrics instead",trait:"architect",desc:"Get insights without invading privacy."}]},
+      {id:10,text:"AI recommends cutting a product line that 200 people depend on for jobs.",cards:[
+        {title:"Follow the AI recommendation",trait:"optimizer",desc:"The data says it's the right move."},
+        {title:"Override AI, keep the product line",trait:"guardian",desc:"200 jobs matter more than margins."},
+        {title:"Retrain employees for other roles",trait:"architect",desc:"Transition plan before any cuts."}]},
+      {id:11,text:"Your AI generates marketing copy that goes viral but contains exaggerated claims.",cards:[
+        {title:"Ride the wave",trait:"optimizer",desc:"Take the wins while they last."},
+        {title:"Pull the campaign immediately",trait:"guardian",desc:"Accuracy matters more than virality."},
+        {title:"Correct and re-release",trait:"architect",desc:"Edit the claims, keep the momentum."}]},
+      {id:12,text:"An autonomous AI agent books meetings, but schedules over employees' family time.",cards:[
+        {title:"Efficiency comes first",trait:"optimizer",desc:"Work demands flexible schedules."},
+        {title:"Disable the auto-scheduling",trait:"guardian",desc:"Boundaries must be respected."},
+        {title:"Add personal time blocks to the AI",trait:"architect",desc:"Teach the AI about boundaries."}]},
+      {id:13,text:"Your AI finds a security vulnerability in a competitor's product during routine scans.",cards:[
+        {title:"Use the information strategically",trait:"optimizer",desc:"Competitive advantage is fair game."},
+        {title:"Report it to the competitor",trait:"guardian",desc:"Ethical duty to disclose."},
+        {title:"Report anonymously to a security body",trait:"architect",desc:"Responsible disclosure through proper channels."}]},
+      {id:14,text:"AI cost optimization suggests switching to a cheaper cloud provider, risking 2 hours of downtime.",cards:[
+        {title:"Switch — savings justify the risk",trait:"optimizer",desc:"$500K annual savings is significant."},
+        {title:"Stay — uptime is non-negotiable",trait:"guardian",desc:"Customer trust depends on reliability."},
+        {title:"Migrate gradually with zero downtime",trait:"architect",desc:"Slower switch, no disruption."}]},
+      {id:15,text:"Your AI writing assistant is being used by employees to do their colleagues' work.",cards:[
+        {title:"That's just efficiency",trait:"optimizer",desc:"If output improves, who cares how."},
+        {title:"Ban the practice",trait:"guardian",desc:"Fairness and honest work matter."},
+        {title:"Create clear AI usage guidelines",trait:"architect",desc:"Define acceptable use policies."}]},
+      {id:16,text:"An AI model you deployed starts producing outputs nobody on the team can explain.",cards:[
+        {title:"Keep it if it works",trait:"optimizer",desc:"Results matter more than explanations."},
+        {title:"Shut it down until it's explainable",trait:"guardian",desc:"If you can't explain it, don't deploy it."},
+        {title:"Build an interpretability layer",trait:"architect",desc:"Invest in making the model transparent."}]},
+      {id:17,text:"Your company's AI is better than humans at performance reviews. HR resists adoption.",cards:[
+        {title:"Override HR — data doesn't lie",trait:"optimizer",desc:"AI removes human bias from reviews."},
+        {title:"Respect HR's expertise",trait:"guardian",desc:"People should evaluate people."},
+        {title:"Use AI as input, humans as deciders",trait:"architect",desc:"Combine both strengths."}]},
+      {id:18,text:"An AI vendor offers a powerful tool but requires sharing your customer data for training.",cards:[
+        {title:"Share it — the tool is worth it",trait:"optimizer",desc:"The competitive edge justifies it."},
+        {title:"Reject the deal outright",trait:"guardian",desc:"Customer data is never for sale."},
+        {title:"Negotiate synthetic data instead",trait:"architect",desc:"Get the tool without exposing real data."}]},
+      {id:19,text:"Your AI detects a manager consistently giving lower ratings to one demographic.",cards:[
+        {title:"Flag it to leadership quietly",trait:"optimizer",desc:"Handle it internally, avoid PR risk."},
+        {title:"Confront the manager directly",trait:"guardian",desc:"Address bias head-on, no matter the fallout."},
+        {title:"Implement systemic bias checks",trait:"architect",desc:"Build anti-bias into the review system."}]},
+      {id:20,text:"A junior employee discovers your AI has been making small accounting errors for 6 months.",cards:[
+        {title:"Fix it and move on",trait:"optimizer",desc:"Errors happen, correct and continue."},
+        {title:"Full audit and public disclosure",trait:"guardian",desc:"Stakeholders deserve to know."},
+        {title:"Fix, audit, and redesign the process",trait:"architect",desc:"Root cause analysis plus prevention."}]}
+    ]
+  },
+  responsible_leadership: {
+    title: "Responsible Leadership & Ethics",
+    subtitle: "How you lead through ethical dilemmas — integrity, strategy, transformation",
+    icon: "Crown",
+    questions: [
+      {id:1,text:"A profitable subcontractor violates ESG rules. Cutting them ruins your Q4 launch.",cards:[
+        {title:"Cut ties immediately",trait:"purist",desc:"Integrity over quarterly numbers."},
+        {title:"Keep them, manage the PR",trait:"operator",desc:"Protect the launch, control perception."},
+        {title:"Go fix their operations yourself",trait:"transformer",desc:"Use your resources to change them."}]},
+      {id:2,text:"Implementing a learning program requires cutting R&D budget by 15%. Board is split.",cards:[
+        {title:"Force the budget cut",trait:"transformer",desc:"Culture investment pays long-term."},
+        {title:"Delay the program",trait:"purist",desc:"R&D protects the company's future."},
+        {title:"Do 5% cut and raise debt for the rest",trait:"operator",desc:"Compromise to move forward."}]},
+      {id:3,text:"You discover your CFO inflated numbers on last quarter's board report.",cards:[
+        {title:"Report to the board immediately",trait:"purist",desc:"Truth to the board, no matter what."},
+        {title:"Confront the CFO privately first",trait:"operator",desc:"Handle it discreetly, then decide."},
+        {title:"Overhaul the financial reporting process",trait:"transformer",desc:"Fix the system that allowed it."}]},
+      {id:4,text:"Your top salesperson is toxic to the team but brings in 30% of revenue.",cards:[
+        {title:"Fire them",trait:"purist",desc:"No one is above team culture."},
+        {title:"Manage them carefully",trait:"operator",desc:"Isolate the damage, keep the revenue."},
+        {title:"Coach and transform their behavior",trait:"transformer",desc:"Invest in changing them."}]},
+      {id:5,text:"A whistleblower reports safety issues at your factory. Fixing them halts production for 3 months.",cards:[
+        {title:"Shut down and fix everything",trait:"purist",desc:"Safety is non-negotiable."},
+        {title:"Phase fixes while keeping production",trait:"operator",desc:"Balance safety with business continuity."},
+        {title:"Bring in external experts to fast-track",trait:"transformer",desc:"Invest heavily to fix fast."}]},
+      {id:6,text:"Your company can expand into a country with questionable human rights records.",cards:[
+        {title:"Refuse to expand there",trait:"purist",desc:"Don't legitimize the regime."},
+        {title:"Expand with strict conditions",trait:"operator",desc:"Be present, but set ethical standards."},
+        {title:"Expand and fund local reform efforts",trait:"transformer",desc:"Use your presence for positive change."}]},
+      {id:7,text:"A board member asks you to hire their unqualified nephew for a VP role.",cards:[
+        {title:"Refuse outright",trait:"purist",desc:"Merit-based hiring, period."},
+        {title:"Offer an entry-level role instead",trait:"operator",desc:"Keep the board member happy diplomatically."},
+        {title:"Create a leadership development path",trait:"transformer",desc:"Build a pipeline that's fair to all."}]},
+      {id:8,text:"Employees demand a 4-day work week. Productivity data is inconclusive.",cards:[
+        {title:"Implement it based on principle",trait:"purist",desc:"Employee wellbeing is a right."},
+        {title:"Run a 6-month pilot",trait:"operator",desc:"Test before committing."},
+        {title:"Redesign work processes first",trait:"transformer",desc:"Make work efficient enough for 4 days."}]},
+      {id:9,text:"Your company's product accidentally causes environmental damage in a community.",cards:[
+        {title:"Full public accountability and remediation",trait:"purist",desc:"Own it completely and fix it."},
+        {title:"Settle quietly, fix the damage",trait:"operator",desc:"Make it right without destroying the brand."},
+        {title:"Fund a community restoration project",trait:"transformer",desc:"Go beyond fixing — invest in the community."}]},
+      {id:10,text:"You must lay off 200 people. Your leadership team wants to do it by email.",cards:[
+        {title:"Do it face-to-face, every person",trait:"purist",desc:"Respect demands personal communication."},
+        {title:"Town hall announcement plus support",trait:"operator",desc:"Efficient but still compassionate."},
+        {title:"Redesign before cutting — find alternatives",trait:"transformer",desc:"Explore redeployment options first."}]},
+      {id:11,text:"A journalist asks about internal diversity data that doesn't look good.",cards:[
+        {title:"Share the data honestly",trait:"purist",desc:"Transparency builds long-term trust."},
+        {title:"Share selectively with context",trait:"operator",desc:"Frame it alongside improvement plans."},
+        {title:"Share data plus your transformation plan",trait:"transformer",desc:"Own the gap and show the path forward."}]},
+      {id:12,text:"Your investors pressure you to deprioritize sustainability goals for faster growth.",cards:[
+        {title:"Stand firm on sustainability",trait:"purist",desc:"Long-term values over short-term pressure."},
+        {title:"Find a compromise timeline",trait:"operator",desc:"Negotiate a middle ground."},
+        {title:"Prove sustainability drives growth",trait:"transformer",desc:"Reframe the narrative with data."}]},
+      {id:13,text:"An employee anonymously reports discrimination. Investigation could disrupt a key project.",cards:[
+        {title:"Investigate fully regardless of impact",trait:"purist",desc:"Justice can't wait for business timelines."},
+        {title:"Start investigation, protect the project",trait:"operator",desc:"Run both tracks simultaneously."},
+        {title:"Use this to build a better reporting system",trait:"transformer",desc:"Turn the crisis into systemic improvement."}]},
+      {id:14,text:"Your mentee asks you to recommend them for a role you don't think they're ready for.",cards:[
+        {title:"Be honest — say they're not ready",trait:"purist",desc:"Truthful feedback helps them more."},
+        {title:"Recommend with caveats",trait:"operator",desc:"Support them while being realistic."},
+        {title:"Build a development plan to get them ready",trait:"transformer",desc:"Invest time to prepare them."}]},
+      {id:15,text:"Your company's legacy practices are profitable but increasingly seen as outdated.",cards:[
+        {title:"Change them now, absorb the cost",trait:"purist",desc:"Do the right thing proactively."},
+        {title:"Transition gradually",trait:"operator",desc:"Managed change minimizes disruption."},
+        {title:"Leapfrog to industry-leading practices",trait:"transformer",desc:"Go beyond updating — lead the industry."}]},
+      {id:16,text:"An acquired company has a culture that clashes with yours. Integration is failing.",cards:[
+        {title:"Enforce your company's values",trait:"purist",desc:"One company, one culture standard."},
+        {title:"Allow cultural autonomy for now",trait:"operator",desc:"Don't force it, let it blend naturally."},
+        {title:"Co-create a new shared culture",trait:"transformer",desc:"Build something new together."}]},
+      {id:17,text:"Your supply chain audit reveals a tier-2 supplier uses child labor.",cards:[
+        {title:"Cut the entire chain immediately",trait:"purist",desc:"Zero tolerance, accept the consequences."},
+        {title:"Pressure your tier-1 supplier to fix it",trait:"operator",desc:"Use your leverage through the chain."},
+        {title:"Fund a transition program for the workers",trait:"transformer",desc:"Help the community, not just your optics."}]},
+      {id:18,text:"A competitor poaches your entire engineering leadership with massive offers.",cards:[
+        {title:"Let them go, stay principled",trait:"purist",desc:"Never enter a bidding war for people."},
+        {title:"Counter-offer strategically",trait:"operator",desc:"Retain the most critical people."},
+        {title:"Rethink your entire talent strategy",trait:"transformer",desc:"Build a culture people don't want to leave."}]},
+      {id:19,text:"Regulators ask you to share user data for a national security investigation.",cards:[
+        {title:"Refuse — user privacy is absolute",trait:"purist",desc:"Protect your users at all costs."},
+        {title:"Comply within legal limits",trait:"operator",desc:"Follow the law, minimize exposure."},
+        {title:"Advocate publicly for better data laws",trait:"transformer",desc:"Use your voice to change the system."}]},
+      {id:20,text:"Your company can save $20M by moving operations overseas, eliminating 500 local jobs.",cards:[
+        {title:"Stay local — loyalty matters",trait:"purist",desc:"Community commitments are binding."},
+        {title:"Move, but fund retraining programs",trait:"operator",desc:"Business decision with a safety net."},
+        {title:"Automate locally instead of offshoring",trait:"transformer",desc:"Innovate to save jobs and costs."}]}
+    ]
+  },
+  pediatric_screentime: {
+    title: "Parenting & Cognitive Development",
+    subtitle: "How you handle screen time, boundaries, and emotional regulation with children",
+    icon: "Baby",
+    questions: [
+      {id:1,text:"You're on an important Zoom call. Your 7-year-old storms in screaming because their iPad died.",cards:[
+        {title:"Hand them your phone",trait:"nanny",desc:"Quick fix — keep the meeting going."},
+        {title:"Yell and take all screens away",trait:"dictator",desc:"Enforce discipline immediately."},
+        {title:"Mute the call and sit with them",trait:"voidwalker",desc:"Be present, hold the boundary."}]},
+      {id:2,text:"Your child refuses to eat dinner unless they can watch YouTube at the table.",cards:[
+        {title:"Allow it — at least they're eating",trait:"nanny",desc:"Pick your battles."},
+        {title:"No screens at the table, period",trait:"dictator",desc:"Rules are rules."},
+        {title:"Talk about why they want it and find a middle ground",trait:"voidwalker",desc:"Understand the need behind the demand."}]},
+      {id:3,text:"Your kid's teacher says they can't focus in class after heavy screen use at home.",cards:[
+        {title:"Reduce screens slightly",trait:"nanny",desc:"Small adjustments are easier."},
+        {title:"Ban all screens on school nights",trait:"dictator",desc:"Drastic action for clear results."},
+        {title:"Work with the teacher to understand the pattern",trait:"voidwalker",desc:"Investigate before reacting."}]},
+      {id:4,text:"Your 10-year-old wants a smartphone because all their friends have one.",cards:[
+        {title:"Get them one with parental controls",trait:"nanny",desc:"They'll get one eventually anyway."},
+        {title:"Absolutely not until they're older",trait:"dictator",desc:"You decide the timeline, not peer pressure."},
+        {title:"Discuss it together and set conditions",trait:"voidwalker",desc:"Shared decision with clear expectations."}]},
+      {id:5,text:"You find your child has been watching age-inappropriate content online.",cards:[
+        {title:"Install stronger filters",trait:"nanny",desc:"Tech solution to a tech problem."},
+        {title:"Remove internet access entirely",trait:"dictator",desc:"Total lockdown until you're confident."},
+        {title:"Have an honest conversation about what they saw",trait:"voidwalker",desc:"Use it as a teaching moment."}]},
+      {id:6,text:"Your toddler only calms down with screen time during public tantrums.",cards:[
+        {title:"Use the screen — survival mode",trait:"nanny",desc:"Whatever gets through the moment."},
+        {title:"Never use screens as pacifiers",trait:"dictator",desc:"Short-term pain, long-term gain."},
+        {title:"Prepare non-screen soothing strategies",trait:"voidwalker",desc:"Build coping skills proactively."}]},
+      {id:7,text:"Your child is learning a lot from educational apps but spending 4+ hours daily on them.",cards:[
+        {title:"It's educational, so it's fine",trait:"nanny",desc:"Learning is learning, regardless of medium."},
+        {title:"Cut to 1 hour max",trait:"dictator",desc:"Screen time is screen time."},
+        {title:"Balance with hands-on activities that reinforce the same topics",trait:"voidwalker",desc:"Complement, don't replace."}]},
+      {id:8,text:"Your child says they have no friends because they can't play the same online games.",cards:[
+        {title:"Let them play to fit in",trait:"nanny",desc:"Social connection matters at this age."},
+        {title:"They'll make friends other ways",trait:"dictator",desc:"Real friendships don't need games."},
+        {title:"Explore the games together and set limits",trait:"voidwalker",desc:"Participate and guide."}]},
+      {id:9,text:"Your partner gives the kids unlimited screen time when you're not home.",cards:[
+        {title:"Let it go — consistency is impossible",trait:"nanny",desc:"Different rules for different parents."},
+        {title:"Confront your partner and insist on rules",trait:"dictator",desc:"Unified parenting is essential."},
+        {title:"Discuss and agree on shared guidelines together",trait:"voidwalker",desc:"Collaborate on a family approach."}]},
+      {id:10,text:"Your child is using AI chatbots for homework answers instead of learning.",cards:[
+        {title:"It's the future — let them adapt",trait:"nanny",desc:"AI literacy is a skill."},
+        {title:"Ban AI tools completely for schoolwork",trait:"dictator",desc:"They need to learn the hard way."},
+        {title:"Teach them to use AI as a learning aid, not a shortcut",trait:"voidwalker",desc:"Guide the tool usage."}]},
+      {id:11,text:"Your 5-year-old has a meltdown every time screen time ends.",cards:[
+        {title:"Give them 5 more minutes each time",trait:"nanny",desc:"Gradual transitions are easier."},
+        {title:"Turn it off — they'll learn to deal with it",trait:"dictator",desc:"Emotional regulation through firm limits."},
+        {title:"Create a predictable wind-down routine",trait:"voidwalker",desc:"Help them learn to transition."}]},
+      {id:12,text:"A family member gifts your child a gaming console against your wishes.",cards:[
+        {title:"Accept it and set rules",trait:"nanny",desc:"Don't create family drama."},
+        {title:"Return it immediately",trait:"dictator",desc:"Your house, your rules."},
+        {title:"Thank the relative, then co-create gaming rules with your child",trait:"voidwalker",desc:"Use it to teach self-regulation."}]},
+      {id:13,text:"Your child excels at coding/creative work on screens but does nothing else.",cards:[
+        {title:"Nurture the talent — screens are their medium",trait:"nanny",desc:"Follow their passion."},
+        {title:"Force a balanced schedule",trait:"dictator",desc:"Well-rounded kids need variety."},
+        {title:"Connect their digital skills to real-world activities",trait:"voidwalker",desc:"Bridge screen and physical worlds."}]},
+      {id:14,text:"Your teenager starts sleeping with their phone under their pillow.",cards:[
+        {title:"It's normal teen behavior",trait:"nanny",desc:"They'll grow out of it."},
+        {title:"Phones charge outside bedrooms, non-negotiable",trait:"dictator",desc:"Sleep hygiene requires hard rules."},
+        {title:"Share the sleep research and let them decide",trait:"voidwalker",desc:"Empower informed choices."}]},
+      {id:15,text:"Your child says screen time helps their anxiety and they feel worse without it.",cards:[
+        {title:"If it helps, don't restrict it",trait:"nanny",desc:"Their comfort matters most."},
+        {title:"That's dependency, reduce it now",trait:"dictator",desc:"Screens aren't a healthy coping mechanism."},
+        {title:"Explore the anxiety together and find multiple coping tools",trait:"voidwalker",desc:"Address the root, not the symptom."}]},
+      {id:16,text:"Your child's school assigns mandatory screen-based homework for hours daily.",cards:[
+        {title:"Follow the school's approach",trait:"nanny",desc:"Trust the educators."},
+        {title:"Push back against the school",trait:"dictator",desc:"You know what's best for your child."},
+        {title:"Supplement with offline activities and communicate with teachers",trait:"voidwalker",desc:"Balance without conflict."}]},
+      {id:17,text:"Your 8-year-old wants to start a YouTube channel like their favorite creators.",cards:[
+        {title:"Help them — it builds skills",trait:"nanny",desc:"Creativity should be encouraged."},
+        {title:"Absolutely not at that age",trait:"dictator",desc:"Too young for public content."},
+        {title:"Make family videos together privately first",trait:"voidwalker",desc:"Safe practice before public exposure."}]},
+      {id:18,text:"During a road trip, the only way to keep peace is screens for all kids.",cards:[
+        {title:"Use screens — road trips are boring",trait:"nanny",desc:"Practical solution for a tough situation."},
+        {title:"No screens — they need to entertain themselves",trait:"dictator",desc:"Boredom builds imagination."},
+        {title:"Mix screen time with games, audiobooks, and conversation",trait:"voidwalker",desc:"Variety keeps everyone engaged."}]},
+      {id:19,text:"Your child's best friend is allowed unlimited screen time and your child resents your rules.",cards:[
+        {title:"Relax your rules to match",trait:"nanny",desc:"Don't make your kid the odd one out."},
+        {title:"Your house has different rules, end of discussion",trait:"dictator",desc:"Other families don't set your standards."},
+        {title:"Explain your reasoning and listen to their feelings",trait:"voidwalker",desc:"Validate frustration while holding boundaries."}]},
+      {id:20,text:"Your child's creativity seems to have declined since they started heavy tablet use.",cards:[
+        {title:"They're just creative in different ways now",trait:"nanny",desc:"Digital creativity counts too."},
+        {title:"Remove the tablet, give them art supplies",trait:"dictator",desc:"Analog tools spark real creativity."},
+        {title:"Reduce tablet and co-create projects blending both",trait:"voidwalker",desc:"Guide them to balanced expression."}]}
+    ]
+  }
+};
+
+const ARCHETYPES={
+  optimizer:{name:"The Optimizer",desc:"High Pragmatism. Prioritizes systemic efficiency over individual friction."},
+  guardian:{name:"The Guardian",desc:"High Empathy. Protects the human baseline at the cost of velocity."},
+  architect:{name:"The Architect",desc:"High Openness. Redesigns the system rather than choosing between bad options."},
+  purist:{name:"The Purist",desc:"High Conscientiousness. Integrity is absolute, regardless of financial cost."},
+  operator:{name:"The Operator",desc:"High Machiavellianism. Manages perception and navigates the grey areas."},
+  transformer:{name:"The Transformer",desc:"High Extroversion. Injects capital and energy to alter the reality of the problem."},
+  nanny:{name:"The Algorithmic Nanny",desc:"High Avoidance. Outsourcing emotional regulation to convenience."},
+  dictator:{name:"The Dictator",desc:"High Reactivity. Uses authority to command short-term obedience."},
+  voidwalker:{name:"The Void-Walker",desc:"High Resilience. Comfortable with discomfort. Builds cognitive independence."}
+};
+
+/* ═══════════════════════════════════════════════════
+   NAVBAR
+   ═══════════════════════════════════════════════════ */
+function Navbar({activeTab,setActiveTab}){
+  const tabs=[{id:'project-m',label:'Project M',icon:'Brain'},{id:'live-long',label:'Live Long',icon:'HeartPulse'},{id:'medpod',label:'MedPod',icon:'Radio'},{id:'roi-dashboard',label:'ROI Dashboard',icon:'BarChart3'}];
+  return(
+    <nav className="fixed top-0 left-0 right-0 z-50 glass" style={{borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'rgba(168,85,247,0.15)',border:'1px solid rgba(168,85,247,0.3)'}}><Icon name="Hexagon" size={16} className="text-purple-400"/></div>
+          <span className="text-sm font-semibold tracking-wider text-white/90">CRUCIBLE OS</span>
+          <span className="text-white/30 ml-1" style={{fontSize:'10px',letterSpacing:'0.15em'}}>V3.0</span>
+        </div>
+        <div className="flex items-center gap-1">
+          {tabs.map(t=>(
+            <button key={t.id} onClick={()=>setActiveTab(t.id)} className={`nav-item px-3 md:px-4 py-2 rounded-lg text-xs font-medium tracking-wide transition-all duration-300 flex items-center gap-2 ${activeTab===t.id?'active text-white bg-white/5':'text-white/40 hover:text-white/70 hover:bg-white/5'}`}>
+              <Icon name={t.icon} size={14}/><span className="hidden md:inline">{t.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-green-500/80 pulse-dot"/><span className="text-white/30 hidden md:inline" style={{fontSize:'10px',letterSpacing:'0.15em'}}>SYSTEM NOMINAL</span></div>
+      </div>
+    </nav>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   PROJECT M — FULL PSYCHOMETRIC ENGINE
+   Best of 7: Pick 7 from 20, answer them, get result
+   ═══════════════════════════════════════════════════ */
+function ProjectM({setActiveTab}){
+  // Steps: 0=theme pick, 1=scenario picker, 2=answering, 3=processing, 4=result
+  const[phase,setPhase]=useState(0);
+  const[selectedTheme,setSelectedTheme]=useState(null);
+  const[pickedScenarios,setPickedScenarios]=useState([]);
+  const[currentQ,setCurrentQ]=useState(0);
+  const[answers,setAnswers]=useState([]);
+  const[cardsVisible,setCardsVisible]=useState(false);
+  const[selectedCard,setSelectedCard]=useState(null);
+
+  const themeData=selectedTheme?THEMES[selectedTheme]:null;
+  const activeScenarios=themeData?pickedScenarios.map(idx=>themeData.questions[idx]):[];
+  const question=activeScenarios[currentQ]||null;
+
+  useEffect(()=>{
+    if(phase===2){setCardsVisible(false);setSelectedCard(null);const t=setTimeout(()=>setCardsVisible(true),800);return()=>clearTimeout(t);}
+  },[phase,currentQ]);
+
+  function pickTheme(key){setSelectedTheme(key);setPickedScenarios([]);setAnswers([]);setCurrentQ(0);setPhase(1);}
+
+  function toggleScenario(idx){
+    if(pickedScenarios.includes(idx)){setPickedScenarios(pickedScenarios.filter(i=>i!==idx));}
+    else if(pickedScenarios.length<7){setPickedScenarios([...pickedScenarios,idx]);}
+  }
+
+  function randomPick(){
+    const indices=Array.from({length:20},(_,i)=>i);
+    for(let i=indices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}
+    setPickedScenarios(indices.slice(0,7));
+  }
+
+  function startAnswering(){if(pickedScenarios.length===7){setCurrentQ(0);setAnswers([]);setPhase(2);}}
+
+  function selectCard(trait,idx){
+    setSelectedCard(idx);
+    const newAnswers=[...answers,trait];
+    setAnswers(newAnswers);
+    setTimeout(()=>{
+      if(currentQ<6){setCurrentQ(currentQ+1);setCardsVisible(false);setSelectedCard(null);setTimeout(()=>setCardsVisible(true),800);}
+      else{setPhase(3);setTimeout(()=>setPhase(4),2500);}
+    },600);
+  }
+
+  function getResult(){
+    const freq={};answers.forEach(t=>{freq[t]=(freq[t]||0)+1;});
+    let maxT=answers[0]||'optimizer',maxC=0;
+    Object.entries(freq).forEach(([t,c])=>{if(c>maxC){maxC=c;maxT=t;}});
+    return{archetype:ARCHETYPES[maxT]||ARCHETYPES.optimizer,freq,total:answers.length};
+  }
+
+  function reset(){setPhase(0);setSelectedTheme(null);setPickedScenarios([]);setAnswers([]);setCurrentQ(0);setCardsVisible(false);setSelectedCard(null);}
+
+  // ── THEME SELECT ──
+  if(phase===0){
+    const themes=[
+      {key:'ai_productivity',bg:'rgba(168,85,247,0.08)',border:'rgba(168,85,247,0.18)',txt:'text-purple-400'},
+      {key:'responsible_leadership',bg:'rgba(245,158,11,0.08)',border:'rgba(245,158,11,0.18)',txt:'text-amber-400'},
+      {key:'pediatric_screentime',bg:'rgba(34,211,238,0.08)',border:'rgba(34,211,238,0.18)',txt:'text-cyan-400'},
+    ];
+    return(
+      <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-4xl mx-auto">
+        <FadeUp delay={100}><div className="text-center mb-4"><span className="text-purple-400/60 uppercase" style={{fontSize:'10px',letterSpacing:'0.3em'}}>Ontological Engine — Best of 7</span></div></FadeUp>
+        <FadeUp delay={200}><h1 className="text-center text-4xl md:text-5xl font-bold tracking-tight text-white/95 mb-3">The Mind Matrix</h1></FadeUp>
+        <FadeUp delay={300}><p className="text-center text-sm text-white/30 max-w-lg mx-auto mb-16 leading-relaxed">Choose a domain. Pick 7 scenarios from 20. Your decisions map to a psychometric archetype.</p></FadeUp>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {themes.map((th,i)=>(
+            <FadeUp key={th.key} delay={500+i*150}>
+              <button onClick={()=>pickTheme(th.key)} className="glass-card glass-hover rounded-2xl p-8 text-left w-full transition-all duration-500 group">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{background:th.bg,border:`1px solid ${th.border}`}}>
+                  <Icon name={THEMES[th.key].icon} size={20} className={th.txt}/>
+                </div>
+                <h3 className="text-sm font-semibold text-white/90 mb-1">{THEMES[th.key].title}</h3>
+                <p className="text-xs text-white/30 leading-relaxed mb-1">{THEMES[th.key].subtitle}</p>
+                <p className="text-xs text-white/20">20 scenarios · Best of 7</p>
+                <div className="mt-5 flex items-center gap-2 text-xs text-white/20 group-hover:text-white/40 transition-all"><span>Select</span><Icon name="ArrowRight" size={12}/></div>
+              </button>
+            </FadeUp>
+          ))}
+        </div>
+      </div></div>
+    );
+  }
+
+  // ── SCENARIO PICKER ──
+  if(phase===1){
+    return(
+      <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-4xl mx-auto">
+        <FadeUp delay={50}>
+          <div className="flex items-center justify-between mb-8">
+            <button onClick={reset} className="flex items-center gap-2 text-xs text-white/20 hover:text-white/40 transition-all"><Icon name="ArrowLeft" size={14}/>Back</button>
+            <span className="text-white/20 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>{themeData.title}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono" style={{color:pickedScenarios.length===7?'rgba(52,211,153,0.8)':'rgba(255,255,255,0.3)'}}>{pickedScenarios.length}/7</span>
+            </div>
+          </div>
+        </FadeUp>
+        <FadeUp delay={150}>
+          <div className="glass-card rounded-2xl p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-white/90 mb-1">Choose Your 7 Scenarios</h2>
+                <p className="text-xs text-white/30">Tap to select scenarios, or shuffle for a random set.</p>
+              </div>
+              <button onClick={randomPick} className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all" style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',color:'rgba(255,255,255,0.5)'}} onMouseOver={e=>{e.target.style.background='rgba(255,255,255,0.08)'}} onMouseOut={e=>{e.target.style.background='rgba(255,255,255,0.05)'}}>
+                <Icon name="Shuffle" size={14}/>Shuffle 7
+              </button>
+            </div>
+            <div className="space-y-2 max-h-[480px] overflow-y-auto pr-2">
+              {themeData.questions.map((q,i)=>{
+                const isPicked=pickedScenarios.includes(i);
+                const num=isPicked?pickedScenarios.indexOf(i)+1:null;
+                return(
+                  <button key={i} onClick={()=>toggleScenario(i)}
+                    className={`scenario-pill w-full text-left px-4 py-3 rounded-xl flex items-start gap-3 ${isPicked?'picked':''}`}
+                    style={{border:'1px solid rgba(255,255,255,0.06)',background:isPicked?'rgba(168,85,247,0.1)':'rgba(255,255,255,0.02)'}}>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{
+                      background:isPicked?'rgba(168,85,247,0.2)':'rgba(255,255,255,0.04)',
+                      border:`1px solid ${isPicked?'rgba(168,85,247,0.4)':'rgba(255,255,255,0.08)'}`,
+                      color:isPicked?'rgba(216,180,254,0.9)':'rgba(255,255,255,0.25)',fontSize:'11px',fontWeight:600
+                    }}>{isPicked?num:i+1}</div>
+                    <p className="text-xs leading-relaxed" style={{color:isPicked?'rgba(216,180,254,0.8)':'rgba(255,255,255,0.4)'}}>{q.text}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </FadeUp>
+        <FadeUp delay={300}>
+          <button onClick={startAnswering} disabled={pickedScenarios.length!==7}
+            className="w-full py-4 rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-center gap-3"
+            style={{
+              background:pickedScenarios.length===7?'rgba(168,85,247,0.2)':'rgba(255,255,255,0.03)',
+              border:`1px solid ${pickedScenarios.length===7?'rgba(168,85,247,0.4)':'rgba(255,255,255,0.06)'}`,
+              color:pickedScenarios.length===7?'rgba(216,180,254,0.9)':'rgba(255,255,255,0.2)',
+              cursor:pickedScenarios.length===7?'pointer':'not-allowed'
+            }}>
+            <Icon name="Play" size={16}/>Begin Assessment — {pickedScenarios.length===7?'7 Scenarios Ready':'Select '+( 7-pickedScenarios.length)+' More'}
+          </button>
+        </FadeUp>
+      </div></div>
+    );
+  }
+
+  // ── PROCESSING ──
+  if(phase===3){
+    return(
+      <div className="min-h-screen pt-24 flex items-center justify-center">
+        <div className="text-center">
+          <div className="processing-ring mx-auto mb-8"/>
+          <FadeUp delay={200}><p className="text-xs text-white/30 uppercase" style={{letterSpacing:'0.3em'}}>Mapping Cognitive Architecture</p></FadeUp>
+          <FadeUp delay={600}><p className="text-white/15 mt-3" style={{fontSize:'10px'}}>Analyzing 7 decision vectors...</p></FadeUp>
+        </div>
+      </div>
+    );
+  }
+
+  // ── RESULT ──
+  if(phase===4){
+    const{archetype,freq,total}=getResult();
+    const sortedTraits=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    return(
+      <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-2xl mx-auto text-center">
+        <FadeUp delay={200}><span className="text-purple-400/60 uppercase" style={{fontSize:'10px',letterSpacing:'0.3em'}}>Best of 7 — Analysis Complete</span></FadeUp>
+        <FadeUp delay={400}>
+          <div className="mt-10 mb-8">
+            <div className="w-20 h-20 rounded-2xl glass-card glow-border mx-auto flex items-center justify-center mb-8"><Icon name="Fingerprint" size={32} className="text-purple-400"/></div>
+            <h1 className="text-3xl md:text-4xl font-bold text-white/95 mb-4">{archetype.name}</h1>
+            <p className="text-sm text-white/40 leading-relaxed max-w-md mx-auto">{archetype.desc}</p>
+          </div>
+        </FadeUp>
+        <FadeUp delay={700}>
+          <div className="glass-card rounded-2xl p-6 mb-6 text-left">
+            <div className="flex items-center gap-3 mb-5"><Icon name="BarChart3" size={16} className="text-purple-400/60"/><span className="text-white/30 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>Trait Distribution (7 answers)</span></div>
+            <div className="space-y-3">
+              {sortedTraits.map(([trait,count],i)=>{
+                const pct=Math.round((count/total)*100);
+                return(
+                  <div key={trait}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-white/50 font-medium">{ARCHETYPES[trait]?.name||trait}</span>
+                      <span className="text-xs text-white/30 font-mono">{count}/7 ({pct}%)</span>
+                    </div>
+                    <div className="h-2 rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.03)'}}>
+                      <div className="h-full rounded-full bar-animate" style={{width:`${pct}%`,background:'rgba(168,85,247,0.5)',transition:'width 1s ease'}}/>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </FadeUp>
+        <FadeUp delay={1000}>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <button onClick={()=>setActiveTab('live-long')} className="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2" style={{background:'rgba(168,85,247,0.2)',border:'1px solid rgba(168,85,247,0.3)',color:'rgba(216,180,254,0.9)'}}>
+              <Icon name="HeartPulse" size={16}/>Initialize Biological Fulfillment<Icon name="ArrowRight" size={14}/>
+            </button>
+            <button onClick={()=>{setPhase(1);setAnswers([]);setCurrentQ(0);}} className="px-5 py-3 rounded-xl text-xs transition-all flex items-center gap-2" style={{color:'rgba(255,255,255,0.3)',border:'1px solid rgba(255,255,255,0.06)'}}><Icon name="RotateCcw" size={14}/>Pick New Scenarios</button>
+            <button onClick={reset} className="px-5 py-3 rounded-xl text-xs text-white/20 hover:text-white/40 transition-all">Reset All</button>
+          </div>
+        </FadeUp>
+      </div></div>
+    );
+  }
+
+  // ── ANSWERING PHASE ──
+  return(
+    <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-4xl mx-auto">
+      <FadeUp delay={50}>
+        <div className="flex items-center justify-between mb-10">
+          <button onClick={()=>{setPhase(1);setAnswers([]);setCurrentQ(0);}} className="flex items-center gap-2 text-xs text-white/20 hover:text-white/40 transition-all"><Icon name="ArrowLeft" size={14}/>Back</button>
+          <span className="text-white/20 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>{themeData.title}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-white/30" style={{fontSize:'10px'}}>Round {currentQ+1} / 7</span>
+            <div className="flex gap-1.5">
+              {Array.from({length:7}).map((_,i)=>(
+                <div key={i} className="w-6 h-1 rounded-full transition-all duration-500" style={{background:i<=currentQ?'rgba(168,85,247,0.6)':'rgba(255,255,255,0.05)'}}/>
+              ))}
+            </div>
+          </div>
+        </div>
+      </FadeUp>
+
+      <FadeUp delay={100} key={`q-${currentQ}`}>
+        <div className="glass-card rounded-2xl p-8 mb-8">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
+              <Icon name="AlertTriangle" size={18} className="text-amber-400/70"/>
+            </div>
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-white/20 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>Scenario {question.id}</span>
+                <span className="px-2 py-0.5 rounded-full text-white/15" style={{fontSize:'9px',background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.05)'}}>Round {currentQ+1} of 7</span>
+              </div>
+              <p className="text-base text-white/80 leading-relaxed">{question.text}</p>
+            </div>
+          </div>
+        </div>
+      </FadeUp>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {question.cards.map((card,i)=>(
+          <div key={`${currentQ}-${i}`} className={`fade-up ${cardsVisible?'visible':''} ${i===0?'card-delayed-1':i===1?'card-delayed-2':'card-delayed-3'}`}>
+            <button onClick={()=>selectedCard===null&&selectCard(card.trait,i)} disabled={selectedCard!==null}
+              className={`tarot-card glass-card rounded-2xl p-6 text-left w-full flex flex-col ${selectedCard===i?'selected':''} ${selectedCard!==null&&selectedCard!==i?'opacity-30':''}`}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
+                <span className="text-white/40 font-bold" style={{fontSize:'14px'}}>{String.fromCharCode(65+i)}</span>
+              </div>
+              <h3 className="text-sm font-semibold text-white/90 mb-2">{card.title}</h3>
+              <p className="text-xs text-white/40 leading-relaxed flex-1">{card.desc}</p>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div></div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   LIVE LONG
+   ═══════════════════════════════════════════════════ */
+function LiveLong(){
+  const plans=[
+    {name:"Blueprint Starter",price:"₹85,000",period:"/mo",popular:false,features:["60 Biomarkers Panel","Cognitive Sleep Mapping","Quarterly Epigenetic Review","AI Longevity Dashboard","Priority Teleconsult"],cta:"Initialize Protocol"},
+    {name:"Protocol Zero",price:"₹1,65,000",period:"/mo",popular:true,features:["111 Biomarkers — Full Genomic","MedPod IV Therapy (4x/mo)","Epigenetic Biological Age Clock","Cognitive Sleep + HRV Mapping","Dedicated Longevity Physician","Quarterly Deep-Tissue MRI","NAD+ & Peptide Protocols"],cta:"Activate Protocol Zero"}
+  ];
+  return(
+    <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-4xl mx-auto">
+      <FadeUp delay={100}><div className="text-center mb-4"><span className="text-emerald-400/60 uppercase" style={{fontSize:'10px',letterSpacing:'0.3em'}}>Biological Fulfillment</span></div></FadeUp>
+      <FadeUp delay={200}><h1 className="text-center text-4xl font-bold text-white/95 mb-3">Live Long</h1></FadeUp>
+      <FadeUp delay={300}><p className="text-center text-sm text-white/30 max-w-md mx-auto mb-16 leading-relaxed">Precision longevity protocols. Reverse your biological clock with data-driven interventions.</p></FadeUp>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        {plans.map((plan,i)=>(
+          <FadeUp key={i} delay={500+i*200}>
+            <div className={`rounded-2xl p-8 h-full flex flex-col ${plan.popular?'glass-card glow-border':'glass-card'}`}>
+              {plan.popular&&<div className="flex items-center gap-2 mb-6"><div className="px-3 py-1 rounded-full" style={{background:'rgba(168,85,247,0.12)',border:'1px solid rgba(168,85,247,0.25)'}}><span className="text-purple-300/80 uppercase font-medium" style={{fontSize:'10px',letterSpacing:'0.1em'}}>Most Popular</span></div></div>}
+              <h3 className="text-lg font-semibold text-white/90 mb-1">{plan.name}</h3>
+              <div className="flex items-baseline gap-1 mb-8"><span className="text-3xl font-bold text-white/95">{plan.price}</span><span className="text-sm text-white/25">{plan.period}</span></div>
+              <div className="flex-1 space-y-3 mb-8">
+                {plan.features.map((f,fi)=>(<div key={fi} className="flex items-start gap-3"><div className="mt-0.5"><Icon name="Check" size={14} className={plan.popular?"text-purple-400/60":"text-emerald-400/50"}/></div><span className="text-xs text-white/40 leading-relaxed">{f}</span></div>))}
+              </div>
+              <button className="w-full py-3.5 rounded-xl text-sm font-medium transition-all duration-300"
+                style={plan.popular?{background:'rgba(168,85,247,0.25)',border:'1px solid rgba(168,85,247,0.4)',color:'rgba(233,213,255,0.9)'}:{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)',color:'rgba(255,255,255,0.6)'}}>{plan.cta}</button>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </div></div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   MEDPOD
+   ═══════════════════════════════════════════════════ */
+function MedPod(){
+  const pods=[
+    {id:"POD-ALPHA",status:"Available",lat:"19.0421°N",lng:"73.0292°E",battery:98,icon:"CircleDot",sc:'#22c55e',sbg:'rgba(34,197,94,0.08)',sbr:'rgba(34,197,94,0.15)',bar:'rgba(34,197,94,0.6)',label:'READY'},
+    {id:"POD-BETA",status:"On Mission",lat:"19.0178°N",lng:"73.0368°E",battery:72,icon:"Navigation",sc:'#f59e0b',sbg:'rgba(245,158,11,0.08)',sbr:'rgba(245,158,11,0.15)',bar:'rgba(245,158,11,0.6)',label:'ACTIVE'}
+  ];
+  return(
+    <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-6xl mx-auto">
+      <FadeUp delay={100}><div className="flex items-center justify-between mb-10"><div><span className="text-cyan-400/60 uppercase block mb-2" style={{fontSize:'10px',letterSpacing:'0.3em'}}>Decentralized VIP Clinics</span><h1 className="text-3xl font-bold text-white/95">MedPod Fleet</h1></div><div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-green-500/80 pulse-dot"/><span className="text-xs text-white/30">KDMC Hub — Live</span></div></div></FadeUp>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-2 space-y-4">
+          <FadeUp delay={300}><div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-6"><Icon name="Radio" size={14} className="text-cyan-400/60"/><span className="text-white/30 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>Fleet Status</span></div>
+            <div className="space-y-4">
+              {pods.map((p,i)=>(<div key={i} className="glass rounded-xl p-5 hover:bg-white/5 transition-all duration-300">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:p.sbg,border:`1px solid ${p.sbr}`}}><Icon name={p.icon} size={14} style={{color:p.sc}}/></div><div><span className="text-xs font-semibold text-white/80 block">{p.id}</span><span style={{fontSize:'10px',color:p.sc+'b3'}}>{p.status}</span></div></div>
+                  <div className="px-2.5 py-1 rounded-full" style={{background:p.sbg,border:`1px solid ${p.sbr}`}}><span className="font-medium" style={{fontSize:'10px',color:p.sc+'cc'}}>{p.label}</span></div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  <div><span className="text-white/15 uppercase tracking-wider block mb-1" style={{fontSize:'9px'}}>Position</span><span className="text-white/40 font-mono block" style={{fontSize:'10px'}}>{p.lat}</span><span className="text-white/40 font-mono block" style={{fontSize:'10px'}}>{p.lng}</span></div>
+                  <div><span className="text-white/15 uppercase tracking-wider block mb-1" style={{fontSize:'9px'}}>Power</span><div className="flex items-center gap-2"><div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.04)'}}><div className="h-full rounded-full" style={{width:`${p.battery}%`,background:p.bar}}/></div><span className="text-white/30" style={{fontSize:'10px'}}>{p.battery}%</span></div></div>
+                </div>
+              </div>))}
+            </div>
+          </div></FadeUp>
+          <FadeUp delay={500}><button className="w-full glass-card rounded-xl py-3.5 text-xs font-medium text-cyan-300/60 hover:text-cyan-300/80 hover:bg-white/5 transition-all flex items-center justify-center gap-2"><Icon name="Plus" size={14}/>Request Dispatch</button></FadeUp>
+        </div>
+        <FadeUp delay={400} className="lg:col-span-3">
+          <div className="glass-card rounded-2xl p-6 h-full min-h-[420px] relative overflow-hidden">
+            <div className="flex items-center gap-2 mb-6"><Icon name="Map" size={14} className="text-cyan-400/60"/><span className="text-white/30 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>Spatial Awareness</span></div>
+            <div className="absolute inset-0 flex items-center justify-center" style={{top:'40px'}}>
+              <div className="relative" style={{width:'288px',height:'288px'}}>
+                {[100,75,50,25].map((pct,i)=>(<div key={i} className="radar-ring" style={{width:`${pct}%`,height:`${pct}%`,top:`${(100-pct)/2}%`,left:`${(100-pct)/2}%`}}/>))}
+                <div className="radar-sweep"/>
+                <div className="absolute w-3 h-3 rounded-full pulse-dot" style={{top:'38%',left:'52%',transform:'translate(-50%,-50%)',background:'rgba(34,197,94,0.9)'}}/>
+                <div className="absolute rounded-full" style={{width:'10px',height:'10px',top:'58%',left:'44%',transform:'translate(-50%,-50%)',background:'rgba(245,158,11,0.8)'}}><div className="absolute inset-0 rounded-full animate-ping" style={{background:'rgba(245,158,11,0.4)'}}/></div>
+                <div className="absolute font-mono" style={{fontSize:'9px',color:'rgba(34,197,94,0.5)',top:'32%',left:'58%'}}>α</div>
+                <div className="absolute font-mono" style={{fontSize:'9px',color:'rgba(245,158,11,0.5)',top:'62%',left:'38%'}}>β</div>
+              </div>
+            </div>
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between"><span className="text-white/15 font-mono" style={{fontSize:'9px'}}>KDMC SECTOR 7 — NAVI MUMBAI</span><span className="text-white/15 font-mono" style={{fontSize:'9px'}}>RANGE: 12KM</span></div>
+          </div>
+        </FadeUp>
+      </div>
+    </div></div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   ROI DASHBOARD
+   ═══════════════════════════════════════════════════ */
+function ROIDashboard(){
+  const[bV,setBV]=useState(false);
+  useEffect(()=>{const t=setTimeout(()=>setBV(true),800);return()=>clearTimeout(t)},[]);
+  const kpis=[{label:"Active Seats",value:"1,064",icon:"Users",delta:null},{label:"Avg Time-To-Cause",value:"4.2 min",icon:"Timer",delta:"↓ 84%"},{label:"Friction Pattern",value:"Avoidance",icon:"ShieldOff",delta:null}];
+  const dist=[{name:"Operator",pct:55,color:'rgba(168,85,247,0.5)'},{name:"Optimizer",pct:22,color:'rgba(34,211,238,0.5)'},{name:"Guardian",pct:18,color:'rgba(52,211,153,0.5)'},{name:"Purist",pct:5,color:'rgba(245,158,11,0.5)'}];
+  const ins=[{icon:"TrendingDown",text:"Avoidance-dominant orgs show 3.2x higher attrition in Q2-Q3 cycles.",bg:'rgba(239,68,68,0.06)',br:'rgba(239,68,68,0.12)',ic:'rgba(239,68,68,0.5)'},{icon:"Zap",text:"Operator archetype correlates with faster decisions but 67% higher ethical friction.",bg:'rgba(245,158,11,0.06)',br:'rgba(245,158,11,0.12)',ic:'rgba(245,158,11,0.5)'},{icon:"Target",text:"Guardian prevalence below 20% signals empathy debt — recommend intervention.",bg:'rgba(34,211,238,0.06)',br:'rgba(34,211,238,0.12)',ic:'rgba(34,211,238,0.5)'}];
+  return(
+    <div className="min-h-screen pt-24 pb-16 px-6"><div className="max-w-6xl mx-auto">
+      <FadeUp delay={100}><div className="flex items-center justify-between mb-10"><div><span className="text-purple-400/60 uppercase block mb-2" style={{fontSize:'10px',letterSpacing:'0.3em'}}>Enterprise Analytics</span><h1 className="text-3xl font-bold text-white/95">CHRO Dashboard</h1></div><div className="flex items-center gap-3 glass-card rounded-xl px-4 py-2.5"><Icon name="Building2" size={14} className="text-white/25"/><span className="text-xs text-white/40">Acme Corp</span><span className="text-white/15" style={{fontSize:'10px'}}>|</span><span className="text-white/20" style={{fontSize:'10px'}}>Q1 2026</span></div></div></FadeUp>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        {kpis.map((k,i)=>(<FadeUp key={i} delay={300+i*150}><div className="glass-card rounded-2xl p-6"><div className="flex items-center justify-between mb-4"><div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.06)'}}><Icon name={k.icon} size={18} className="text-white/30"/></div>{k.delta&&<span className="font-medium px-2.5 py-1 rounded-full" style={{fontSize:'10px',color:'rgba(52,211,153,0.7)',background:'rgba(52,211,153,0.08)'}}>{k.delta}</span>}</div><span className="text-2xl font-bold text-white/90 block mb-1">{k.value}</span><span className="text-white/25 tracking-wider uppercase" style={{fontSize:'10px'}}>{k.label}</span></div></FadeUp>))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <FadeUp delay={800} className="lg:col-span-2"><div className="glass-card rounded-2xl p-8">
+          <div className="flex items-center justify-between mb-8"><div><span className="text-white/20 uppercase block mb-1" style={{fontSize:'10px',letterSpacing:'0.2em'}}>Psychometric Distribution</span><h3 className="text-sm font-semibold text-white/70">Organizational Archetype Map</h3></div><div className="flex items-center gap-2"><Icon name="BarChart3" size={14} className="text-white/15"/><span className="text-white/15" style={{fontSize:'10px'}}>n=1,064</span></div></div>
+          <div className="space-y-5">{dist.map((d,i)=>(<div key={i}><div className="flex items-center justify-between mb-2"><span className="text-xs text-white/50 font-medium">{d.name}</span><span className="text-xs text-white/30 font-mono">{d.pct}%</span></div><div className="h-2.5 rounded-full overflow-hidden" style={{background:'rgba(255,255,255,0.02)'}}><div className="h-full rounded-full bar-animate" style={{width:bV?`${d.pct}%`:'0%',background:d.color}}/></div></div>))}</div>
+        </div></FadeUp>
+        <FadeUp delay={1000}><div className="glass-card rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-6"><Icon name="Lightbulb" size={14} className="text-amber-400/50"/><span className="text-white/20 uppercase" style={{fontSize:'10px',letterSpacing:'0.2em'}}>AI Insights</span></div>
+          <div className="space-y-4">{ins.map((n,i)=>(<div key={i} className="glass rounded-xl p-4"><div className="flex items-start gap-3"><div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{background:n.bg,border:`1px solid ${n.br}`}}><Icon name={n.icon} size={12} style={{color:n.ic}}/></div><p className="text-white/35 leading-relaxed" style={{fontSize:'11px'}}>{n.text}</p></div></div>))}</div>
+        </div></FadeUp>
+      </div>
+    </div></div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   APP ROOT
+   ═══════════════════════════════════════════════════ */
+function App(){
+  const[activeTab,setActiveTab]=useState('project-m');
+  const renderPage=()=>{
+    switch(activeTab){
+      case'project-m':return <ProjectM key="pm" setActiveTab={setActiveTab}/>;
+      case'live-long':return <LiveLong key="ll"/>;
+      case'medpod':return <MedPod key="mp"/>;
+      case'roi-dashboard':return <ROIDashboard key="rd"/>;
+      default:return <ProjectM key="pmd" setActiveTab={setActiveTab}/>;
+    }
+  };
+  return(
+    <div className="min-h-screen bg-neutral-950 text-white">
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <div key={activeTab}>{renderPage()}</div>
+      <div className="fixed bottom-4 left-0 right-0 text-center"><span className="text-white/10 uppercase" style={{fontSize:'9px',letterSpacing:'0.3em'}}>Crucible OS — MedRoute V3.0 — HealAI Systems</span></div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

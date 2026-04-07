@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "board": "ICSE",
+    "version": "2024-25",
+    "subjects": ["Biology"],
+    "classes": ["6", "7", "8", "9", "10"]
+  },
+  "class_6": {
+    "label": "Class VI",
+    "chapters": [
+      {
+        "id": "6-bio-1",
+        "title": "The Cell — Basic Unit of Life",
+        "topics": ["Cell Structure", "Plant vs Animal Cell", "Cell Organelles", "Cell Membrane", "Nucleus", "Cytoplasm", "Mitochondria", "Chloroplasts"],
+        "key_facts": [
+          "All living organisms are made of cells",
+          "Robert Hooke discovered the cell in 1665",
+          "Plant cells have cell wall and chloroplasts; animal cells do not",
+          "Mitochondria is the powerhouse of the cell",
+          "The nucleus controls all cell activities"
+        ],
+        "misconceptions": ["Cell is visible to naked eye — FALSE", "All cells are the same shape — FALSE"],
+        "hero_hook": "Tiny warriors inside every living thing",
+        "difficulty": "foundation"
+      },
+      {
+        "id": "6-bio-2",
+        "title": "Reproduction in Plants",
+        "topics": ["Asexual Reproduction", "Vegetative Propagation", "Spore Formation", "Fragmentation", "Budding in Yeast", "Sexual Reproduction in Plants", "Pollination", "Fertilization", "Seed Dispersal"],
+        "key_facts": [
+          "Asexual reproduction requires only one parent",
+          "Vegetative propagation occurs through roots, stems, and leaves",
+          "Pollination is the transfer of pollen from anther to stigma",
+          "Seeds are dispersed by wind, water, animals, and explosion",
+          "Fertilization produces a zygote"
+        ],
+        "misconceptions": ["Plants don't reproduce sexually — FALSE"],
+        "hero_hook": "The secret life cycle of a seed becoming a forest",
+        "difficulty": "foundation"
+      },
+      {
+        "id": "6-bio-3",
+        "title": "Adaptation in Plants",
+        "topics": ["Hydrophytes", "Xerophytes", "Mesophytes", "Halophytes", "Epiphytes", "Insectivorous Plants"],
+        "key_facts": [
+          "Xerophytes have thick waxy leaves to reduce water loss",
+          "Hydrophytes have air spaces (aerenchyma) for buoyancy",
+          "Cactus stores water in its stem",
+          "Pitcher plant digests insects to get nitrogen",
+          "Mangroves have prop roots and pneumatophores for oxygen in waterlogged soil"
+        ],
+        "misconceptions": ["All desert plants are cacti — FALSE"],
+        "hero_hook": "Survivors of the harshest worlds",
+        "difficulty": "foundation"
+      },
+      {
+        "id": "6-bio-4",
+        "title": "Human Body — Digestive System",
+        "topics": ["Digestion", "Mouth", "Oesophagus", "Stomach", "Small Intestine", "Large Intestine", "Liver", "Pancreas", "Enzymes", "Absorption", "Assimilation"],
+        "key_facts": [
+          "Digestion begins in the mouth with salivary amylase",
+          "Stomach produces hydrochloric acid and pepsin",
+          "Small intestine is the site of maximum digestion and absorption",
+          "Liver produces bile which emulsifies fats",
+          "Pancreas produces lipase, amylase, and trypsin"
+        ],
+        "hero_hook": "The incredible journey of a samosa from mouth to energy",
+        "difficulty": "foundation"
+      }
+    ]
+  },
+  "class_7": {
+    "label": "Class VII",
+    "chapters": [
+      {
+        "id": "7-bio-1",
+        "title": "Photosynthesis",
+        "topics": ["Chlorophyll", "Light Reactions", "Dark Reactions", "Carbon Dioxide Fixation", "Glucose Production", "Oxygen Release", "Factors Affecting Photosynthesis", "Starch Test"],
+        "key_facts": [
+          "Photosynthesis: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂",
+          "Chlorophyll absorbs mainly red and blue light",
+          "Photosynthesis occurs in chloroplasts",
+          "Light, CO₂, water, and chlorophyll are essential",
+          "Oxygen is a byproduct released through stomata"
+        ],
+        "hero_hook": "Plants are solar-powered food factories",
+        "difficulty": "intermediate"
+      },
+      {
+        "id": "7-bio-2",
+        "title": "Excretion in Plants",
+        "topics": ["Types of Excretion", "Stomata", "Transpiration", "Resins", "Latex", "Tannins", "Gums", "Oxygen and Carbon Dioxide excretion"],
+        "key_facts": [
+          "Plants excrete oxygen during photosynthesis and CO₂ during respiration",
+          "Stomata are pores on leaves that control gas exchange",
+          "Resins and tannins are excretory products stored in bark",
+          "Transpiration pulls water up from roots (transpiration pull)"
+        ],
+        "hero_hook": "How plants breathe, sweat, and clean themselves",
+        "difficulty": "intermediate"
+      },
+      {
+        "id": "7-bio-3",
+        "title": "Allergy and Immune System",
+        "topics": ["Immunity", "Antigens", "Antibodies", "Allergens", "Histamine", "Types of Immunity", "Vaccines", "Phagocytosis"],
+        "key_facts": [
+          "Immunity is the body's ability to resist disease",
+          "Antibodies are proteins that neutralize antigens",
+          "Allergens trigger histamine release causing allergic reactions",
+          "Active immunity is long-lasting; passive immunity is temporary",
+          "Vaccination introduces weakened pathogens to build immunity"
+        ],
+        "hero_hook": "Your body's invisible army fighting invaders 24/7",
+        "difficulty": "intermediate"
+      }
+    ]
+  },
+  "class_8": {
+    "label": "Class VIII",
+    "chapters": [
+      {
+        "id": "8-bio-1",
+        "title": "Microorganisms",
+        "topics": ["Bacteria", "Viruses", "Fungi", "Protozoa", "Algae", "Beneficial Microorganisms", "Harmful Microorganisms", "Disease-causing Pathogens", "Antibiotics", "Vaccines", "Pasteurization", "Food Preservation"],
+        "key_facts": [
+          "Bacteria are prokaryotic — no membrane-bound nucleus",
+          "Viruses are not cells — they are particles of DNA/RNA with protein coat",
+          "Lactobacillus converts milk to curd (lactic acid fermentation)",
+          "Penicillin was discovered by Alexander Fleming in 1929",
+          "Pasteurization kills harmful bacteria by heating at 72°C for 15 seconds",
+          "Malaria is caused by Plasmodium (protozoa), spread by female Anopheles mosquito"
+        ],
+        "misconceptions": ["Antibiotics kill viruses — FALSE", "All bacteria are harmful — FALSE"],
+        "hero_hook": "The invisible world that controls the living world",
+        "difficulty": "intermediate"
+      },
+      {
+        "id": "8-bio-2",
+        "title": "Cell Division",
+        "topics": ["Mitosis", "Meiosis", "Stages of Mitosis", "Chromosomes", "DNA Replication", "Significance of Cell Division", "Cancer (uncontrolled division)"],
+        "key_facts": [
+          "Mitosis produces two identical daughter cells (somatic cells)",
+          "Meiosis produces four genetically variable cells (gametes)",
+          "Human cells have 46 chromosomes (23 pairs)",
+          "DNA replication occurs during S phase of interphase",
+          "Cancer is caused by uncontrolled mitotic division"
+        ],
+        "hero_hook": "The miracle of one cell becoming trillions",
+        "difficulty": "advanced"
+      },
+      {
+        "id": "8-bio-3",
+        "title": "Conservation of Natural Resources",
+        "topics": ["Biodiversity", "Deforestation", "Wildlife Conservation", "Soil Erosion", "Water Conservation", "National Parks", "Biosphere Reserves", "Endangered Species", "Food Chain", "Food Web"],
+        "key_facts": [
+          "India has 104 national parks and over 550 wildlife sanctuaries",
+          "Deforestation leads to soil erosion, loss of biodiversity, climate change",
+          "A food chain always starts with a producer (green plant)",
+          "Energy transfer in food chain is only 10% at each level (10% law)",
+          "Project Tiger was launched in 1973 to protect Bengal tigers"
+        ],
+        "hero_hook": "Earth's last defenders — why every species matters",
+        "difficulty": "intermediate"
+      }
+    ]
+  },
+  "class_9": {
+    "label": "Class IX",
+    "chapters": [
+      {
+        "id": "9-bio-1",
+        "title": "Basic Biology — Characteristics of Living Things",
+        "topics": ["Life Processes", "Respiration", "Nutrition", "Growth", "Reproduction", "Excretion", "Response to Stimuli", "Movement", "Cellular Respiration", "ATP", "Aerobic vs Anaerobic"],
+        "key_facts": [
+          "All living things: grow, respire, reproduce, excrete, respond to stimuli",
+          "ATP (Adenosine Triphosphate) is the energy currency of cells",
+          "Aerobic respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + 38 ATP",
+          "Anaerobic respiration in yeast: glucose → ethanol + CO₂",
+          "MRS GREN: Movement, Respiration, Sensitivity, Growth, Reproduction, Excretion, Nutrition"
+        ],
+        "hero_hook": "What makes you alive? The science of life itself",
+        "difficulty": "advanced"
+      },
+      {
+        "id": "9-bio-2",
+        "title": "Flower — Structure and Reproduction",
+        "topics": ["Parts of Flower", "Sepal", "Petals", "Stamen", "Pistil", "Pollination types", "Self vs Cross Pollination", "Fertilization", "Double Fertilization", "Fruit Development"],
+        "key_facts": [
+          "Stamen (anther + filament) = male reproductive part",
+          "Pistil (stigma + style + ovary) = female reproductive part",
+          "Double fertilization is unique to angiosperms",
+          "Cross pollination increases genetic variation",
+          "After fertilization: ovary → fruit, ovule → seed"
+        ],
+        "hero_hook": "The love story hidden inside every flower",
+        "difficulty": "intermediate"
+      },
+      {
+        "id": "9-bio-3",
+        "title": "Genetics — Mendel's Laws",
+        "topics": ["Heredity", "Variation", "Genes", "Alleles", "Dominant vs Recessive", "Monohybrid Cross", "Dihybrid Cross", "Law of Segregation", "Law of Independent Assortment", "Punnett Square"],
+        "key_facts": [
+          "Gregor Mendel is the Father of Genetics",
+          "Law of Segregation: alleles separate during gamete formation",
+          "Dominant trait masks recessive in heterozygous condition",
+          "Monohybrid cross ratio (F2): 3 dominant : 1 recessive",
+          "Punnett square predicts probability of offspring traits"
+        ],
+        "hero_hook": "Why you look like your parents — the code of inheritance",
+        "difficulty": "advanced"
+      }
+    ]
+  },
+  "class_10": {
+    "label": "Class X",
+    "chapters": [
+      {
+        "id": "10-bio-1",
+        "title": "Genetics and Evolution",
+        "topics": ["DNA Structure", "Watson and Crick", "Chromosome Theory", "Sex Determination", "Mutations", "Natural Selection", "Darwin's Theory", "Lamarck's Theory", "Variation", "Speciation"],
+        "key_facts": [
+          "DNA double helix discovered by Watson & Crick in 1953",
+          "DNA base pairing: A-T and G-C",
+          "Humans have XX (female) and XY (male) sex chromosomes",
+          "Mutations are permanent changes in DNA — can be caused by radiation or chemicals",
+          "Natural selection: survival of the fittest (Darwin, 1859)",
+          "Evolution occurs over millions of years through genetic variation"
+        ],
+        "misconceptions": ["Humans evolved from monkeys — FALSE (share common ancestor)"],
+        "hero_hook": "The master code that wrote every living thing on Earth",
+        "difficulty": "advanced"
+      },
+      {
+        "id": "10-bio-2",
+        "title": "Human Physiology — Nervous System",
+        "topics": ["Neurons", "Synapse", "CNS and PNS", "Brain Structure", "Spinal Cord", "Reflex Arc", "Voluntary vs Involuntary Actions", "Sense Organs", "Nerve Impulse"],
+        "key_facts": [
+          "Neuron is the structural and functional unit of nervous system",
+          "Nerve impulse travels electrically along axon, chemically across synapse",
+          "Cerebrum controls voluntary actions and intelligence",
+          "Cerebellum controls balance and coordination",
+          "Reflex arc bypasses the brain for fast responses"
+        ],
+        "hero_hook": "Your body's lightning-fast internet — 120 m/s nerve signals",
+        "difficulty": "advanced"
+      },
+      {
+        "id": "10-bio-3",
+        "title": "Human Physiology — Circulatory System",
+        "topics": ["Heart Structure", "Blood Circulation", "Double Circulation", "Arteries and Veins", "Blood Components", "Blood Groups", "Lymphatic System", "Blood Pressure", "Heart Diseases"],
+        "key_facts": [
+          "Human heart has 4 chambers: 2 atria and 2 ventricles",
+          "Double circulation: pulmonary (lungs) and systemic (body)",
+          "RBCs carry oxygen via haemoglobin; WBCs fight infection; platelets clot blood",
+          "Blood groups: A, B, AB, O — based on antigens on RBC surface",
+          "AB is universal recipient; O negative is universal donor",
+          "Normal blood pressure: 120/80 mmHg"
+        ],
+        "hero_hook": "The 100,000 heartbeats a day keeping you alive",
+        "difficulty": "advanced"
+      },
+      {
+        "id": "10-bio-4",
+        "title": "Human Physiology — Reproductive System",
+        "topics": ["Male Reproductive System", "Female Reproductive System", "Menstrual Cycle", "Fertilization", "Implantation", "Foetal Development", "Placenta", "Puberty", "Hormones"],
+        "key_facts": [
+          "Testes produce sperm and testosterone",
+          "Ovaries produce eggs and oestrogen/progesterone",
+          "Fertilization usually occurs in the fallopian tube",
+          "Menstrual cycle is 28 days on average",
+          "Placenta supplies nutrients and removes waste from foetus",
+          "Puberty in girls: 10-14 years; boys: 12-16 years (approximate)"
+        ],
+        "hero_hook": "The nine-month journey from single cell to a human",
+        "difficulty": "advanced"
+      }
+    ]
+  }
+}

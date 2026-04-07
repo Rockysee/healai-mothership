@@ -1,0 +1,1 @@
+{"type":"module","dependencies":{"pdf-parse":"^1.1.1","playwright":"^1.58.2","sqlite":"^5.1.1","sqlite3":"^6.0.1"}}

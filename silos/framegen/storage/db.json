@@ -1,0 +1,2360 @@
+{
+  "projects": [
+    {
+      "id": "2be41f29-8ad0-4783-ab12-e80c3c42a3f3",
+      "title": "The First Star Map",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The First Star Map",
+        "logline": "A young sage's celestial discovery births the ancient wisdom that will guide humanity through the ages.",
+        "colorGrade": "Deep amber and bronze tones, high contrast shadows, warm film grain with ethereal blue highlights",
+        "soundtrack": "Mystical sitar and tabla building to soaring orchestral strings with cosmic synth undertones",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Calling",
+            "durationSec": 8,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "SLOW CRANE UP",
+            "videoPrompt": "Ancient Indian temple courtyard at golden hour, young sage boy in white robes walking purposefully toward stone steps, massive carved pillars casting dramatic shadows, warm amber light filtering through incense smoke, anamorphic lens with shallow depth of field, film grain texture, epic cinematic atmosphere with mystical reverence",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In ancient times, when the heavens called to those who would listen...",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Night Vigil",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "DOLLY IN",
+            "videoPrompt": "Young sage sitting cross-legged on rooftop under star-filled night sky, bronze oil lamp illuminating weathered scrolls and astronomical instruments, deep blue moonlight mixing with warm amber glow, dramatic shadows across concentrated face, anamorphic bokeh from distant stars, film grain, cinematic composition with shallow focus",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "He studied the cosmic dance night after night...",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "The Revelation",
+            "durationSec": 8,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Extreme close-up of sage's hands drawing intricate star patterns on palm leaf manuscript with reed pen, golden candlelight creating dramatic shadows, ancient Sanskrit symbols emerging, warm amber and bronze color grade, shallow depth of field with beautiful bokeh, film grain texture, mystical reverence in every careful stroke",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "And in that moment, the first star map was born.",
+            "transition": "fade-to-black"
+          },
+          {
+            "id": 4,
+            "title": "Legacy Rising",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Epic wide shot of completed star chart spread across stone floor, multiple oil lamps creating pools of warm light, young sage standing triumphant with arms raised toward starry sky visible through temple opening, golden hour lighting with deep bronze shadows, anamorphic lens flares, film grain, cinematic grandeur and mystical achievement",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Thus began the eternal wisdom of Vedic astrology.",
+            "transition": "cut"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Calling",
+          "durationSec": 8,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "SLOW CRANE UP",
+          "videoPrompt": "Ancient Indian temple courtyard at golden hour, young sage boy in white robes walking purposefully toward stone steps, massive carved pillars casting dramatic shadows, warm amber light filtering through incense smoke, anamorphic lens with shallow depth of field, film grain texture, epic cinematic atmosphere with mystical reverence",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In ancient times, when the heavens called to those who would listen...",
+          "transition": "dissolve",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "Ken Burns failed: /bin/sh: ffmpeg: command not found\n",
+          "photoFile": "img_5786_14879897186_o.jpg"
+        },
+        {
+          "id": 2,
+          "title": "Night Vigil",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "DOLLY IN",
+          "videoPrompt": "Young sage sitting cross-legged on rooftop under star-filled night sky, bronze oil lamp illuminating weathered scrolls and astronomical instruments, deep blue moonlight mixing with warm amber glow, dramatic shadows across concentrated face, anamorphic bokeh from distant stars, film grain, cinematic composition with shallow focus",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "He studied the cosmic dance night after night...",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "The Revelation",
+          "durationSec": 8,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Extreme close-up of sage's hands drawing intricate star patterns on palm leaf manuscript with reed pen, golden candlelight creating dramatic shadows, ancient Sanskrit symbols emerging, warm amber and bronze color grade, shallow depth of field with beautiful bokeh, film grain texture, mystical reverence in every careful stroke",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "And in that moment, the first star map was born.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Legacy Rising",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Epic wide shot of completed star chart spread across stone floor, multiple oil lamps creating pools of warm light, young sage standing triumphant with arms raised toward starry sky visible through temple opening, golden hour lighting with deep bronze shadows, anamorphic lens flares, film grain, cinematic grandeur and mystical achievement",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Thus began the eternal wisdom of Vedic astrology.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-11T19:30:34.328Z",
+      "updatedAt": "2026-03-11T20:30:58.146Z"
+    },
+    {
+      "id": "bb346665-db33-4591-ac30-b9db2c29fee4",
+      "title": "Starbound Sage",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Starbound Sage",
+        "logline": "A young mystic discovers the celestial language that will guide humanity for millennia.",
+        "colorGrade": "Deep indigo nights with golden starlight, warm amber skin tones, high contrast shadows",
+        "soundtrack": "Ethereal sitar and tabla building to epic orchestral crescendo with cosmic drones",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Calling",
+            "durationSec": 8,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "SLOW CRANE UP",
+            "videoPrompt": "Ancient Indian boy sage sits cross-legged on mountain peak under vast star-filled sky, glowing constellation patterns visible above, warm oil lamp flickering beside scroll and ink, anamorphic lens captures epic scale, film grain texture, deep indigo night with golden starlight, dramatic shadows across weathered stone, mystical atmosphere with gentle wind moving his simple robes",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In the silence between heartbeats, the cosmos whispered its secrets.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Revelation",
+            "durationSec": 7,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "DOLLY IN",
+            "videoPrompt": "Intense close-up of young sage's face tilted upward, eyes reflecting starlight patterns, pupils dilating with cosmic revelation, shallow depth of field isolates his concentrated expression, golden hour lighting on bronze skin, film grain adds texture, anamorphic bokeh creates dreamy background, dramatic shadows emphasize facial contours, mystical energy radiating from his gaze as understanding dawns",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Sacred Mapping",
+            "durationSec": 9,
+            "shotType": "OVERHEAD",
+            "cameraMove": "SLOW SPIRAL DOWN",
+            "videoPrompt": "Overhead view of ancient parchment covered in intricate star charts and Sanskrit symbols, young hands delicately drawing celestial patterns with golden ink, oil lamp casting warm flickering shadows, anamorphic lens creates cinematic depth, film grain texture enhances aged atmosphere, warm amber and indigo color palette, dramatic lighting reveals detailed astronomical calculations and zodiac symbols being born",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Each star became a letter, each constellation a chapter in destiny's eternal book.",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Legacy Rising",
+            "durationSec": 6,
+            "shotType": "WIDE",
+            "cameraMove": "DOLLY OUT",
+            "videoPrompt": "Young sage stands holding completed star map against dawn sky, first rays of golden sunlight breaking over mountains, his silhouette heroic against epic landscape, anamorphic lens captures cinematic scope, film grain adds texture, warm golden hour lighting transitions from night's indigo, dramatic shadows stretching across ancient stone temples below, mystical energy emanating from the sacred scroll as wind gently moves his robes",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "And so began the sacred science that would guide souls through eternity.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Calling",
+          "durationSec": 8,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "SLOW CRANE UP",
+          "videoPrompt": "Ancient Indian boy sage sits cross-legged on mountain peak under vast star-filled sky, glowing constellation patterns visible above, warm oil lamp flickering beside scroll and ink, anamorphic lens captures epic scale, film grain texture, deep indigo night with golden starlight, dramatic shadows across weathered stone, mystical atmosphere with gentle wind moving his simple robes",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In the silence between heartbeats, the cosmos whispered its secrets.",
+          "transition": "dissolve",
+          "genStatus": "generating",
+          "videoUrl": null,
+          "progressLog": "Using seed: 95250\n"
+        },
+        {
+          "id": 2,
+          "title": "Celestial Revelation",
+          "durationSec": 7,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "DOLLY IN",
+          "videoPrompt": "Intense close-up of young sage's face tilted upward, eyes reflecting starlight patterns, pupils dilating with cosmic revelation, shallow depth of field isolates his concentrated expression, golden hour lighting on bronze skin, film grain adds texture, anamorphic bokeh creates dreamy background, dramatic shadows emphasize facial contours, mystical energy radiating from his gaze as understanding dawns",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Sacred Mapping",
+          "durationSec": 9,
+          "shotType": "OVERHEAD",
+          "cameraMove": "SLOW SPIRAL DOWN",
+          "videoPrompt": "Overhead view of ancient parchment covered in intricate star charts and Sanskrit symbols, young hands delicately drawing celestial patterns with golden ink, oil lamp casting warm flickering shadows, anamorphic lens creates cinematic depth, film grain texture enhances aged atmosphere, warm amber and indigo color palette, dramatic lighting reveals detailed astronomical calculations and zodiac symbols being born",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Each star became a letter, each constellation a chapter in destiny's eternal book.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Legacy Rising",
+          "durationSec": 6,
+          "shotType": "WIDE",
+          "cameraMove": "DOLLY OUT",
+          "videoPrompt": "Young sage stands holding completed star map against dawn sky, first rays of golden sunlight breaking over mountains, his silhouette heroic against epic landscape, anamorphic lens captures cinematic scope, film grain adds texture, warm golden hour lighting transitions from night's indigo, dramatic shadows stretching across ancient stone temples below, mystical energy emanating from the sacred scroll as wind gently moves his robes",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "And so began the sacred science that would guide souls through eternity.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-11T19:42:18.530Z",
+      "updatedAt": "2026-03-11T19:49:54.750Z"
+    },
+    {
+      "id": "fedb1df1-fcf8-449b-877a-7c5a65bfb2c4",
+      "title": "Starmap Origins",
+      "style": "anime",
+      "mood": "Epic",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Starmap Origins",
+        "logline": "A young sage discovers the celestial patterns that will become humanity's first astrological system.",
+        "colorGrade": "Warm amber and deep indigo, high contrast shadows, golden hour filmic look",
+        "soundtrack": "Mystical sitar and tabla building to epic orchestral crescendo with ethereal vocals",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Observer",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "Ancient Indian boy sage with flowing robes sits cross-legged on stone platform, intently studying star charts made of copper and palm leaves. Warm candlelight flickers across his concentrated face as his finger traces celestial patterns. Ancient temple architecture surrounds him, carved pillars casting dramatic shadows. Handheld documentary camera slowly moves closer, capturing the raw authenticity of his scholarly devotion. Natural candlelight creates golden amber tones against deep indigo night sky visible through stone archways.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In ancient India, a young sage began mapping the heavens.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Revelation",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Breathtaking wide shot of the same boy sage standing on temple rooftop with arms raised toward brilliant star-filled sky. Milky Way galaxy stretches dramatically overhead as shooting stars streak across the cosmos. His silhouette is backlit by ethereal moonlight while ancient Sanskrit symbols and constellation lines appear to glow faintly in the night sky. Handheld camera movement captures the epic scope and raw documentary feel. Deep indigo sky contrasts with warm golden light emanating from temple below.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "He saw patterns in the stars that would guide humanity for millennia.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Observer",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "Ancient Indian boy sage with flowing robes sits cross-legged on stone platform, intently studying star charts made of copper and palm leaves. Warm candlelight flickers across his concentrated face as his finger traces celestial patterns. Ancient temple architecture surrounds him, carved pillars casting dramatic shadows. Handheld documentary camera slowly moves closer, capturing the raw authenticity of his scholarly devotion. Natural candlelight creates golden amber tones against deep indigo night sky visible through stone archways.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In ancient India, a young sage began mapping the heavens.",
+          "transition": "match-cut",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "Ken Burns failed: /bin/sh: ffmpeg: command not found\n",
+          "photoFile": "_mg_0561_7489520146_o.jpg"
+        },
+        {
+          "id": 2,
+          "title": "Celestial Revelation",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Breathtaking wide shot of the same boy sage standing on temple rooftop with arms raised toward brilliant star-filled sky. Milky Way galaxy stretches dramatically overhead as shooting stars streak across the cosmos. His silhouette is backlit by ethereal moonlight while ancient Sanskrit symbols and constellation lines appear to glow faintly in the night sky. Handheld camera movement captures the epic scope and raw documentary feel. Deep indigo sky contrasts with warm golden light emanating from temple below.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "He saw patterns in the stars that would guide humanity for millennia.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 2,
+      "createdAt": "2026-03-11T20:50:30.784Z",
+      "updatedAt": "2026-03-11T20:55:34.812Z"
+    },
+    {
+      "id": "c1b9daaf-87df-48b0-891f-6cb0dd1ec188",
+      "title": "Star Cartographer's Genesis",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Star Cartographer's Genesis",
+        "logline": "A young sage's celestial observations birth the ancient science of Vedic astrology.",
+        "colorGrade": "Deep amber and indigo, warm golden highlights, cinematic film grain",
+        "soundtrack": "Mystical Indian classical, building to ethereal choral crescendo with temple bells",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Observer",
+            "durationSec": 8,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "Ancient Indian boy sage in simple white robes sits cross-legged on stone temple steps, gazing upward with wonder. Golden hour sunlight filters through ornate pillars, casting dramatic shadows. Anamorphic lens with shallow depth of field, warm amber color grade, film grain texture. Peaceful temple courtyard with carved stone details, incense smoke drifting. Cinematic lighting emphasizes his contemplative expression and youthful wisdom.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In ancient times, a young sage looked to the heavens with curious eyes.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Canvas",
+            "durationSec": 7,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "CRANE UP",
+            "videoPrompt": "Vast starlit night sky over ancient Indian temple complex, constellations brilliantly visible in deep indigo darkness. Silhouetted temple spires and the small figure of the boy sage on rooftop. Anamorphic lens captures sweeping celestial dome, golden stars twinkling against rich blue-black sky. Cinematic film grain, dramatic contrast between earthly architecture and infinite cosmos. Mystical atmosphere with subtle mist around temple peaks.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Above him stretched an infinite canvas of stars and celestial bodies.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Sacred Documentation",
+            "durationSec": 8,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "HANDHELD",
+            "videoPrompt": "Young sage's hands carefully drawing star charts on palm leaf manuscript with reed pen, candlelight flickering. Ancient Sanskrit symbols and celestial diagrams emerge on weathered parchment. Warm golden lighting from oil lamp, shallow depth of field focusing on intricate astronomical drawings. Anamorphic lens with film grain, amber color grade. Aged wooden desk with brass instruments, scrolls, and geometric tools scattered around ancient observatory setting.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Night after night, he mapped their movements, creating the first star charts.",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Eternal Legacy",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Majestic ancient temple at dawn, golden sunlight streaming through carved stone windows onto walls covered with intricate astronomical carvings and star charts. Young sage stands before massive stone wheel depicting zodiacal constellations. Anamorphic lens with dramatic lighting, warm amber and golden color grade. Film grain texture, shallow depth of field highlighting detailed Sanskrit inscriptions. Mystical atmosphere as morning light reveals the birth of Vedic astrology etched in stone.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Thus began the ancient science that would guide humanity for millennia.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Observer",
+          "durationSec": 8,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "Ancient Indian boy sage in simple white robes sits cross-legged on stone temple steps, gazing upward with wonder. Golden hour sunlight filters through ornate pillars, casting dramatic shadows. Anamorphic lens with shallow depth of field, warm amber color grade, film grain texture. Peaceful temple courtyard with carved stone details, incense smoke drifting. Cinematic lighting emphasizes his contemplative expression and youthful wisdom.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In ancient times, a young sage looked to the heavens with curious eyes.",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Celestial Canvas",
+          "durationSec": 7,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "CRANE UP",
+          "videoPrompt": "Vast starlit night sky over ancient Indian temple complex, constellations brilliantly visible in deep indigo darkness. Silhouetted temple spires and the small figure of the boy sage on rooftop. Anamorphic lens captures sweeping celestial dome, golden stars twinkling against rich blue-black sky. Cinematic film grain, dramatic contrast between earthly architecture and infinite cosmos. Mystical atmosphere with subtle mist around temple peaks.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Above him stretched an infinite canvas of stars and celestial bodies.",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Sacred Documentation",
+          "durationSec": 8,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "HANDHELD",
+          "videoPrompt": "Young sage's hands carefully drawing star charts on palm leaf manuscript with reed pen, candlelight flickering. Ancient Sanskrit symbols and celestial diagrams emerge on weathered parchment. Warm golden lighting from oil lamp, shallow depth of field focusing on intricate astronomical drawings. Anamorphic lens with film grain, amber color grade. Aged wooden desk with brass instruments, scrolls, and geometric tools scattered around ancient observatory setting.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Night after night, he mapped their movements, creating the first star charts.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Eternal Legacy",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Majestic ancient temple at dawn, golden sunlight streaming through carved stone windows onto walls covered with intricate astronomical carvings and star charts. Young sage stands before massive stone wheel depicting zodiacal constellations. Anamorphic lens with dramatic lighting, warm amber and golden color grade. Film grain texture, shallow depth of field highlighting detailed Sanskrit inscriptions. Mystical atmosphere as morning light reveals the birth of Vedic astrology etched in stone.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Thus began the ancient science that would guide humanity for millennia.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-11T22:05:34.337Z",
+      "updatedAt": "2026-03-11T22:05:34.337Z"
+    },
+    {
+      "id": "72239cd6-9013-49d7-b912-a5ac52af39cd",
+      "title": "Learning Together",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Learning Together",
+        "logline": "A mother and daughter share precious moments of discovery through homework and love.",
+        "colorGrade": "Warm golden tones, soft highlights, gentle film grain with creamy shadows",
+        "soundtrack": "Gentle piano melody building to orchestral strings with subtle emotional crescendo",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Evening Study Session",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "A cozy living room bathed in warm golden hour light streaming through sheer curtains. A young school girl in uniform sits at a wooden table with textbooks spread open, her mother beside her pointing at pages. Soft shadows dance across their faces, shot with anamorphic lens creating gentle bokeh. The scene feels intimate and peaceful, with film grain adding cinematic warmth to their concentrated expressions.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Every lesson becomes a bridge between generations",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Focused Learning",
+            "durationSec": 6,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "STATIC",
+            "videoPrompt": "Extreme close-up of hands writing in a notebook, mother's gentle hand guiding daughter's pencil across lined paper. Shallow depth of field isolates their intertwined fingers against blurred homework pages. Warm tungsten lighting creates golden highlights on their skin, dramatic shadows falling naturally. Film grain texture adds cinematic quality to this tender moment of shared learning and patience.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Breakthrough Moment",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Medium shot capturing both mother and daughter as understanding dawns on the girl's face. Anamorphic lens flares catch the warm lamplight, creating dreamy bokeh behind them. The mother smiles proudly while her daughter's eyes light up with comprehension. Golden hour color grading bathes the scene in honey tones, with dramatic shadows sculpting their faces cinematically against the softly blurred background.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "The moment when confusion transforms into clarity",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Proud Embrace",
+            "durationSec": 9,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Emotional close-up as mother embraces her daughter from behind, both looking down at completed homework with satisfied smiles. Warm golden lighting creates a halo effect around them, shallow DOF blurs the background into creamy bokeh. Film grain adds texture while dramatic shadows create depth. The scene captures pure maternal pride and daughter's achievement, shot with cinematic anamorphic characteristics.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In every lesson learned, love grows stronger",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Evening Study Session",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "A cozy living room bathed in warm golden hour light streaming through sheer curtains. A young school girl in uniform sits at a wooden table with textbooks spread open, her mother beside her pointing at pages. Soft shadows dance across their faces, shot with anamorphic lens creating gentle bokeh. The scene feels intimate and peaceful, with film grain adding cinematic warmth to their concentrated expressions.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Every lesson becomes a bridge between generations",
+          "transition": "dissolve",
+          "genStatus": "failed",
+          "videoUrl": "/videos/rpt38d5npxrmw0cwyx5rv9kdk4.mp4",
+          "progressLog": "Could not read photo (unsupported format?): /bin/sh: ffmpeg: command not found\n",
+          "photoFile": "img_0437_7489450098_o.jpg"
+        },
+        {
+          "id": 2,
+          "title": "Focused Learning",
+          "durationSec": 6,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "STATIC",
+          "videoPrompt": "Extreme close-up of hands writing in a notebook, mother's gentle hand guiding daughter's pencil across lined paper. Shallow depth of field isolates their intertwined fingers against blurred homework pages. Warm tungsten lighting creates golden highlights on their skin, dramatic shadows falling naturally. Film grain texture adds cinematic quality to this tender moment of shared learning and patience.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Breakthrough Moment",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Medium shot capturing both mother and daughter as understanding dawns on the girl's face. Anamorphic lens flares catch the warm lamplight, creating dreamy bokeh behind them. The mother smiles proudly while her daughter's eyes light up with comprehension. Golden hour color grading bathes the scene in honey tones, with dramatic shadows sculpting their faces cinematically against the softly blurred background.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "The moment when confusion transforms into clarity",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Proud Embrace",
+          "durationSec": 9,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Emotional close-up as mother embraces her daughter from behind, both looking down at completed homework with satisfied smiles. Warm golden lighting creates a halo effect around them, shallow DOF blurs the background into creamy bokeh. Film grain adds texture while dramatic shadows create depth. The scene captures pure maternal pride and daughter's achievement, shot with cinematic anamorphic characteristics.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In every lesson learned, love grows stronger",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T05:07:20.298Z",
+      "updatedAt": "2026-03-16T05:13:16.758Z"
+    },
+    {
+      "id": "c7ab96bd-14ef-4dc9-8c3b-6b90e6732cc6",
+      "title": "The First Stargazer",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The First Stargazer",
+        "logline": "A young sage discovers the celestial patterns that will guide humanity for millennia.",
+        "colorGrade": "Deep indigo blues and warm amber, high contrast with film grain, mystical atmosphere",
+        "soundtrack": "Ethereal tabla and sitar building to powerful orchestral crescendo with cosmic undertones",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Observer",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "Ancient Indian boy sage in simple robes sits cross-legged on stone temple steps under vast starlit sky, anamorphic lens captures him against massive cosmos, warm oil lamp flickers beside ancient scrolls, dramatic shadows dance across weathered stone, film grain adds mystical quality, deep indigo night sky contrasts with amber lamplight, peaceful contemplative mood, shallow depth of field isolates subject from infinite background",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In the age of mystery, when gods walked among mortals, a young sage sought truth in the heavens.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Revelation",
+            "durationSec": 7,
+            "shotType": "EXTREME CLOSE-UP",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Extreme close-up of young sage's intense dark eyes reflecting swirling constellations and moving stars, anamorphic bokeh creates dreamy star patterns in shallow depth of field, warm golden hour lighting illuminates his face with cinematic glow, film grain enhances mystical atmosphere, cosmic reflections dance in pupils, deep amber and indigo color grade, expression of profound realization and wonder, dramatic shadows sculpt facial features",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "The stars whispered their ancient secrets, revealing the cosmic dance of destiny.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Mapping the Cosmos",
+            "durationSec": 8,
+            "shotType": "OVERHEAD",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Overhead shot cranes down revealing young sage drawing intricate star charts on palm leaf manuscripts with reed pen, golden oil lamps create dramatic pools of warm light, Sanskrit symbols and celestial diagrams emerge on parchment, anamorphic lens with film grain, deep shadows contrast with amber illumination, ancient wooden desk scattered with astronomical instruments, mystical atmosphere with cosmic energy, shallow depth of field focuses on flowing hand movements",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "With sacred geometry, he captured the eternal patterns that govern all life.",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Legacy of Stars",
+            "durationSec": 7,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "STATIC",
+            "videoPrompt": "Extreme wide shot of ancient temple complex silhouetted against spectacular dawn sky filled with visible constellations fading into golden sunrise, young sage stands tiny on highest temple peak holding completed star charts, anamorphic lens captures epic scale with dramatic film grain, deep indigo sky transitions to warm amber dawn light, cinematic depth of field, mystical atmosphere suggests birth of eternal wisdom, cosmic energy radiates from sacred site",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Thus was born the sacred science that would guide seekers across the ages.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Observer",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "Ancient Indian boy sage in simple robes sits cross-legged on stone temple steps under vast starlit sky, anamorphic lens captures him against massive cosmos, warm oil lamp flickers beside ancient scrolls, dramatic shadows dance across weathered stone, film grain adds mystical quality, deep indigo night sky contrasts with amber lamplight, peaceful contemplative mood, shallow depth of field isolates subject from infinite background",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In the age of mystery, when gods walked among mortals, a young sage sought truth in the heavens.",
+          "transition": "dissolve",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "Request was throttled. Your rate limit for creating predictions is reduced to 6 requests per minute with a burst of 1 requests while you have less than $5.0 in credit. Your rate limit resets in ~2s."
+        },
+        {
+          "id": 2,
+          "title": "Celestial Revelation",
+          "durationSec": 7,
+          "shotType": "EXTREME CLOSE-UP",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Extreme close-up of young sage's intense dark eyes reflecting swirling constellations and moving stars, anamorphic bokeh creates dreamy star patterns in shallow depth of field, warm golden hour lighting illuminates his face with cinematic glow, film grain enhances mystical atmosphere, cosmic reflections dance in pupils, deep amber and indigo color grade, expression of profound realization and wonder, dramatic shadows sculpt facial features",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "The stars whispered their ancient secrets, revealing the cosmic dance of destiny.",
+          "transition": "match-cut",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "The requested resource could not be found."
+        },
+        {
+          "id": 3,
+          "title": "Mapping the Cosmos",
+          "durationSec": 8,
+          "shotType": "OVERHEAD",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Overhead shot cranes down revealing young sage drawing intricate star charts on palm leaf manuscripts with reed pen, golden oil lamps create dramatic pools of warm light, Sanskrit symbols and celestial diagrams emerge on parchment, anamorphic lens with film grain, deep shadows contrast with amber illumination, ancient wooden desk scattered with astronomical instruments, mystical atmosphere with cosmic energy, shallow depth of field focuses on flowing hand movements",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "With sacred geometry, he captured the eternal patterns that govern all life.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Legacy of Stars",
+          "durationSec": 7,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "STATIC",
+          "videoPrompt": "Extreme wide shot of ancient temple complex silhouetted against spectacular dawn sky filled with visible constellations fading into golden sunrise, young sage stands tiny on highest temple peak holding completed star charts, anamorphic lens captures epic scale with dramatic film grain, deep indigo sky transitions to warm amber dawn light, cinematic depth of field, mystical atmosphere suggests birth of eternal wisdom, cosmic energy radiates from sacred site",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Thus was born the sacred science that would guide seekers across the ages.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T06:28:10.120Z",
+      "updatedAt": "2026-03-16T06:31:07.915Z"
+    },
+    {
+      "id": "efdf2a13-a374-43eb-85d6-aa799be7ed33",
+      "title": "Star Mapper's Awakening",
+      "style": "anime",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Star Mapper's Awakening",
+        "logline": "A young sage discovers the celestial patterns that will unlock the mysteries of human destiny through Vedic astrology.",
+        "colorGrade": "Deep blues and gold, ethereal glow, mystical contrast with warm highlights",
+        "soundtrack": "Ambient Indian classical with building orchestral strings, crescendo with ceremonial bells",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Dreaming Sage",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "Young anime sage boy with flowing robes sits in lotus position atop ancient stone temple, eyes closed in deep meditation. Starlight bathes his serene face as cosmic energy swirls around him in luminous blue and gold spirals. Ancient Sanskrit symbols glow faintly on temple walls. Deep blue night sky sparkles with brilliant constellations above. Mystical aura emanates from his peaceful form, hair gently flowing in ethereal wind.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In the silence between breaths, the cosmos whispered its secrets.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Vision",
+            "durationSec": 8,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Vast panoramic view of ancient Indian temple complex under infinite starry sky. Anime sage boy appears tiny on highest tower, arms outstretched toward swirling galaxy above. Brilliant celestial patterns form geometric mandalas of light connecting stars. Golden energy streams cascade from sky to earth. Temple architecture glows with mystical blue light. Cosmic wind carries glowing Sanskrit characters through the air. Epic scale showing connection between earthly wisdom and universal knowledge.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Sacred Mathematics",
+            "durationSec": 8,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "HANDHELD",
+            "videoPrompt": "Extreme close-up of anime sage boy's intense eyes reflecting star patterns, pupils containing tiny constellations. His hands trace glowing geometric calculations in mid-air, creating complex mandala patterns with golden light. Ancient palm leaf manuscripts float around him, inscribed with Vedic charts and celestial diagrams. Magical particles swirl as cosmic mathematics materializes. Deep blue and gold color grade with ethereal lighting. Expression of profound understanding and wonder crosses his youthful features.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "He saw the language of time itself written in celestial motion.",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Birth of Astrology",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Anime sage boy stands triumphantly on mountain peak at dawn, holding glowing scroll containing first astrological chart. Cosmic energy radiates from the sacred text in golden waves across the landscape. Ancient temples below awaken with mystical light. Stars fade as sun rises, but zodiac constellations remain visible as translucent overlay. Epic perspective showing his silhouette against majestic sunrise. Flowing robes and hair catch morning light, creating heroic anime-style composition with deep blues transforming to warm golds.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "And so the stars became humanity's guide to destiny.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Dreaming Sage",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "Young anime sage boy with flowing robes sits in lotus position atop ancient stone temple, eyes closed in deep meditation. Starlight bathes his serene face as cosmic energy swirls around him in luminous blue and gold spirals. Ancient Sanskrit symbols glow faintly on temple walls. Deep blue night sky sparkles with brilliant constellations above. Mystical aura emanates from his peaceful form, hair gently flowing in ethereal wind.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In the silence between breaths, the cosmos whispered its secrets.",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Celestial Vision",
+          "durationSec": 8,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Vast panoramic view of ancient Indian temple complex under infinite starry sky. Anime sage boy appears tiny on highest tower, arms outstretched toward swirling galaxy above. Brilliant celestial patterns form geometric mandalas of light connecting stars. Golden energy streams cascade from sky to earth. Temple architecture glows with mystical blue light. Cosmic wind carries glowing Sanskrit characters through the air. Epic scale showing connection between earthly wisdom and universal knowledge.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Sacred Mathematics",
+          "durationSec": 8,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "HANDHELD",
+          "videoPrompt": "Extreme close-up of anime sage boy's intense eyes reflecting star patterns, pupils containing tiny constellations. His hands trace glowing geometric calculations in mid-air, creating complex mandala patterns with golden light. Ancient palm leaf manuscripts float around him, inscribed with Vedic charts and celestial diagrams. Magical particles swirl as cosmic mathematics materializes. Deep blue and gold color grade with ethereal lighting. Expression of profound understanding and wonder crosses his youthful features.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "He saw the language of time itself written in celestial motion.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Birth of Astrology",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Anime sage boy stands triumphantly on mountain peak at dawn, holding glowing scroll containing first astrological chart. Cosmic energy radiates from the sacred text in golden waves across the landscape. Ancient temples below awaken with mystical light. Stars fade as sun rises, but zodiac constellations remain visible as translucent overlay. Epic perspective showing his silhouette against majestic sunrise. Flowing robes and hair catch morning light, creating heroic anime-style composition with deep blues transforming to warm golds.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "And so the stars became humanity's guide to destiny.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T15:33:45.280Z",
+      "updatedAt": "2026-03-16T15:33:50.920Z"
+    },
+    {
+      "id": "604cf9ac-e2f4-4573-8cd8-abbbef2581cd",
+      "title": "Starbound Sage",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Starbound Sage",
+        "logline": "A young mystic's celestial discoveries birth the ancient wisdom that will guide humanity for millennia.",
+        "colorGrade": "Deep indigo blues with warm golden highlights, high contrast shadows, film grain texture",
+        "soundtrack": "Ethereal ambient strings building to powerful orchestral crescendo with traditional Indian instruments",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Oracle",
+            "durationSec": 8,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "Ancient Indian boy sage with flowing robes sits cross-legged on stone temple steps at twilight, surrounded by flickering oil lamps and Sanskrit scrolls. Golden hour lighting casts dramatic shadows across his serene face as he gazes upward with profound wisdom. Anamorphic lens creates shallow depth of field, film grain adds cinematic texture. Warm amber and deep blue color palette enhances mystical atmosphere.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In ancient times, when gods walked among mortals, a child was born with eyes that could read the heavens.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Mapping",
+            "durationSec": 7,
+            "shotType": "OVERHEAD",
+            "cameraMove": "SLOW CRANE DOWN",
+            "videoPrompt": "Overhead view of young sage drawing intricate star charts on large stone tablets with golden stylus, surrounded by astrolabe instruments and celestial calculation tools. Moonlight streams through temple columns creating dramatic geometric shadows. Deep indigo and gold color grading with film grain texture. Ancient observatory setting with carved Sanskrit symbols glowing softly in candlelight.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Night after night, he mapped the cosmic dance, translating starlight into sacred geometry.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Cosmic Vision",
+            "durationSec": 8,
+            "shotType": "EXTREME CLOSE-UP",
+            "cameraMove": "STATIC",
+            "videoPrompt": "Extreme close-up of the sage's eyes reflecting swirling galaxies and constellation patterns, with pupils dilating as cosmic visions unfold. Ethereal golden light emanates from his gaze while star trails and nebula colors dance across his iris. Anamorphic bokeh creates dreamlike quality, shallow depth of field isolates the mystical moment. Deep space blues merge with warm amber tones, film grain enhances the otherworldly atmosphere.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In his eyes, the universe revealed its deepest secrets and eternal patterns.",
+            "transition": "fade-to-black"
+          },
+          {
+            "id": 4,
+            "title": "Legacy Born",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Wide shot of ancient temple complex at dawn with young sage standing on highest tower, arms raised toward brightening sky filled with visible constellations. Golden sunrise light bathes carved stone architecture while morning mist swirls around temple base. Disciples gather below holding scrolls and instruments. Anamorphic lens flares and film grain create epic cinematic quality. Rich golden hour color palette with dramatic shadow contrast.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "From his celestial wisdom, Vedic astrology was born, lighting humanity's path through time itself.",
+            "transition": "cut"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Oracle",
+          "durationSec": 8,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "Ancient Indian boy sage with flowing robes sits cross-legged on stone temple steps at twilight, surrounded by flickering oil lamps and Sanskrit scrolls. Golden hour lighting casts dramatic shadows across his serene face as he gazes upward with profound wisdom. Anamorphic lens creates shallow depth of field, film grain adds cinematic texture. Warm amber and deep blue color palette enhances mystical atmosphere.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In ancient times, when gods walked among mortals, a child was born with eyes that could read the heavens.",
+          "transition": "dissolve",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "Ken Burns conversion failed",
+          "photoFile": "_mg_0763_7489548128_o.jpg"
+        },
+        {
+          "id": 2,
+          "title": "Celestial Mapping",
+          "durationSec": 7,
+          "shotType": "OVERHEAD",
+          "cameraMove": "SLOW CRANE DOWN",
+          "videoPrompt": "Overhead view of young sage drawing intricate star charts on large stone tablets with golden stylus, surrounded by astrolabe instruments and celestial calculation tools. Moonlight streams through temple columns creating dramatic geometric shadows. Deep indigo and gold color grading with film grain texture. Ancient observatory setting with carved Sanskrit symbols glowing softly in candlelight.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Night after night, he mapped the cosmic dance, translating starlight into sacred geometry.",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Cosmic Vision",
+          "durationSec": 8,
+          "shotType": "EXTREME CLOSE-UP",
+          "cameraMove": "STATIC",
+          "videoPrompt": "Extreme close-up of the sage's eyes reflecting swirling galaxies and constellation patterns, with pupils dilating as cosmic visions unfold. Ethereal golden light emanates from his gaze while star trails and nebula colors dance across his iris. Anamorphic bokeh creates dreamlike quality, shallow depth of field isolates the mystical moment. Deep space blues merge with warm amber tones, film grain enhances the otherworldly atmosphere.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In his eyes, the universe revealed its deepest secrets and eternal patterns.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Legacy Born",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Wide shot of ancient temple complex at dawn with young sage standing on highest tower, arms raised toward brightening sky filled with visible constellations. Golden sunrise light bathes carved stone architecture while morning mist swirls around temple base. Disciples gather below holding scrolls and instruments. Anamorphic lens flares and film grain create epic cinematic quality. Rich golden hour color palette with dramatic shadow contrast.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "From his celestial wisdom, Vedic astrology was born, lighting humanity's path through time itself.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T15:40:15.127Z",
+      "updatedAt": "2026-03-16T15:46:18.692Z"
+    },
+    {
+      "id": "d8841466-1a77-42f1-8122-c81786d1a10d",
+      "title": "Starborn Sage",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "Starborn Sage",
+        "logline": "A young oracle discovers celestial patterns that will guide humanity for millennia.",
+        "colorGrade": "Deep amber and midnight blue, warm shadows, ethereal highlights",
+        "soundtrack": "Ancient flutes and tabla building to orchestral crescendo with celestial chimes",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Oracle",
+            "durationSec": 8,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "A 12-year-old sage boy with long dark hair and simple white robes sits cross-legged on ancient stone steps of a temple at twilight. Golden oil lamps flicker around him, casting warm amber light on weathered sandstone. His eyes reflect starlight as he gazes upward with profound wisdom. Anamorphic lens creates shallow depth of field, film grain texture, dramatic shadows dance across temple pillars.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "In ancient times, a child was born who could read the language of the heavens.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Celestial Vision",
+            "durationSec": 7,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "SLOW CRANE UP",
+            "videoPrompt": "Vast star-filled night sky above ancient Indian landscape, constellations glowing brightly in deep midnight blue. The Milky Way stretches across the frame like a cosmic river. Below, temple spires and palm trees create silhouettes. Ethereal light beams connect stars in geometric patterns, forming celestial maps. Anamorphic lens flares from brightest stars, film grain adds texture, golden hour warmth meets cool starlight.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "The stars whispered secrets of destiny and time.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Sacred Inscription",
+            "durationSec": 9,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "HANDHELD DRIFT",
+            "videoPrompt": "Young sage's hands carefully carving Sanskrit symbols into a large stone tablet with primitive tools. Warm oil lamp light illuminates the intricate astronomical diagrams and celestial calculations being etched into weathered sandstone. His fingers trace star patterns with reverence. Shallow depth of field focuses on the sacred inscriptions, film grain texture, dramatic golden lighting creates deep shadows between carved symbols.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "He carved the cosmic blueprint that would guide souls for thousands of years.",
+            "transition": "fade-to-black"
+          },
+          {
+            "id": 4,
+            "title": "Eternal Legacy",
+            "durationSec": 6,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Ancient temple at sunrise with golden light streaming through stone arches, illuminating carved astronomical tablets and star charts covering the walls. The young sage stands silhouetted against the dawn sky, arms raised toward celestial bodies visible in the brightening heavens. Warm amber and gold tones dominate, film grain adds cinematic quality, anamorphic lens creates divine light rays through temple architecture.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Thus was born the sacred science of Vedic astrology.",
+            "transition": "cut"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Oracle",
+          "durationSec": 8,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "A 12-year-old sage boy with long dark hair and simple white robes sits cross-legged on ancient stone steps of a temple at twilight. Golden oil lamps flicker around him, casting warm amber light on weathered sandstone. His eyes reflect starlight as he gazes upward with profound wisdom. Anamorphic lens creates shallow depth of field, film grain texture, dramatic shadows dance across temple pillars.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "In ancient times, a child was born who could read the language of the heavens.",
+          "transition": "dissolve",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/ec5bghjbk1rmt0cwz6zvc02kvc.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Celestial Vision",
+          "durationSec": 7,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "SLOW CRANE UP",
+          "videoPrompt": "Vast star-filled night sky above ancient Indian landscape, constellations glowing brightly in deep midnight blue. The Milky Way stretches across the frame like a cosmic river. Below, temple spires and palm trees create silhouettes. Ethereal light beams connect stars in geometric patterns, forming celestial maps. Anamorphic lens flares from brightest stars, film grain adds texture, golden hour warmth meets cool starlight.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "The stars whispered secrets of destiny and time.",
+          "transition": "match-cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/yrx2nxhfwnrmy0cwz70v6bg3gc.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Sacred Inscription",
+          "durationSec": 9,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "HANDHELD DRIFT",
+          "videoPrompt": "Young sage's hands carefully carving Sanskrit symbols into a large stone tablet with primitive tools. Warm oil lamp light illuminates the intricate astronomical diagrams and celestial calculations being etched into weathered sandstone. His fingers trace star patterns with reverence. Shallow depth of field focuses on the sacred inscriptions, film grain texture, dramatic golden lighting creates deep shadows between carved symbols.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "He carved the cosmic blueprint that would guide souls for thousands of years.",
+          "transition": "fade-to-black",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/9nsf6r35dsrmr0cwz71bap2m94.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Eternal Legacy",
+          "durationSec": 6,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Ancient temple at sunrise with golden light streaming through stone arches, illuminating carved astronomical tablets and star charts covering the walls. The young sage stands silhouetted against the dawn sky, arms raised toward celestial bodies visible in the brightening heavens. Warm amber and gold tones dominate, film grain adds cinematic quality, anamorphic lens creates divine light rays through temple architecture.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Thus was born the sacred science of Vedic astrology.",
+          "transition": "cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/zrqq2k9wqsrmt0cwz71shp0k2m.mp4",
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T16:32:52.493Z",
+      "updatedAt": "2026-03-16T18:07:20.189Z"
+    },
+    {
+      "id": "75e300e7-1cd3-4f9c-b398-0f28cfb4aa91",
+      "title": "The First Pattern",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The First Pattern",
+        "logline": "A young mystic must weave a new cosmic pattern to save humanity before an ancient stellar order collapses forever.",
+        "colorGrade": "Deep teal shadows with golden highlights, desaturated earth tones, ethereal blue-white starlight accents",
+        "soundtrack": "Ambient orchestral with ethereal vocals building to dramatic percussion as cosmic threat emerges",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Dawn of Prophecy",
+            "durationSec": 8,
+            "shotType": "EXTREME WIDE",
+            "cameraMove": "SLOW CRANE DOWN",
+            "videoPrompt": "Ancient stone circles emerge from morning mist in a mystical valley, golden hour sunlight breaking through ethereal fog. Anamorphic lens with shallow depth of field captures weathered monoliths arranged in sacred patterns. Film grain texture, dramatic shadows cast by towering stones, warm golden light contrasting with cool blue mist. Cinematic crane movement reveals the sprawling valley sanctuary below.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Starweaver Awakens",
+            "durationSec": 7,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "DOLLY IN",
+            "videoPrompt": "Young woman with wild hair sits cross-legged atop ancient stone circle, glowing constellation symbols pulsing along her forearms. Eyes snap open revealing swirling galaxy irises. Anamorphic bokeh background, shallow DOF isolates subject, golden morning light creates rim lighting. Film grain adds texture, dramatic shadows define facial features. Slow dolly movement intensifies mystical revelation moment.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Something's coming.",
+            "transition": "cut"
+          },
+          {
+            "id": 3,
+            "title": "Cosmic Disruption",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Night sky filled with wheeling stars in impossible patterns, shooting star streaks against cosmic flow. Lightning splits heavens without thunder, revealing brief vision of burning cities below. Anamorphic lens captures celestial chaos, deep shadows contrast with brilliant starlight. Film grain enhances otherworldly atmosphere, dramatic lighting shifts from starlight to lightning flash. Epic scale cosmic disturbance.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "The pattern... it's breaking.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 4,
+            "title": "Ancient Wisdom",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "HANDHELD",
+            "videoPrompt": "Weathered elder in meditation chamber surrounded by floating ancient texts, pages turning mysteriously in unseen wind. Candles flicker, casting dancing shadows on stone walls. His clouded eyes suddenly clear with prophetic vision. Shallow DOF isolates floating books, warm candlelight creates golden highlights against deep shadows. Film grain adds mystical texture, handheld movement suggests supernatural disturbance.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "You are the Starweaver, the last of your kind.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Dawn of Prophecy",
+          "durationSec": 8,
+          "shotType": "EXTREME WIDE",
+          "cameraMove": "SLOW CRANE DOWN",
+          "videoPrompt": "Ancient stone circles emerge from morning mist in a mystical valley, golden hour sunlight breaking through ethereal fog. Anamorphic lens with shallow depth of field captures weathered monoliths arranged in sacred patterns. Film grain texture, dramatic shadows cast by towering stones, warm golden light contrasting with cool blue mist. Cinematic crane movement reveals the sprawling valley sanctuary below.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "dissolve",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/q96gybzed5rmt0cwz8c8cz9p50.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Starweaver Awakens",
+          "durationSec": 7,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "DOLLY IN",
+          "videoPrompt": "Young woman with wild hair sits cross-legged atop ancient stone circle, glowing constellation symbols pulsing along her forearms. Eyes snap open revealing swirling galaxy irises. Anamorphic bokeh background, shallow DOF isolates subject, golden morning light creates rim lighting. Film grain adds texture, dramatic shadows define facial features. Slow dolly movement intensifies mystical revelation moment.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Something's coming.",
+          "transition": "cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/kxkxyk6s5xrmw0cwz8cs608a5c.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Cosmic Disruption",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Night sky filled with wheeling stars in impossible patterns, shooting star streaks against cosmic flow. Lightning splits heavens without thunder, revealing brief vision of burning cities below. Anamorphic lens captures celestial chaos, deep shadows contrast with brilliant starlight. Film grain enhances otherworldly atmosphere, dramatic lighting shifts from starlight to lightning flash. Epic scale cosmic disturbance.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "The pattern... it's breaking.",
+          "transition": "match-cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/w1g463xyenrmw0cwz8d8cspaf0.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Ancient Wisdom",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "HANDHELD",
+          "videoPrompt": "Weathered elder in meditation chamber surrounded by floating ancient texts, pages turning mysteriously in unseen wind. Candles flicker, casting dancing shadows on stone walls. His clouded eyes suddenly clear with prophetic vision. Shallow DOF isolates floating books, warm candlelight creates golden highlights against deep shadows. Film grain adds mystical texture, handheld movement suggests supernatural disturbance.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "You are the Starweaver, the last of your kind.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T18:07:47.381Z",
+      "updatedAt": "2026-03-16T20:52:51.526Z"
+    },
+    {
+      "id": "102e2718-9be8-40ff-81c0-4940f7304c34",
+      "title": "The Star Child",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The Star Child",
+        "logline": "A clumsy village boy's chaotic arrival at an ancient ashram sets the stage for cosmic comedy and wisdom.",
+        "colorGrade": "Golden hour warmth with earthy browns, vibrant saffron oranges, and emerald greens, high contrast with film grain",
+        "soundtrack": "Playful Indian classical sitar and tabla, building to comedic crescendo with temple bells",
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Village Dawn Journey",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW DOLLY IN",
+            "videoPrompt": "A scrawny 8-year-old boy with wild hair trudges along a dusty dirt road through emerald rice fields at golden hour dawn. He carries an oversized cloth bundle, his shirt flapping in morning breeze. Water buffalo graze peacefully in background mist. Anamorphic lens with shallow depth of field, warm golden light casting long shadows, cinematic film grain, pastoral serenity with epic scope.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "cut"
+          },
+          {
+            "id": 2,
+            "title": "The Epic Mud Puddle Fall",
+            "durationSec": 6,
+            "shotType": "MEDIUM",
+            "cameraMove": "HANDHELD",
+            "videoPrompt": "Young boy with enormous curious eyes trips spectacularly over his own feet, tumbling into a mud puddle with dramatic splash. Sacred cow approaches and snorts disapprovingly at muddy child. Golden hour lighting with dramatic shadows, handheld camera capturing the comedic chaos, anamorphic lens flare, warm earthy tones with splashing water droplets frozen in cinematic slow motion.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "",
+            "transition": "match-cut"
+          },
+          {
+            "id": 3,
+            "title": "Guru's Kitchen Wisdom",
+            "durationSec": 7,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "SLOW PAN",
+            "videoPrompt": "Portly Indian guru with magnificent white beard stirs steaming pot of kheer in temple kitchen, warm golden light streaming through windows. Steam rises dramatically, his eyes twinkling with wisdom and humor. Young assistant chops vegetables in background. Anamorphic lens with shallow depth of field, cinematic warm lighting, saffron and orange color palette, film grain texture, epic intimate portraiture.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "Children are like empty vessels - they absorb everything, even when we wish they wouldn't.",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Cosmic Destruction Finale",
+            "durationSec": 9,
+            "shotType": "OVERHEAD",
+            "cameraMove": "CRANE DOWN",
+            "videoPrompt": "Overhead view of ancient ashram courtyard showing complete chaos - destroyed colorful rangoli sand patterns, scattered marigold petals, overturned brass lamps. Small boy stands frozen in center with peacock feather in hair and foot stuck in meditation bowl. Older students watch in horror while wise guru laughs delightedly. Anamorphic lens, golden hour lighting, vibrant saffron and emerald colors, dramatic shadows, cinematic film grain.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+            "narration": "After an entrance like this, how could I possibly let you leave?",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Village Dawn Journey",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW DOLLY IN",
+          "videoPrompt": "A scrawny 8-year-old boy with wild hair trudges along a dusty dirt road through emerald rice fields at golden hour dawn. He carries an oversized cloth bundle, his shirt flapping in morning breeze. Water buffalo graze peacefully in background mist. Anamorphic lens with shallow depth of field, warm golden light casting long shadows, cinematic film grain, pastoral serenity with epic scope.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/mxka9f5101rmy0cwzbc9zj6czg.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "The Epic Mud Puddle Fall",
+          "durationSec": 6,
+          "shotType": "MEDIUM",
+          "cameraMove": "HANDHELD",
+          "videoPrompt": "Young boy with enormous curious eyes trips spectacularly over his own feet, tumbling into a mud puddle with dramatic splash. Sacred cow approaches and snorts disapprovingly at muddy child. Golden hour lighting with dramatic shadows, handheld camera capturing the comedic chaos, anamorphic lens flare, warm earthy tones with splashing water droplets frozen in cinematic slow motion.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "",
+          "transition": "match-cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "Guru's Kitchen Wisdom",
+          "durationSec": 7,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "SLOW PAN",
+          "videoPrompt": "Portly Indian guru with magnificent white beard stirs steaming pot of kheer in temple kitchen, warm golden light streaming through windows. Steam rises dramatically, his eyes twinkling with wisdom and humor. Young assistant chops vegetables in background. Anamorphic lens with shallow depth of field, cinematic warm lighting, saffron and orange color palette, film grain texture, epic intimate portraiture.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "Children are like empty vessels - they absorb everything, even when we wish they wouldn't.",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Cosmic Destruction Finale",
+          "durationSec": 9,
+          "shotType": "OVERHEAD",
+          "cameraMove": "CRANE DOWN",
+          "videoPrompt": "Overhead view of ancient ashram courtyard showing complete chaos - destroyed colorful rangoli sand patterns, scattered marigold petals, overturned brass lamps. Small boy stands frozen in center with peacock feather in hair and foot stuck in meditation bowl. Older students watch in horror while wise guru laughs delightedly. Anamorphic lens, golden hour lighting, vibrant saffron and emerald colors, dramatic shadows, cinematic film grain.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts",
+          "narration": "After an entrance like this, how could I possibly let you leave?",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 4,
+      "createdAt": "2026-03-16T21:38:21.311Z",
+      "updatedAt": "2026-03-16T21:42:14.174Z"
+    },
+    {
+      "id": "6906e456-24a3-4516-b2d7-649229d2a17a",
+      "title": "The Cosmic Thread",
+      "style": "anime",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The Cosmic Thread",
+        "logline": "A young boy's journey from celestial wonder to becoming a master of cosmic wisdom in ancient India.",
+        "colorGrade": "Golden sunrise hues transitioning to deep indigo nights, warm saffron tones, mystical blues and purples",
+        "soundtrack": "Ambient Indian classical with sitar and flute, building to orchestral crescendo with tabla rhythms",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "Young Arjuna",
+            "anchor": "8-year-old Indian boy with dark hair in small topknot, bright intelligent brown eyes, lean build, wearing simple saffron cloth robes, calm serene expression, small hands weathered from mountain life, barefoot, sitting in lotus position with perfect posture."
+          },
+          {
+            "id": "c2",
+            "name": "Teen Arjuna",
+            "anchor": "13-year-old Indian boy with longer dark hair partially tied, wise brown eyes, taller lean frame, wearing earth-toned robes and prayer beads, more mature facial features, hands precise and deliberate, carrying wooden calculating instruments and bark manuscripts."
+          },
+          {
+            "id": "c3",
+            "name": "Master Arjuna",
+            "anchor": "23-year-old Indian man with long flowing dark hair, deep contemplative brown eyes, tall scholarly build, wearing refined saffron and white robes, beard beginning to grow, hands holding palm leaf manuscripts, bearing of wisdom and authority."
+          },
+          {
+            "id": "c4",
+            "name": "Guru Bharadwaja",
+            "anchor": "70-year-old Indian sage with long white beard and hair, kind weathered face, seated cross-legged, wearing simple white robes, prayer beads around neck, hands gesturing gracefully, surrounded by astronomical instruments and scrolls."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Himalayan Dawn",
+            "anchor": "Misty mountain peaks bathed in golden sunrise light, ancient pine trees swaying, flat meditation stone surrounded by wildflowers, ethereal morning atmosphere with rays of light streaming through clouds."
+          },
+          {
+            "id": "l2",
+            "name": "Forest Clearing",
+            "anchor": "Circular clearing with geometric stone arrangements, dappled sunlight through canopy, dirt ground with traced patterns, storm clouds gathering overhead, mystical forest atmosphere with ancient trees surrounding."
+          },
+          {
+            "id": "l3",
+            "name": "Mountain Hermitage",
+            "anchor": "Stone buildings carved into mountainside, cooking fires with smoke, terraced levels connected by pathways, evening light casting long shadows, sacred atmosphere with prayer flags and astronomical instruments visible."
+          },
+          {
+            "id": "l4",
+            "name": "Hermitage Hall",
+            "anchor": "Circular stone chamber with astronomical charts covering walls, soft lamplight illuminating manuscripts, geometric floor patterns, incense smoke curling upward, scholarly atmosphere with calculating instruments scattered around."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Dawn Meditation",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Camera slowly pans across the scene as the boy sits in perfect stillness, eyes tracking invisible movements across the brightening sky. Golden light gradually intensifies, stars fade into daylight. Anime-style vibrant colors emphasize the mystical atmosphere. Gentle wind animation through hair and robes.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Stone Circle Prophecy",
+            "durationSec": 7,
+            "shotType": "OVERHEAD",
+            "cameraMove": "CRANE DOWN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Camera cranes down revealing intricate stone patterns from above as the teenager adjusts celestial markers with precise movements. Dark storm clouds gather rapidly overhead, rain begins to fall. Epic anime lighting with dramatic shadows and vibrant storm colors. Motion blur on falling raindrops.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "fade-to-black"
+          },
+          {
+            "id": 3,
+            "title": "The Hermitage",
+            "durationSec": 6,
+            "shotType": "WIDE",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c3"
+            ],
+            "locationId": "l3",
+            "videoPrompt": "Camera dollies in as the young man walks purposefully through the hermitage carrying manuscripts. Evening light creates dramatic anime-style backlighting. Other sages move in background performing studies. Warm golden hour lighting with deep purple shadows. Flowing robes animated by mountain breeze.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "cut"
+          },
+          {
+            "id": 4,
+            "title": "Circle of Wisdom",
+            "durationSec": 9,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW PAN",
+            "characterIds": [
+              "c3",
+              "c4"
+            ],
+            "locationId": "l4",
+            "videoPrompt": "Camera slowly pans around the circle of sages as they place manuscripts in the center, creating a pool of shared knowledge. Warm lamplight flickers across their faces. Epic anime-style dramatic lighting with deep shadows and golden highlights. Incense smoke curls upward in stylized patterns. Manuscripts glow with inner light.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Dawn Meditation",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Camera slowly pans across the scene as the boy sits in perfect stillness, eyes tracking invisible movements across the brightening sky. Golden light gradually intensifies, stars fade into daylight. Anime-style vibrant colors emphasize the mystical atmosphere. Gentle wind animation through hair and robes.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Stone Circle Prophecy",
+          "durationSec": 7,
+          "shotType": "OVERHEAD",
+          "cameraMove": "CRANE DOWN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Camera cranes down revealing intricate stone patterns from above as the teenager adjusts celestial markers with precise movements. Dark storm clouds gather rapidly overhead, rain begins to fall. Epic anime lighting with dramatic shadows and vibrant storm colors. Motion blur on falling raindrops.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "The Hermitage",
+          "durationSec": 6,
+          "shotType": "WIDE",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c3"
+          ],
+          "locationId": "l3",
+          "videoPrompt": "Camera dollies in as the young man walks purposefully through the hermitage carrying manuscripts. Evening light creates dramatic anime-style backlighting. Other sages move in background performing studies. Warm golden hour lighting with deep purple shadows. Flowing robes animated by mountain breeze.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Circle of Wisdom",
+          "durationSec": 9,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW PAN",
+          "characterIds": [
+            "c3",
+            "c4"
+          ],
+          "locationId": "l4",
+          "videoPrompt": "Camera slowly pans around the circle of sages as they place manuscripts in the center, creating a pool of shared knowledge. Warm lamplight flickers across their faces. Epic anime-style dramatic lighting with deep shadows and golden highlights. Incense smoke curls upward in stylized patterns. Manuscripts glow with inner light.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 4,
+      "createdAt": "2026-03-17T07:12:08.115Z",
+      "updatedAt": "2026-03-17T07:12:08.115Z"
+    },
+    {
+      "id": "40907361-b85e-4b60-9c54-7a44daf1d104",
+      "title": "Birth of Vedic Astrology",
+      "style": "anime",
+      "mood": "Epic",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Birth of Vedic Astrology",
+        "logline": "A young Indian sage's celestial observations evolve into the ancient science of Vedic astrology through generations of knowledge gathering.",
+        "colorGrade": "Golden hour warmth with deep cosmic blues, high contrast between earthly tones and celestial luminescence",
+        "soundtrack": "Mystical Indian classical with tabla builds, transitioning to orchestral grandeur with traditional instruments",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "The Young Sage",
+            "anchor": "8-year-old Indian boy with dark brown skin, deep black shoulder-length hair tied in small topknot, bright amber eyes, lean build, wearing simple saffron cloth dhoti and wooden prayer beads around neck, small tilaka mark on forehead."
+          },
+          {
+            "id": "c2",
+            "name": "The Elder Sage",
+            "anchor": "60-year-old Indian sage with weathered dark brown skin, long white beard reaching chest, silver-grey hair in traditional knot, wise deep brown eyes, wearing flowing orange robes with sacred thread across chest, multiple prayer bead malas."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Celestial Observatory",
+            "anchor": "Ancient stone platform atop mountain peak, carved astronomical instruments, star charts etched in stone, golden hour lighting casting long shadows, mystical atmosphere with incense smoke wisps."
+          },
+          {
+            "id": "l2",
+            "name": "The Sacred Hermitage",
+            "anchor": "Traditional ashram with wooden pavilions, palm leaf manuscripts scattered on low tables, oil lamps flickering, multiple sages in meditation poses, warm candlelight illuminating ancient texts and astronomical diagrams."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Young Observer",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW CRANE UP",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Young sage sits cross-legged gazing upward at swirling cosmic patterns in twilight sky, stars forming geometric mandalas above, ethereal light rays descending, mystical energy particles floating around him, anime-style dramatic lighting with vibrant celestial colors and glowing auras.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "In ancient times, a young sage gazed upon the cosmic dance above.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "The Knowledge Collective",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Elder sage examines ancient star charts while other sages exchange scrolls and debate calculations, mathematical symbols and celestial diagrams glowing with golden light, knowledge flowing between minds as luminous streams, epic anime-style transformation of wisdom into living energy.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "Through generations of observation, the sacred science of Vedic astrology was born.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Young Observer",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW CRANE UP",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Young sage sits cross-legged gazing upward at swirling cosmic patterns in twilight sky, stars forming geometric mandalas above, ethereal light rays descending, mystical energy particles floating around him, anime-style dramatic lighting with vibrant celestial colors and glowing auras.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "In ancient times, a young sage gazed upon the cosmic dance above.",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "The Knowledge Collective",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Elder sage examines ancient star charts while other sages exchange scrolls and debate calculations, mathematical symbols and celestial diagrams glowing with golden light, knowledge flowing between minds as luminous streams, epic anime-style transformation of wisdom into living energy.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "Through generations of observation, the sacred science of Vedic astrology was born.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 2,
+      "createdAt": "2026-03-17T07:24:20.756Z",
+      "updatedAt": "2026-03-17T07:24:20.756Z"
+    },
+    {
+      "id": "c2f29155-cb5e-4e39-aabf-213c831b73ad",
+      "title": "Birth of Vedic Wisdom",
+      "style": "anime",
+      "mood": "Raw",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Birth of Vedic Wisdom",
+        "logline": "A young sage's celestial observations evolve into the foundational science of Vedic astrology through generations of dedicated knowledge seekers.",
+        "colorGrade": "Deep purples and golds, ethereal lighting, mystical atmosphere with starlight highlights",
+        "soundtrack": "Traditional Indian instruments building to orchestral grandeur, tabla rhythms with celestial drones",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "The Young Sage",
+            "anchor": "Indian boy aged 12, dark brown eyes filled with wonder, shoulder-length black hair tied in a small topknot, wearing simple saffron cloth robes, lean build, lotus position posture, serene facial expression, small tilaka mark on forehead, bronze skin tone"
+          },
+          {
+            "id": "c2",
+            "name": "The Elder Sage",
+            "anchor": "Aged Indian sage, 60 years old, long white beard flowing to chest, completely bald head, deep brown weathered eyes showing infinite wisdom, wearing orange and white robes, tall thin frame, prayer beads around neck, intricate tilaka markings on forehead"
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Mountain Observatory",
+            "anchor": "High mountain peak at night, clear star-filled sky with visible constellations, ancient stone platform, soft moonlight casting long shadows, misty atmosphere, distant mountain silhouettes, ethereal cosmic energy visible as light patterns"
+          },
+          {
+            "id": "l2",
+            "name": "Sacred Hermitage",
+            "anchor": "Traditional ashram with wooden structures, meditation halls with carved pillars, oil lamps providing warm golden light, ancient manuscripts scattered on wooden tables, other sages in background, peaceful forest setting, dawn lighting"
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Celestial Awakening",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW TILT UP",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Young sage sits in meditation as cosmic patterns swirl above him in anime style. Camera tilts from his peaceful face upward to reveal intricate constellation patterns forming geometric mandalas. Starlight streams down in vibrant purple and gold rays. Mystical energy particles dance around him as he opens his eyes in profound realization.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change, modern elements",
+            "narration": "In the silence of cosmic observation, wisdom awakens",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Knowledge Confluence",
+            "durationSec": 8,
+            "shotType": "MEDIUM",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Elder sage writes on ancient scrolls while other sages gather around sharing astronomical observations. Golden morning light streams through wooden windows creating dramatic anime-style lighting. Mathematical diagrams and star charts float ethereally around them. Multiple sages exchange knowledge with animated gestures, creating a dynamic scene of collaborative discovery and wisdom preservation.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change, modern technology",
+            "narration": "Through generations of dedicated observation, Vedic astrology was born",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Celestial Awakening",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW TILT UP",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Young sage sits in meditation as cosmic patterns swirl above him in anime style. Camera tilts from his peaceful face upward to reveal intricate constellation patterns forming geometric mandalas. Starlight streams down in vibrant purple and gold rays. Mystical energy particles dance around him as he opens his eyes in profound realization.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change, modern elements",
+          "narration": "In the silence of cosmic observation, wisdom awakens",
+          "transition": "dissolve",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/bjen4k2e7drmr0cwzkssjye2t8.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Knowledge Confluence",
+          "durationSec": 8,
+          "shotType": "MEDIUM",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Elder sage writes on ancient scrolls while other sages gather around sharing astronomical observations. Golden morning light streams through wooden windows creating dramatic anime-style lighting. Mathematical diagrams and star charts float ethereally around them. Multiple sages exchange knowledge with animated gestures, creating a dynamic scene of collaborative discovery and wisdom preservation.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change, modern technology",
+          "narration": "Through generations of dedicated observation, Vedic astrology was born",
+          "transition": "fade-to-black",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/bqgx3vkewsrmw0cwzktb79vst0.mp4",
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 2,
+      "createdAt": "2026-03-17T07:27:51.435Z",
+      "updatedAt": "2026-03-17T07:57:43.742Z"
+    },
+    {
+      "id": "f0a87130-5724-489d-9f8e-9ffe2aa8056d",
+      "title": "Birth of Vedic Wisdom",
+      "style": "anime",
+      "mood": "Dreamlike",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Birth of Vedic Wisdom",
+        "logline": "A young sage's celestial observations evolve into the foundational knowledge of Vedic astrology across generations.",
+        "colorGrade": "Deep purples and golds with mystical blue undertones, high contrast ethereal lighting",
+        "soundtrack": "Meditative sitar opening building to orchestral crescendo with traditional Indian percussion",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "The Young Sage",
+            "anchor": "12-year-old Indian boy with deep brown eyes, shoulder-length dark hair, wearing simple saffron robes with golden thread borders, small tilaka mark on forehead, thin build, bare feet, serene expression with an aura of ancient wisdom beyond his years."
+          },
+          {
+            "id": "c2",
+            "name": "The Elder Sage",
+            "anchor": "60-year-old Indian man with long silver beard, piercing dark eyes, bald head with topknot, wearing deep orange robes with intricate golden embroidery, multiple tilaka marks, weathered hands holding scrolls, tall dignified posture radiating profound knowledge."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Sacred Observation Point",
+            "anchor": "Mountain peak at twilight with swirling cosmic patterns in the star-filled sky, ancient stone platform, soft golden light emanating from celestial bodies, mystical energy streams visible in the atmosphere."
+          },
+          {
+            "id": "l2",
+            "name": "The Knowledge Hermitage",
+            "anchor": "Wooden ashram with multiple levels, warm oil lamp lighting, scrolls and astronomical instruments scattered throughout, other sages in background studying charts, peaceful grove setting with flowering trees."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Celestial Awakening",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW PAN UP",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Young sage sits cross-legged gazing upward as cosmic patterns of stars, planets and energy lines materialize in the sky above him, his eyes reflecting the celestial light, gentle wind moves his robes, anime-style magical sparkles and geometric patterns overlay the star formations, dreamlike atmosphere with soft focus edges",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "In the silence between heartbeats, the universe revealed its ancient rhythms.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "The Living Archive",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Elder sage sits at center of bustling hermitage surrounded by other sages studying scrolls and astronomical charts, knowledge streams flow between them as glowing particles, he holds up a completed star chart while others take notes, warm golden light illuminates the scene, anime-style magical knowledge transfer effects",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "Through generations of observation, the sacred science of time and cosmos was born.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Celestial Awakening",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW PAN UP",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Young sage sits cross-legged gazing upward as cosmic patterns of stars, planets and energy lines materialize in the sky above him, his eyes reflecting the celestial light, gentle wind moves his robes, anime-style magical sparkles and geometric patterns overlay the star formations, dreamlike atmosphere with soft focus edges",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "In the silence between heartbeats, the universe revealed its ancient rhythms.",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "The Living Archive",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Elder sage sits at center of bustling hermitage surrounded by other sages studying scrolls and astronomical charts, knowledge streams flow between them as glowing particles, he holds up a completed star chart while others take notes, warm golden light illuminates the scene, anime-style magical knowledge transfer effects",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "Through generations of observation, the sacred science of time and cosmos was born.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 2,
+      "createdAt": "2026-03-17T08:01:57.612Z",
+      "updatedAt": "2026-03-17T08:02:22.034Z"
+    },
+    {
+      "id": "b2737072-d519-4ff5-90c0-304073a7301f",
+      "title": "Cosmic Revelation Genesis",
+      "style": "anime",
+      "mood": "Dreamlike",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Cosmic Revelation Genesis",
+        "logline": "A young sage's celestial observation evolves into the foundational birth of Vedic astrology through collective wisdom.",
+        "colorGrade": "Deep purples and golds, ethereal lighting, mystical atmosphere with starlight accents",
+        "soundtrack": "Meditative sitar and tabla building into orchestral crescendo with traditional Indian instruments",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "The Young Sage",
+            "anchor": "12-year-old Indian boy with shoulder-length black hair, deep brown eyes, fair complexion, wearing simple saffron cloth wrapped around his waist, bare chest with sacred thread across shoulder, sitting in lotus position with serene expression and glowing third eye mark on forehead."
+          },
+          {
+            "id": "c2",
+            "name": "The Elder Sage",
+            "anchor": "60-year-old Indian man with long white beard and hair tied in topknot, wise amber eyes, weathered face with deep smile lines, wearing flowing orange robes with intricate gold embroidery, prayer beads around neck, carrying ancient palm leaf manuscripts."
+          },
+          {
+            "id": "c3",
+            "name": "The Hermitage Sages",
+            "anchor": "Group of elderly Indian sages with varying ages 40-70, long beards in different shades of grey and white, wearing earth-toned robes in ochre and brown, some with turbans, all holding scrolls or writing instruments, seated around study circles."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Celestial Observation Point",
+            "anchor": "Mountain peak at twilight with vast star-filled sky, ancient stone platform, glowing constellation patterns visible overhead, soft purple-blue atmospheric lighting, gentle mist swirling around rocky terrain."
+          },
+          {
+            "id": "l2",
+            "name": "Sacred Hermitage",
+            "anchor": "Traditional ashram with carved wooden pillars, oil lamp lighting casting warm golden glow, palm leaf manuscripts scattered on low tables, meditation mats arranged in circles, incense smoke drifting through arched doorways."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Cosmic Awakening",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW CRANE UP",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Young sage gazes upward as celestial patterns shift and pulse with divine light, constellations forming geometric mandala shapes in the sky. Camera slowly rises revealing the cosmic dance above while mystical energy swirls around the meditating figure. Anime-style sparkles and light trails emphasize the magical revelation moment.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "In the silence between heartbeats, the universe reveals its sacred mathematics.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Wisdom Exchange",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "characterIds": [
+              "c2",
+              "c3"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Elder sage demonstrates star chart calculations to gathered sages who take careful notes, ancient symbols and astronomical diagrams materializing as glowing overlays in the air. Warm lamplight flickers as scrolls unfurl and knowledge flows between the scholars. Anime-style glowing text and mathematical symbols float ethereally around the scene.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "Through shared wisdom, the stars' language transforms into eternal knowledge.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Cosmic Awakening",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW CRANE UP",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Young sage gazes upward as celestial patterns shift and pulse with divine light, constellations forming geometric mandala shapes in the sky. Camera slowly rises revealing the cosmic dance above while mystical energy swirls around the meditating figure. Anime-style sparkles and light trails emphasize the magical revelation moment.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "In the silence between heartbeats, the universe reveals its sacred mathematics.",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Wisdom Exchange",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "characterIds": [
+            "c2",
+            "c3"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Elder sage demonstrates star chart calculations to gathered sages who take careful notes, ancient symbols and astronomical diagrams materializing as glowing overlays in the air. Warm lamplight flickers as scrolls unfurl and knowledge flows between the scholars. Anime-style glowing text and mathematical symbols float ethereally around the scene.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "Through shared wisdom, the stars' language transforms into eternal knowledge.",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 2,
+      "createdAt": "2026-03-17T08:07:59.867Z",
+      "updatedAt": "2026-03-17T08:08:59.856Z"
+    },
+    {
+      "id": "b22a7126-c78b-4af8-9be8-0c383ed8b76f",
+      "title": "The Birth of Vedic Astrology",
+      "style": "anime",
+      "mood": "Dreamlike",
+      "duration": "15s",
+      "blueprint": {
+        "title": "The Birth of Vedic Astrology",
+        "logline": "A young sage's celestial observations evolve into the foundational wisdom of Vedic astrology through generations of knowledge gathering.",
+        "colorGrade": "Deep indigo night sky with golden celestial highlights, warm amber temple lighting, mystical purple-blue atmosphere",
+        "soundtrack": "Ethereal sitar and tabla building into orchestral strings with cosmic synthesized tones",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "Young Sage",
+            "anchor": "12-year-old Indian boy with shoulder-length dark hair, bright amber eyes, wearing simple saffron robes with white thread across chest, serene expression, small tilaka marking on forehead, lean build, bare feet"
+          },
+          {
+            "id": "c2",
+            "name": "Elder Sage",
+            "anchor": "50-year-old Indian man with long grey beard, deep brown eyes, wearing flowing orange-red robes with intricate golden embroidery, distinguished weathered face, larger tilaka marking, prayer beads around neck, wise commanding presence"
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Celestial Observatory",
+            "anchor": "Ancient stone platform under starlit sky with swirling cosmic patterns, golden constellation lines connecting stars, ethereal blue-purple atmospheric glow, mystical energy particles floating in air"
+          },
+          {
+            "id": "l2",
+            "name": "Sacred Hermitage",
+            "anchor": "Traditional Indian ashram with carved sandstone pillars, warm oil lamp lighting, ancient scrolls and astronomical instruments scattered on wooden tables, incense smoke creating mystical atmosphere, multiple sages in background"
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "Cosmic Awakening",
+            "durationSec": 8,
+            "shotType": "MEDIUM",
+            "cameraMove": "SLOW CRANE UP",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Boy stands with arms raised toward swirling galaxy patterns above, celestial energy streams flow around him in golden spirals, his eyes glow with cosmic understanding, camera rises revealing vast star field with connecting constellation lines, dreamlike particle effects dance through frame, mystical wind moves his robes",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Wisdom Gathering",
+            "durationSec": 7,
+            "shotType": "WIDE",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Elder sage demonstrates astronomical calculations on ancient stone tablets while other robed figures gather around taking notes, scrolls unfurl revealing star charts and mathematical symbols, warm golden light illuminates their focused faces, mystical energy emanates from the knowledge being shared, ambient particles of wisdom float through the scene",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "Cosmic Awakening",
+          "durationSec": 8,
+          "shotType": "MEDIUM",
+          "cameraMove": "SLOW CRANE UP",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Boy stands with arms raised toward swirling galaxy patterns above, celestial energy streams flow around him in golden spirals, his eyes glow with cosmic understanding, camera rises revealing vast star field with connecting constellation lines, dreamlike particle effects dance through frame, mystical wind moves his robes",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "dissolve",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Wisdom Gathering",
+          "durationSec": 7,
+          "shotType": "WIDE",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Elder sage demonstrates astronomical calculations on ancient stone tablets while other robed figures gather around taking notes, scrolls unfurl revealing star charts and mathematical symbols, warm golden light illuminates their focused faces, mystical energy emanates from the knowledge being shared, ambient particles of wisdom float through the scene",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "fade-to-black",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "draft",
+      "sceneCount": 2,
+      "createdAt": "2026-03-17T08:30:26.936Z",
+      "updatedAt": "2026-03-17T08:36:05.408Z"
+    },
+    {
+      "id": "6ddf6f32-c209-49d7-b45e-e9daea36d5e9",
+      "title": "The Kalyan Startup Secret",
+      "style": "cinematic",
+      "mood": "Epic",
+      "duration": "30s",
+      "blueprint": {
+        "title": "The Kalyan Startup Secret",
+        "logline": "While Silicon Valley dreams big, the real hustle begins at platform 4 in Kalyan.",
+        "colorGrade": "Golden hour warmth with teal shadows, high contrast, cinematic film grain",
+        "soundtrack": "Traditional Indian tabla building into modern electronic beats, entrepreneurial energy",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "The Kalyan Entrepreneur",
+            "anchor": "30-year-old Indian male, medium brown skin, short black hair with slight wave, dark brown eyes, lean athletic build, wearing navy blue cotton shirt with rolled sleeves, dark jeans, simple silver watch, weathered hands from hard work, determined expression with tired eyes that show resilience."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Kalyan Street",
+            "anchor": "Busy Indian street with auto-rickshaws, small shops with Hindi signboards, power lines overhead, golden hour sunlight filtering through urban haze, dusty asphalt road with painted yellow lines."
+          },
+          {
+            "id": "l2",
+            "name": "Corner Chai Shop",
+            "anchor": "Traditional roadside tea stall with blue plastic chairs, steel kettle steaming, glass cases with biscuits, weathered wooden counter, warm orange lighting from single bulb overhead."
+          },
+          {
+            "id": "l3",
+            "name": "Small Office Space",
+            "anchor": "Cramped workspace with laptops on wooden desk, papers scattered, single window with afternoon light, white walls with startup motivation posters, overhead fan spinning slowly."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Kalyan Hustle",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "SLOW PAN",
+            "characterIds": [],
+            "locationId": "l1",
+            "videoPrompt": "Auto-rickshaws weaving through traffic, pedestrians crossing busy street, vendors calling out, golden hour light creating long shadows, anamorphic lens with shallow depth of field, cinematic movement with film grain texture, warm colour grade with dramatic contrast.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "They told me Mumbai is the city of dreams. But the real hustle? It starts at platform number 4 in Kalyan.",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Chai Shop Wisdom",
+            "durationSec": 7,
+            "shotType": "MEDIUM",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Entrepreneur sipping chai from small glass, steam rising, thoughtful expression, warm ambient lighting, shallow focus on face with background bokeh, cinematic colour grading with golden tones, contemplative mood with film grain.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "While VCs discuss burn rates in Bandra, we discuss doodh ka hisaab at the corner tapri.",
+            "transition": "cut"
+          },
+          {
+            "id": 3,
+            "title": "The Reality Check",
+            "durationSec": 8,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "STATIC",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l3",
+            "videoPrompt": "Intense close-up of face lit by laptop screen glow, red graph reflection in glasses, stressed expression with furrowed brow, dramatic blue rim lighting, high contrast shadows, cinematic depth of field, moody atmosphere with film grain texture.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "Scaling isn't a slide deck, Ankit. It's the physics of survival when the server goes down.",
+            "transition": "match-cut"
+          },
+          {
+            "id": 4,
+            "title": "Building Legacies",
+            "durationSec": 7,
+            "shotType": "OVERHEAD",
+            "cameraMove": "CRANE DOWN",
+            "characterIds": [
+              "c1"
+            ],
+            "locationId": "l3",
+            "videoPrompt": "Overhead shot descending to reveal entrepreneur working at cluttered desk, papers and laptop visible, hands typing determinedly, warm afternoon light streaming through window, cinematic movement with shallow focus, golden hour colour grade with film grain.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "Because in Bharat, we don't build unicorns. We build legacies that last 102 years.",
+            "transition": "fade-to-black"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Kalyan Hustle",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "SLOW PAN",
+          "characterIds": [],
+          "locationId": "l1",
+          "videoPrompt": "Auto-rickshaws weaving through traffic, pedestrians crossing busy street, vendors calling out, golden hour light creating long shadows, anamorphic lens with shallow depth of field, cinematic movement with film grain texture, warm colour grade with dramatic contrast.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "They told me Mumbai is the city of dreams. But the real hustle? It starts at platform number 4 in Kalyan.",
+          "transition": "dissolve",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/nm9f3h6hqnrmw0cx2byab6t48w.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Chai Shop Wisdom",
+          "durationSec": 7,
+          "shotType": "MEDIUM",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Entrepreneur sipping chai from small glass, steam rising, thoughtful expression, warm ambient lighting, shallow focus on face with background bokeh, cinematic colour grading with golden tones, contemplative mood with film grain.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "While VCs discuss burn rates in Bandra, we discuss doodh ka hisaab at the corner tapri.",
+          "transition": "cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/tny6fv8xddrmw0cx2c0rfz11d0.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 3,
+          "title": "The Reality Check",
+          "durationSec": 8,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "STATIC",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l3",
+          "videoPrompt": "Intense close-up of face lit by laptop screen glow, red graph reflection in glasses, stressed expression with furrowed brow, dramatic blue rim lighting, high contrast shadows, cinematic depth of field, moody atmosphere with film grain texture.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "Scaling isn't a slide deck, Ankit. It's the physics of survival when the server goes down.",
+          "transition": "match-cut",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/5s608y9nn9rmt0cx2hb89r220c.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 4,
+          "title": "Building Legacies",
+          "durationSec": 7,
+          "shotType": "OVERHEAD",
+          "cameraMove": "CRANE DOWN",
+          "characterIds": [
+            "c1"
+          ],
+          "locationId": "l3",
+          "videoPrompt": "Overhead shot descending to reveal entrepreneur working at cluttered desk, papers and laptop visible, hands typing determinedly, warm afternoon light streaming through window, cinematic movement with shallow focus, golden hour colour grade with film grain.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "Because in Bharat, we don't build unicorns. We build legacies that last 102 years.",
+          "transition": "fade-to-black",
+          "genStatus": "failed",
+          "videoUrl": null,
+          "progressLog": "Request was throttled. Your rate limit for creating predictions is reduced to 6 requests per minute with a burst of 1 requests while you have less than $5.0 in credit. Your rate limit resets in ~4s."
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 4,
+      "createdAt": "2026-03-21T12:45:23.880Z",
+      "updatedAt": "2026-03-21T21:29:32.672Z"
+    },
+    {
+      "id": "7cc37894-831c-4806-8fd8-c72c503abf3b",
+      "title": "Angel's Rescue Mission",
+      "style": "anime",
+      "mood": "Epic",
+      "duration": "15s",
+      "blueprint": {
+        "title": "Angel's Rescue Mission",
+        "logline": "When an angel is kidnapped by a dark villain, her demon best friend must brave everything to save her.",
+        "colorGrade": "High contrast with ethereal whites and golds against deep purples and crimson shadows",
+        "soundtrack": "Haunting choir building into epic orchestral battle theme with thunderous percussion",
+        "characters": [
+          {
+            "id": "c1",
+            "name": "Lilly",
+            "anchor": "Young angel girl with flowing platinum blonde hair, luminous blue eyes, fair porcelain skin, delicate build. Wears pristine white flowing robes with golden trim and ornate belt. Large feathered white wings, soft golden halo floating above her head. Radiates gentle light."
+          },
+          {
+            "id": "c2",
+            "name": "Bony",
+            "anchor": "Young demon boy with spiky black hair with red streaks, glowing red eyes, pale grey skin, lean athletic build. Wears dark leather jacket over crimson shirt, black pants with silver chains. Small curved horns, retractable bat-like wings, confident stance."
+          },
+          {
+            "id": "c3",
+            "name": "Mazela",
+            "anchor": "Imposing villain with long silver hair, piercing violet eyes, tall muscular frame. Wears ornate black armor with purple magical runes, flowing dark cape. Pale skin with dark veins visible, emanates shadowy aura, cruel smile."
+          }
+        ],
+        "locations": [
+          {
+            "id": "l1",
+            "name": "Angel World Gardens",
+            "anchor": "Ethereal garden realm with crystalline trees, glowing flowers, marble pathways, floating islands connected by light bridges. Soft golden sunlight filters through clouds, peaceful atmosphere with sparkles in the air."
+          },
+          {
+            "id": "l2",
+            "name": "Dark Fortress",
+            "anchor": "Menacing obsidian castle with twisted spires, glowing purple crystals, floating stone platforms. Dark storm clouds swirl overhead, lightning flashes illuminate jagged architecture, ominous purple magical energy crackles through the air."
+          }
+        ],
+        "scenes": [
+          {
+            "id": 1,
+            "title": "The Kidnapping",
+            "durationSec": 8,
+            "shotType": "WIDE",
+            "cameraMove": "DOLLY IN",
+            "characterIds": [
+              "c1",
+              "c3"
+            ],
+            "locationId": "l1",
+            "videoPrompt": "Mazela emerges from swirling dark portal behind peaceful Lilly, shadow tendrils wrap around her as she turns in shock. Camera rushes forward as purple magic engulfs the scene, petals scatter violently in supernatural wind, golden light battles against encroaching darkness.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "dissolve"
+          },
+          {
+            "id": 2,
+            "title": "Demon's Determination",
+            "durationSec": 7,
+            "shotType": "CLOSE-UP",
+            "cameraMove": "SLOW PAN",
+            "characterIds": [
+              "c2"
+            ],
+            "locationId": "l2",
+            "videoPrompt": "Bony stands defiantly on fortress balcony, red eyes blazing with determination, wings spreading wide as crimson energy erupts around him. Camera circles slowly as lightning illuminates his resolute expression, wind whips his hair dramatically, fists clenched with fierce loyalty.",
+            "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+            "narration": "",
+            "transition": "cut"
+          }
+        ]
+      },
+      "scenes": [
+        {
+          "id": 1,
+          "title": "The Kidnapping",
+          "durationSec": 8,
+          "shotType": "WIDE",
+          "cameraMove": "DOLLY IN",
+          "characterIds": [
+            "c1",
+            "c3"
+          ],
+          "locationId": "l1",
+          "videoPrompt": "Mazela emerges from swirling dark portal behind peaceful Lilly, shadow tendrils wrap around her as she turns in shock. Camera rushes forward as purple magic engulfs the scene, petals scatter violently in supernatural wind, golden light battles against encroaching darkness.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "dissolve",
+          "genStatus": "succeeded",
+          "videoUrl": "/videos/495j775c79rmr0cx2jabmk8dqg.mp4",
+          "progressLog": ""
+        },
+        {
+          "id": 2,
+          "title": "Demon's Determination",
+          "durationSec": 7,
+          "shotType": "CLOSE-UP",
+          "cameraMove": "SLOW PAN",
+          "characterIds": [
+            "c2"
+          ],
+          "locationId": "l2",
+          "videoPrompt": "Bony stands defiantly on fortress balcony, red eyes blazing with determination, wings spreading wide as crimson energy erupts around him. Camera circles slowly as lightning illuminates his resolute expression, wind whips his hair dramatically, fists clenched with fierce loyalty.",
+          "negativePrompt": "text, watermark, blurry, low quality, static, distorted, artifacts, inconsistent appearance, face change, costume change",
+          "narration": "",
+          "transition": "cut",
+          "genStatus": "idle",
+          "videoUrl": null,
+          "progressLog": ""
+        }
+      ],
+      "finalUrl": null,
+      "status": "in-progress",
+      "sceneCount": 2,
+      "createdAt": "2026-03-21T21:30:56.146Z",
+      "updatedAt": "2026-03-21T21:40:13.482Z"
+    }
+  ]
+}

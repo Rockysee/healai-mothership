@@ -1,0 +1,1918 @@
+[
+    {
+        "file": "ManipalWebApp/app/Traits/Firebase/FirebaseLogin.php",
+        "triggers": [
+            "RF_001"
+        ],
+        "line_count": 24,
+        "ai_readiness": "BLOCK-ROTATE-KEY-FIRST",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "initFirebase()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 159,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Classes/FirebaseHelper.php",
+        "triggers": [
+            "RF_001"
+        ],
+        "line_count": 30,
+        "ai_readiness": "BLOCK-ROTATE-KEY-FIRST",
+        "has_strict": false,
+        "red_flags": [
+            "RF-001 line 11: $private_key= \"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgw"
+        ],
+        "phi_fields": [],
+        "public_methods": [
+            "createCustomTokenForFirebaseAccess($uid)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 685,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "Api Server/app/Exceptions/Handler.php",
+        "triggers": [
+            "RF_004"
+        ],
+        "line_count": 84,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "report(Exception $exception)",
+            "render($request, Exception $exception)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 741,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Dispatcher/RequestHandler.php",
+        "triggers": [
+            "RF_004"
+        ],
+        "line_count": 136,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "__construct(DispatchController $dispatcher,QueryController $qc)",
+            "incomingRequest(Request $request)",
+            "SendRequestOver($request,$search_header,$get_User_Details)",
+            "Validate_request($request)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 1563,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Traits/OAuthHandler.php",
+        "triggers": [
+            "RF_004"
+        ],
+        "line_count": 38,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "oAuthGenerateToken($request)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 254,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Handler/Handler.php",
+        "triggers": [
+            "RF_004"
+        ],
+        "line_count": 11,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "relayInformation($idAgainstRequest)",
+            "informPartiesAboutProgress($idAgainstRequest,$progressType,$data)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 57,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Exceptions/Handler.php",
+        "triggers": [
+            "RF_004"
+        ],
+        "line_count": 78,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "report(Exception $exception)",
+            "render($request, Exception $exception)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 636,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/Services/RequestHelper.php",
+        "triggers": [
+            "STATE_MACHINE"
+        ],
+        "line_count": 99,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "changeStatus($to, $idAgainstRequest)",
+            "checkChangeAcceptance($to, $idAgainstRequest)",
+            "checkAssignAcceptance($to, $idAgainstRequest)",
+            "initiateAcceptorOperator($idAgainstRequest, $operatorId)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 743,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/TripStatus.php",
+        "triggers": [
+            "STATE_MACHINE"
+        ],
+        "line_count": 18,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "getDetailsAttribute($value)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 1246,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/TripStatus.php",
+        "triggers": [
+            "STATE_MACHINE"
+        ],
+        "line_count": 11,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 36,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Dispatcher/Services/RequestHelper.php",
+        "triggers": [
+            "STATE_MACHINE"
+        ],
+        "line_count": 165,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "checkChangeAcceptance($to, $idAgainstRequest)",
+            "checkEquipemtChangeAcceptance($to, $idAgainstRequest)",
+            "checkAssignAcceptance($to, $idAgainstRequest)",
+            "initiateAcceptorOperator($idAgainstRequest, $operatorId)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 1559,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyPregnancyT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 107,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyMedicationHistoryT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 112,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyTimelineDetail.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 21,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 107,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedListPCRPatientStimuliType.php",
+        "triggers": [
+            "PHI_HIGH"
+        ],
+        "line_count": 13,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 71,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCRPatientAddressDetail.php",
+        "triggers": [
+            "PHI_HIGH"
+        ],
+        "line_count": 20,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [
+            "L16:'patient_id'"
+        ],
+        "public_methods": [
+            "patient_details()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 100,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyPreCareT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 102,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyBasicDetail.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 104,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencySignNecessaryDetail.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 108,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyReasonsOtherDetails.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 15,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 80,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyEventsDuringTransportT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 111,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyPatientStimuliT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 108,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCRReasonsCodeDefinedList.php",
+        "triggers": [
+            "PHI_HIGH"
+        ],
+        "line_count": 16,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 79,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCRPatientDetail.php",
+        "triggers": [
+            "PHI_HIGH"
+        ],
+        "line_count": 23,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [
+            "L19:'patient_id'"
+        ],
+        "public_methods": [
+            "pcr_patient_address()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 100,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyTOCT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 104,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyVitalSignT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 105,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/PCREmergencyPastIllnessDetailT.php",
+        "triggers": [
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 19,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [],
+        "public_methods": [
+            "trip()"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 110,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/PCREmergencyController.php",
+        "triggers": [
+            "CONTROLLER",
+            "PHI_HIGH",
+            "CLINICAL_CRITICAL"
+        ],
+        "line_count": 1102,
+        "ai_readiness": "WRAP",
+        "has_strict": false,
+        "red_flags": [],
+        "phi_fields": [
+            "L414:'patient_id'"
+        ],
+        "public_methods": [
+            "showEmergencyPCRForm($id)",
+            "loadPcrFromDropdowns()",
+            "pcrPatientUpdate(Request $request)",
+            "pcrPatientDetails(Request $request)",
+            "pcrPatientAddressUpdate(Request $request)",
+            "pcrPatientAddressDetails(Request $request)",
+            "pcrEmergencyTimelineUpdate(Request $request)",
+            "pcrEmergencyTimelineDetails(Request $request)",
+            "pcrEmergencyBasicUpdate(Request $request)",
+            "pcrEmergencyBasicDetails(Request $request)",
+            "pcrPastIllnessUpdate(Request $request)",
+            "pcrPastIllnessDetails(Request $request)",
+            "pcrHistoryOfMedicationUpdate(Request $request)",
+            "pcrHistoryOfMedicationDetails(Request $request)",
+            "pcrTOCUpdate(Request $request)",
+            "pcrTOCDetails(Request $request)",
+            "pcrVitalSignsUpdate(Request $request)",
+            "pcrVitalSignsDetails(Request $request)",
+            "pcrPregnancyDetailsUpdate(Request $request)",
+            "pcrPregnancyDetails(Request $request)",
+            "pcrPreHospitalCareUpdate(Request $request)",
+            "pcrPreHospitalCareDetails(Request $request)",
+            "pcrEventsDuringTransportUpdate(Request $request)",
+            "pcrEventsDuringTransportDetails(Request $request)",
+            "pcrPhysicianDetailsUpdate(Request $request)",
+            "pcrPhysicianDetails(Request $request)",
+            "pcrEmergencyReasonsUpdate(Request $request)",
+            "pcrEmergencyReasonsDetails(Request $request)",
+            "pcrPrintNecessaryDetailsUpdate(Request $request)",
+            "pcrPrintNecessaryDetails(Request $request)"
+        ],
+        "magic_ints": [],
+        "state_transitions": [],
+        "token_cost": 11760,
+        "status": "PROCESSED"
+    },
+    {
+        "file": "Api Server/app/Models/V2/Operator_Emergency_Sharing.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/V2/Emergency_Sharing.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/V2/UserEmergencyContact.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/V2/Emergency_Payment.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/V2/Emergency_To_Hospital.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/V2/Emergency_Referrer.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Models/UserEmergencyContact.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Notifications/EmergencyRequestRegistered.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPaymentTransactions.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPayment.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicketType.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicketCommentReply.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicketComment.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicketDocument.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicket.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTicket/EmergencyTicketStatus.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyFare.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTagging.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyTimeline.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyServiceMapping.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/HospitalEmergencyFacilities.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/FeedBack/EmergencyFeedBackAnswer.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyMeta.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyActivityHistory.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPersonnelMapping.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencySharing.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPatient.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPayableServiceList.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyDiscount.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyNote.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/HospitalEmergencyMapping.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/Migration/Payment/NewModels/EmergencyPaymentTransactions.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/Migration/Payment/NewModels/EmergencyPayment.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/Migration/Payment/NewModels/EmergencyPayableServiceList.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/Migration/Payment/OldModels/OldEmergencyPayment.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedListEmergencyTimelineType.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedListMechanismOfEmergency.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedListSymptomOfEmergency.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedListTypeOfEmergency.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyPCR/DefinedCauseOfEmergency.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/Equipment/EmergencyOxygenCylinderDetails.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/EmergencyReferrer.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Models/Version1/HospitalEmergencyCapability.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Traits/V1/EmergencyTraits.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Dispatcher/EmergencyController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Emergency/EmergencyTicketCommentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Emergency/EmergencyController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Emergency/EmergencyTicketController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/EmergencyTripController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "CLINICAL_CRITICAL"
+        ]
+    },
+    {
+        "file": "Api Server/app/Classes/PubNubClasses.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "RF_002"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Subscriber/PubNubController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER",
+            "RF_002"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Classes/PubNubClasses.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "RF_002"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Middleware/VerifyCsrfToken.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "NEXUS_TOKEN"
+        ]
+    },
+    {
+        "file": "Api Server/app/Listeners/RevokeOldTokens.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "NEXUS_TOKEN"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Middleware/VerifyCsrfToken.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "NEXUS_TOKEN"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Driver/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Driver/TopController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Driver/DriverController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/TripDetailsController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Website/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Dispatcher/DispatchController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Dispatcher/QueryController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/GenericController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/User/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/MessageController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Operator/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Operator/DriverController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Operator/CommonClassController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V1/Operator/AmbulanceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/Controller.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/Auth/ForgotPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/Auth/LoginController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/Auth/ResetPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/Auth/RegisterController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/TestingController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/FeedBackController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/ErrorController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Driver/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Driver/DriverController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/TripDetailsController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/TestingController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/WebInterface/ServiceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/ServiceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/OperatorServiceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Dispatcher/QueryController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/GenericController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/User/UserController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/User/ServiceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/User/ResetPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/MessageController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/ResetPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Hospital/HospitalController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/DriverController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/TripDetailsController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/AmbulanceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/ProfileController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/GenericController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "Api Server/app/Http/Controllers/V2/Operator/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/HomeController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Controller.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/DateTimeController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Auth/ForgotPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Auth/LoginController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Auth/ResetPasswordController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Auth/RegisterController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Auth/VerificationController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/MedicineController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/EnquiryController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Medicines/MedicineDefinitionController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Medicines/MedicineInventoryController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Medicines/OperatorMedicineController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/AddressController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Expense/ExpenseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Configuration/ConfigController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Configuration/OfficeShiftController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Payments/PaymentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Tools/ToolsController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/EmployeesController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Board/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/VendorController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Security/SecurityController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Driver/DriverController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Driver/LoginController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Driver/DriverBookManagerController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/DashboardController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Tools/DefinedServiceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Search/SearchController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Dashboard/DashboardController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Notes/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/TicketController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/PersonController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/KeypartnerController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/ProfileController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/DocumentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/NotesController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/Profile/ContractController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/KeyPartners/CSRController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/ComponentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Location/LocationController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Doctor/DoctorController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/MarketPlace/MarketPlaceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/BooksManager/ParamedicBookManagerController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/BooksManager/DriverBookManagerController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Tests/StaffTestController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Admin/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/ProfileController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Ambulance/AmbulanceController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Tagging/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Feedback/FeedbackController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/EquipmentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Paramedics/ParamedicController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Logs/LogController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Notes/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/SupportController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Profile/ProfileController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Accounts/AccountsController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Definition/DefinitionController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/InventoryController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Referers/RefererController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Ticket/Comment/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/PersonnelController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/PricingController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Report/ReportController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/FuelUsageController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/EmployeeManagement/EmployeeController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/PartnerOperator/PartnerController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/CorporateBooking/ShiftLogController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/CorporateBooking/ShiftController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/CorporateBooking/DeploymentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/CorporateBooking/ContractController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Equipments/OperatorEquipmentController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Equipments/VendorController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Equipments/EquipmentDefinitionController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/ParamedicController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Connect/MessageController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Connect/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Helper/HelperController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Pricing/FareManagementController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Pricing/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Pricing/PricingController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Attendant/AttendantController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Reminders/ReminderController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/OperatorController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/ThirdPartyController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Driver/LoginController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Driver/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Ambulance/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Subscription/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Ticket/BaseController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/BranchController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/Version1/Operator/Operator_Login_Controller.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    },
+    {
+        "file": "ManipalWebApp/app/Http/Controllers/MessageController.php",
+        "status": "BUDGET_SKIP",
+        "triggers": [
+            "CONTROLLER"
+        ]
+    }
+]

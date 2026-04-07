@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+  Framegen Phase-4 sim: Osmosis / Diffusion (Biology)
+  URL params:
+    type     ("osmosis" | "diffusion", default "osmosis")
+    duration (s, default 12)
+    solute   (particle concentration, default 40)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Osmosis & Diffusion</title>
+<style>* { margin:0; padding:0; } body { background:#f0f4f8; width:1280px; height:720px; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+const P      = new URLSearchParams(location.search);
+const type   = P.get('type') || 'osmosis';
+const dur    = parseFloat(P.get('duration') || 12) * 1000;
+const NSOLUTE = parseInt(P.get('solute') || 40);
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const W = 1280, H = 720;
+
+const MID    = W / 2;
+const TOP    = 120, BOT = H - 80;
+const CELL_H = BOT - TOP;
+
+// Membrane properties
+const MEMBRANE_W = 18;
+const PORE_SPACING = 55;
+
+// ── Particle class ────────────────────────────────────────────────────────────
+class Particle {
+  constructor(x, y, type, r = 7) {
+    this.x = x; this.y = y;
+    this.type = type;          // 'water' | 'solute'
+    this.r = r;
+    this.vx = (Math.random() - 0.5) * 1.6;
+    this.vy = (Math.random() - 0.5) * 1.6;
+    this.alpha = 1;
+  }
+
+  update(canPassMembrane, elapsed, totalDur) {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // Bounce off walls
+    const lx = this.x < MID ? 40 : MID + MEMBRANE_W;
+    const rx = this.x < MID ? MID - MEMBRANE_W : W - 40;
+    if (this.x - this.r < lx)   { this.x = lx + this.r;   this.vx *= -1; }
+    if (this.x + this.r > rx)   { this.x = rx - this.r;   this.vx *= -1; }
+    if (this.y - this.r < TOP)  { this.y = TOP + this.r;  this.vy *= -1; }
+    if (this.y + this.r > BOT)  { this.y = BOT - this.r;  this.vy *= -1; }
+
+    // Membrane interaction
+    if (this.type === 'water' && canPassMembrane) {
+      const progress = elapsed / totalDur;
+      // Water moves from right (hypotonic) to left (hypertonic) over time
+      if (this.x > MID - MEMBRANE_W - this.r && this.x < MID + MEMBRANE_W + this.r) {
+        if (Math.random() < 0.008 * progress && this.x > MID) {
+          this.vx = -Math.abs(this.vx) * 1.2;
+        }
+      }
+    }
+  }
+
+  draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    const grad = ctx.createRadialGradient(this.x - 1, this.y - 1, 1, this.x, this.y, this.r);
+    if (this.type === 'water') {
+      grad.addColorStop(0, '#81d4fa');
+      grad.addColorStop(1, '#0277bd');
+    } else {
+      grad.addColorStop(0, '#ffcc80');
+      grad.addColorStop(1, '#e65100');
+    }
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+}
+
+// Initialise particles
+const particles = [];
+
+// Left side: high solute concentration (hypertonic)
+for (let i = 0; i < NSOLUTE; i++) {
+  particles.push(new Particle(
+    80 + Math.random() * (MID - MEMBRANE_W - 110),
+    TOP + Math.random() * CELL_H,
+    'solute', 9
+  ));
+}
+for (let i = 0; i < 25; i++) {
+  particles.push(new Particle(
+    80 + Math.random() * (MID - MEMBRANE_W - 110),
+    TOP + Math.random() * CELL_H,
+    'water', 6
+  ));
+}
+
+// Right side: low solute concentration (hypotonic)
+for (let i = 0; i < Math.floor(NSOLUTE * 0.2); i++) {
+  particles.push(new Particle(
+    MID + MEMBRANE_W + Math.random() * (W - MID - MEMBRANE_W - 80),
+    TOP + Math.random() * CELL_H,
+    'solute', 9
+  ));
+}
+for (let i = 0; i < 55; i++) {
+  particles.push(new Particle(
+    MID + MEMBRANE_W + Math.random() * (W - MID - MEMBRANE_W - 80),
+    TOP + Math.random() * CELL_H,
+    'water', 6
+  ));
+}
+
+let startTime = null;
+
+function drawMembrane(elapsed, total) {
+  const progress = elapsed / total;
+
+  // Membrane background
+  ctx.fillStyle = '#f1f8e9';
+  ctx.fillRect(MID - MEMBRANE_W / 2, TOP, MEMBRANE_W, CELL_H);
+
+  // Pores (semi-permeable indicator)
+  for (let y = TOP + PORE_SPACING / 2; y < BOT; y += PORE_SPACING) {
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(MID, y, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#8bc34a'; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+
+  // Membrane border
+  ctx.strokeStyle = '#4caf50'; ctx.lineWidth = 3;
+  ctx.strokeRect(MID - MEMBRANE_W / 2, TOP, MEMBRANE_W, CELL_H);
+
+  // Label
+  ctx.fillStyle = '#2e7d32'; ctx.font = 'bold 14px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText('Semi-permeable', MID, TOP - 10);
+  ctx.fillText('Membrane', MID, TOP - 28 + 16);
+}
+
+function draw(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = ts - startTime;
+
+  // Background
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#e8f5e9');
+  bg.addColorStop(1, '#f0f4f8');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // Side backgrounds
+  ctx.fillStyle = 'rgba(255,240,210,0.45)';
+  ctx.fillRect(40, TOP, MID - MEMBRANE_W / 2 - 40, CELL_H);
+  ctx.fillStyle = 'rgba(210,235,255,0.45)';
+  ctx.fillRect(MID + MEMBRANE_W / 2, TOP, W - MID - MEMBRANE_W / 2 - 40, CELL_H);
+
+  // Cell borders
+  ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 2;
+  ctx.strokeRect(40, TOP, W - 80, CELL_H);
+
+  // Membrane
+  drawMembrane(elapsed, dur);
+
+  // Update + draw particles
+  particles.forEach(p => {
+    p.update(p.type === 'water', elapsed, dur);
+    p.draw(ctx);
+  });
+
+  // Labels
+  ctx.font = 'bold 22px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#bf360c';
+  ctx.fillText('Hypertonic Solution', MID / 2, TOP + 36);
+  ctx.fillText('(High Solute Concentration)', MID / 2, TOP + 60);
+
+  ctx.fillStyle = '#1565c0';
+  ctx.fillText('Hypotonic Solution', MID + (W - MID) / 2, TOP + 36);
+  ctx.fillText('(Low Solute Concentration)', MID + (W - MID) / 2, TOP + 60);
+
+  // Osmosis arrow overlay (fades in as water moves)
+  const arrowOpacity = Math.min(0.9, (elapsed / dur) * 1.5);
+  ctx.globalAlpha = arrowOpacity;
+  ctx.fillStyle = '#1565c0'; ctx.font = 'bold 36px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText('← Water flows in', MID / 2 + 40, H - 120);
+  ctx.globalAlpha = 1;
+
+  // Legend
+  ctx.textAlign = 'left'; ctx.font = '16px Segoe UI';
+  ctx.fillStyle = '#e65100';
+  ctx.beginPath(); ctx.arc(60, H - 44, 9, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#424242'; ctx.fillText('Solute molecule', 76, H - 38);
+
+  ctx.fillStyle = '#0277bd';
+  ctx.beginPath(); ctx.arc(240, H - 44, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#424242'; ctx.fillText('Water molecule', 254, H - 38);
+
+  // Title
+  ctx.fillStyle = '#1a237e'; ctx.font = 'bold 26px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText('Osmosis — Movement of Water Across a Semi-Permeable Membrane', W / 2, 68);
+
+  if (elapsed < dur + 2000) requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

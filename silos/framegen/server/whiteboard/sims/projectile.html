@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--
+  Framegen Phase-4 sim: Projectile Motion
+  URL params:
+    v0      (m/s, default 18)
+    angle   (degrees, default 45)
+    g       (m/s², default 9.8)
+    duration(s, default 10)
+    h0      (launch height m, default 0)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Projectile Motion</title>
+<style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#f8f9fa; width:1280px; height:720px; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+const P = new URLSearchParams(location.search);
+const v0    = parseFloat(P.get('v0') || 18);
+const angle = parseFloat(P.get('angle') || 45);
+const grav  = parseFloat(P.get('g') || 9.8);
+const dur   = parseFloat(P.get('duration') || 10) * 1000;
+const h0    = parseFloat(P.get('h0') || 0);
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const W = 1280, H = 720;
+
+const rad    = angle * Math.PI / 180;
+const vx     = v0 * Math.cos(rad);
+const vy     = v0 * Math.sin(rad);
+const SCALE  = 18;        // px per metre
+const OX     = 80;        // launch x (px)
+const OY     = H - 100;   // ground y (px)
+
+// Pre-compute full trajectory
+const tFlight = (vy + Math.sqrt(vy * vy + 2 * grav * h0)) / grav;
+const xMax    = vx * tFlight;
+const STEPS   = 240;
+const traj    = Array.from({ length: STEPS + 1 }, (_, i) => {
+  const t = (i / STEPS) * tFlight;
+  return {
+    x: OX + vx * t * SCALE,
+    y: OY - (vy * t - 0.5 * grav * t * t + h0) * SCALE,
+    t,
+  };
+});
+
+let startTime = null;
+let done = false;
+
+function draw(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = ts - startTime;
+  const progress = Math.min(1, elapsed / dur);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Sky gradient
+  const sky = ctx.createLinearGradient(0, 0, 0, OY);
+  sky.addColorStop(0, '#e3f2fd');
+  sky.addColorStop(1, '#f8f9fa');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, OY);
+
+  // Ground
+  const gnd = ctx.createLinearGradient(0, OY, 0, H);
+  gnd.addColorStop(0, '#a5d6a7');
+  gnd.addColorStop(1, '#388e3c');
+  ctx.fillStyle = gnd; ctx.fillRect(0, OY, W, H - OY);
+  ctx.strokeStyle = '#2e7d32'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, OY); ctx.lineTo(W, OY); ctx.stroke();
+
+  // Grid
+  ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 80) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, OY); ctx.stroke();
+  }
+  for (let y = 0; y < OY; y += 60) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // Full trajectory (dashed, faint)
+  ctx.setLineDash([8, 5]); ctx.strokeStyle = 'rgba(230,57,70,0.25)'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  traj.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // Trajectory up to now
+  const curIdx = Math.floor(progress * STEPS);
+  const trail  = traj.slice(0, curIdx + 1);
+  if (trail.length > 1) {
+    ctx.strokeStyle = '#e63946'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    trail.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    ctx.stroke();
+  }
+
+  const cur = traj[curIdx] || traj[traj.length - 1];
+  const landed = cur.y >= OY;
+
+  // Ball
+  const bx = cur.x, by = landed ? OY : cur.y;
+  ctx.fillStyle = '#e63946';
+  ctx.beginPath(); ctx.arc(bx, by, 14, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#b71c1c'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Velocity vector arrows (at current position)
+  if (!landed && curIdx > 0) {
+    const t2 = cur.t;
+    const curVx = vx;
+    const curVy = vy - grav * t2;
+    const arrowScale = 5;
+    const drawArrow = (dx, dy, color) => {
+      const len = Math.hypot(dx, dy);
+      if (len < 0.1) return;
+      const ex = bx + dx * arrowScale, ey = by - dy * arrowScale;
+      ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(ex, ey); ctx.stroke();
+      const headLen = 10, headAngle = Math.atan2(by - ey, bx - ex);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex + headLen * Math.cos(headAngle - 0.4), ey + headLen * Math.sin(headAngle - 0.4));
+      ctx.lineTo(ex + headLen * Math.cos(headAngle + 0.4), ey + headLen * Math.sin(headAngle + 0.4));
+      ctx.fill();
+    };
+    drawArrow(curVx, curVy, '#1565c0');
+    drawArrow(curVx, 0,    '#4caf50');
+    drawArrow(0, curVy,    '#ff9800');
+  }
+
+  // Launch point
+  ctx.fillStyle = '#1565c0'; ctx.beginPath(); ctx.arc(OX, OY, 7, 0, Math.PI * 2); ctx.fill();
+
+  // Info box
+  const t = traj[curIdx]?.t || 0;
+  ctx.fillStyle = 'rgba(255,255,255,0.88)';
+  ctx.roundRect(W - 290, 30, 258, 130, 10);
+  ctx.fill();
+  ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = '#1a237e'; ctx.font = 'bold 15px Segoe UI';
+  const lines = [
+    `v₀ = ${v0} m/s  |  θ = ${angle}°`,
+    `g = ${grav} m/s²`,
+    `Range = ${(xMax).toFixed(1)} m`,
+    `Max Height = ${(vy * vy / (2 * grav) + h0).toFixed(2)} m`,
+    `Time: ${t.toFixed(2)} s`,
+  ];
+  lines.forEach((l, i) => {
+    ctx.fillStyle = i === 0 ? '#1a237e' : '#37474f';
+    ctx.fillText(l, W - 278, 56 + i * 21);
+  });
+
+  if (progress < 1) requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--
+  Framegen Phase-4 sim: Simple / Double Pendulum
+  URL params:
+    length  (m, default 1.5)
+    angle   (degrees, default 40)
+    mass    (kg, default 1)
+    double  (1 = double pendulum, default 0)
+    duration(s, default 10)
+    bg      (hex, default f8f9fa)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Pendulum Simulation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f8f9fa; display: flex; align-items: center; justify-content: center; width: 1280px; height: 720px; overflow: hidden; }
+  canvas { display: block; }
+  #label { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font: 700 20px/1 'Segoe UI', sans-serif; color: #1a237e; background: rgba(255,255,255,0.85); padding: 7px 20px; border-radius: 20px; border: 1.5px solid #90a4ae; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<div id="label">Simple Pendulum</div>
+<script>
+const P = new URLSearchParams(location.search);
+const len      = Math.max(0.4, Math.min(3, parseFloat(P.get('length') || 1.5)));
+const a0deg    = parseFloat(P.get('angle') || 40);
+const mass     = parseFloat(P.get('mass') || 1);
+const isDouble = P.get('double') === '1';
+const durMs    = (parseFloat(P.get('duration') || 10)) * 1000;
+const bg       = '#' + (P.get('bg') || 'f8f9fa').replace('#', '');
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const W = 1280, H = 720;
+const SCALE = 210;                 // px per metre
+const PX = W / 2, PY = 160;      // pivot pixel coords
+
+const g = 9.81;
+
+// ── Single pendulum state ──
+let theta = (a0deg * Math.PI) / 180;
+let omega = 0;
+const pLen = len;
+
+// ── Double pendulum state (Lagrangian formulation) ──
+let t1 = theta, t2 = theta * 0.9;
+let w1 = 0,     w2 = 0;
+const l1 = pLen * 0.6, l2 = pLen * 0.6;
+const m1 = mass, m2 = mass * 0.7;
+
+const trail = [];
+let startTime = null;
+let done = false;
+
+function stepSingle(dt) {
+  omega += -(g / pLen) * Math.sin(theta) * dt;
+  omega *= 0.9998;
+  theta += omega * dt;
+}
+
+function stepDouble(dt) {
+  // Runge-Kutta 4 for double pendulum
+  function derivs(T1, T2, W1, W2) {
+    const d  = 2 * m1 + m2 - m2 * Math.cos(2 * (T1 - T2));
+    const dw1 = (-g * (2 * m1 + m2) * Math.sin(T1) - m2 * g * Math.sin(T1 - 2 * T2) -
+                 2 * Math.sin(T1 - T2) * m2 * (W2 * W2 * l2 + W1 * W1 * l1 * Math.cos(T1 - T2))) / (l1 * d);
+    const dw2 = (2 * Math.sin(T1 - T2) * (W1 * W1 * l1 * (m1 + m2) + g * (m1 + m2) * Math.cos(T1) +
+                 W2 * W2 * l2 * m2 * Math.cos(T1 - T2))) / (l2 * d);
+    return { dw1, dw2 };
+  }
+  const { dw1: k1a, dw2: k1b } = derivs(t1, t2, w1, w2);
+  const { dw1: k2a, dw2: k2b } = derivs(t1 + w1 * dt / 2, t2 + w2 * dt / 2, w1 + k1a * dt / 2, w2 + k1b * dt / 2);
+  const { dw1: k3a, dw2: k3b } = derivs(t1 + w1 * dt / 2, t2 + w2 * dt / 2, w1 + k2a * dt / 2, w2 + k2b * dt / 2);
+  const { dw1: k4a, dw2: k4b } = derivs(t1 + w1 * dt, t2 + w2 * dt, w1 + k3a * dt, w2 + k3b * dt);
+  t1 += dt * (w1);
+  t2 += dt * (w2);
+  w1 += dt * (k1a + 2 * k2a + 2 * k3a + k4a) / 6;
+  w2 += dt * (k1b + 2 * k2b + 2 * k3b + k4b) / 6;
+}
+
+function draw(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = ts - startTime;
+  if (!done && elapsed > durMs) { done = true; }
+
+  const dt = 1 / 60;
+  if (!done) {
+    if (isDouble) stepDouble(dt); else stepSingle(dt);
+  }
+
+  // Clear
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines (subtle)
+  ctx.strokeStyle = '#dee2e6'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  if (isDouble) {
+    const bx1 = PX + Math.sin(t1) * l1 * SCALE;
+    const by1 = PY + Math.cos(t1) * l1 * SCALE;
+    const bx2 = bx1 + Math.sin(t2) * l2 * SCALE;
+    const by2 = by1 + Math.cos(t2) * l2 * SCALE;
+
+    trail.push([bx2, by2]);
+    if (trail.length > 280) trail.shift();
+
+    // Trail
+    if (trail.length > 2) {
+      ctx.beginPath();
+      ctx.moveTo(trail[0][0], trail[0][1]);
+      trail.forEach((p, i) => {
+        ctx.strokeStyle = `rgba(99,50,200,${i / trail.length * 0.55})`;
+        ctx.lineWidth = 1.5;
+        ctx.lineTo(p[0], p[1]);
+      });
+      ctx.stroke();
+    }
+
+    // Support
+    ctx.fillStyle = '#90a4ae';
+    ctx.fillRect(PX - 28, 0, 56, 14);
+
+    // Strings
+    ctx.strokeStyle = '#455a64'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(PX, 14); ctx.lineTo(bx1, by1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(bx1, by1); ctx.lineTo(bx2, by2); ctx.stroke();
+
+    // Pivot
+    ctx.fillStyle = '#37474f'; ctx.beginPath(); ctx.arc(PX, 14, 8, 0, Math.PI * 2); ctx.fill();
+
+    // Bobs
+    ctx.fillStyle = '#1565c0'; ctx.beginPath(); ctx.arc(bx1, by1, 20, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#0d47a1'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#e63946'; ctx.beginPath(); ctx.arc(bx2, by2, 16, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#b71c1c'; ctx.lineWidth = 2; ctx.stroke();
+
+  } else {
+    const bx = PX + Math.sin(theta) * pLen * SCALE;
+    const by = PY + Math.cos(theta) * pLen * SCALE;
+
+    trail.push([bx, by]);
+    if (trail.length > 200) trail.shift();
+
+    // Trail
+    if (trail.length > 2) {
+      for (let i = 1; i < trail.length; i++) {
+        ctx.strokeStyle = `rgba(21,101,192,${i / trail.length * 0.45})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(trail[i - 1][0], trail[i - 1][1]);
+        ctx.lineTo(trail[i][0], trail[i][1]);
+        ctx.stroke();
+      }
+    }
+
+    // Dashed equilibrium line
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#cfd8dc'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(PX, 14); ctx.lineTo(PX, PY + pLen * SCALE + 30); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Support
+    ctx.fillStyle = '#90a4ae';
+    ctx.fillRect(PX - 28, 0, 56, 14);
+
+    // String
+    ctx.strokeStyle = '#455a64'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(PX, 14); ctx.lineTo(bx, by); ctx.stroke();
+
+    // Pivot
+    ctx.fillStyle = '#37474f'; ctx.beginPath(); ctx.arc(PX, 14, 7, 0, Math.PI * 2); ctx.fill();
+
+    // Bob
+    ctx.fillStyle = '#1565c0'; ctx.beginPath(); ctx.arc(bx, by, 24, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#0d47a1'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    // Angle label
+    ctx.fillStyle = '#1565c0'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText(`θ = ${(theta * 180 / Math.PI).toFixed(1)}°`, PX + 50, PY + 30);
+  }
+
+  if (!done) requestAnimationFrame(draw);
+}
+
+document.getElementById('label').textContent = isDouble ? 'Double Pendulum' : `Simple Pendulum  (L = ${len} m, θ₀ = ${a0deg}°)`;
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

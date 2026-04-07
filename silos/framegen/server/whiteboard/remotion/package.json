@@ -1,0 +1,25 @@
+{
+  "name": "framegen-whiteboard-remotion",
+  "version": "1.0.0",
+  "description": "Remotion whiteboard composition for Framegen — general narrative content",
+  "type": "module",
+  "remotion": {
+    "entryPoint": "./index.jsx"
+  },
+  "dependencies": {
+    "@remotion/bundler":  "^4.0.0",
+    "@remotion/cli":      "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "react":              "^18.3.1",
+    "react-dom":          "^18.3.1",
+    "remotion":           "^4.0.0",
+
+    "three":              "^0.166.0",
+    "@react-three/fiber": "^8.16.8",
+    "@react-three/drei":  "^9.108.3",
+
+    "mafs":               "^0.19.0",
+
+    "matter-js":          "^0.19.0"
+  }
+}

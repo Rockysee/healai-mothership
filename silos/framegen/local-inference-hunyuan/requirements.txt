@@ -1,0 +1,30 @@
+# FRAMEGEN — HunyuanVideo Local Inference
+# Tencent HunyuanVideo (13B params) — highest open-source quality
+# Install: pip install -r requirements.txt
+
+# Core ML — torch 2.4+ required for HunyuanVideo MPS support
+torch>=2.4.0
+torchvision>=0.19.0
+
+# Diffusers >= 0.33 ships HunyuanVideoPipeline + I2V variant
+diffusers>=0.33.0
+transformers>=4.48.0
+accelerate>=0.35.0
+sentencepiece
+tokenizers
+
+# Video export
+imageio[ffmpeg]
+imageio-ffmpeg
+
+# API server
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.0.0
+
+# Memory probing (adaptive quality selection)
+psutil
+
+# Utilities
+numpy
+Pillow
