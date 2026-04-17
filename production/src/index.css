@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Premium Glassmorphism Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  /* Brand Gradients */
+  --grad-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --grad-aurora: linear-gradient(225deg, #4f46e5 0%, #06b6d4 100%);
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl;
+    box-shadow: var(--glass-glow);
+  }
+  
+  .glass-card {
+    @apply bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-white/[0.12] transition-all duration-500 backdrop-blur-md;
+  }
+  
+  .btn-premium {
+    @apply relative overflow-hidden transition-all duration-500 active:scale-[0.98];
+  }
+}
+
+/* Micro-Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; filter: blur(10px); }
+  50% { opacity: 0.8; filter: blur(15px); }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }

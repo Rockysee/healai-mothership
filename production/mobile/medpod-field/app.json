@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "MedPod Field",
+    "slug": "medpod-driver",
+    "scheme": "medpodfield",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "userInterfaceStyle": "dark",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/284d10f5-ec06-4fe9-b84b-e70c32624199"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "284d10f5-ec06-4fe9-b84b-e70c32624199"
+      }
+    },
+    "splash": {
+      "backgroundColor": "#0b1220"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.healai.medpodfield",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.healai.medpodfield",
+      "versionCode": 1
+    },
+    "owner": "rockysees-organization"
+  }
+}

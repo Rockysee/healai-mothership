@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020205;
+  --foreground: #ffffff;
+  --accent: #10b981;
+
+  /* Safe-area insets (iOS notch / Dynamic Island / Android cutout) */
+  --sat: env(safe-area-inset-top,    0px);
+  --sar: env(safe-area-inset-right,  0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left,   0px);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+html {
+  /* Use dynamic viewport height — accounts for mobile browser chrome */
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent overscroll bounce interfering with fixed elements on iOS */
+  overscroll-behavior: none;
+  /* Remove 300ms tap delay on all touch devices */
+  touch-action: manipulation;
+}
+
+/* ── Touch targets ───────────────────────────────────────────────────────── */
+/* Ensure all interactive elements meet 44×44 px minimum */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── Glass panel ─────────────────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.1); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Safe-area utility classes ───────────────────────────────────────────── */
+.pb-safe   { padding-bottom: var(--sab); }
+.pt-safe   { padding-top:    var(--sat); }
+.mb-safe   { margin-bottom:  var(--sab); }
+.mt-safe   { margin-top:     var(--sat); }
+
+/* ── Tablet / iPad layout helpers ────────────────────────────────────────── */
+/* Content columns widen on larger screens */
+@media (min-width: 640px) {
+  .silo-content {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .silo-content {
+    max-width: 860px;
+  }
+}
+
+/* ── Foldable screens ────────────────────────────────────────────────────── */
+/* Single-fold vertical (e.g. Galaxy Z Fold unfolded — two side-by-side panes) */
+@media (horizontal-viewport-segments: 2) {
+  .fold-aware {
+    /* Each pane gets roughly half; avoid placing critical content at fold seam */
+    padding-left: env(viewport-segment-left 0 0, 0px);
+    padding-right: env(viewport-segment-right 1 0, 0px);
+  }
+}
+
+/* Single-fold horizontal (e.g. Flip phone open) */
+@media (vertical-viewport-segments: 2) {
+  .fold-aware-v {
+    padding-top:    env(viewport-segment-top 0 0,    0px);
+    padding-bottom: env(viewport-segment-bottom 0 1, 0px);
+  }
+}
+
+/* ── Crucible OS Glass Card Styles ───────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.glow-border {
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.1), inset 0 0 30px rgba(168, 85, 247, 0.03);
+}
+
+.pulse-dot {
+  animation: pulse-g 2s ease-in-out infinite;
+}
+
+@keyframes pulse-g {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.9);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tarot-card {
+  min-height: 200px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tarot-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.tarot-card.selected {
+  border-color: rgba(168, 85, 247, 0.6);
+  background: rgba(168, 85, 247, 0.08);
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.12);
+}
+
+.processing-ring {
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-top-color: rgba(168, 85, 247, 0.7);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-ring {
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.radar-sweep {
+  position: absolute;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.5), transparent);
+  top: 50%;
+  left: 50%;
+  transform-origin: left center;
+  animation: sweep 4s linear infinite;
+}
+
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bar-animate {
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: rgba(168, 85, 247, 0.8);
+  border-radius: 1px;
+}
+
+.scenario-pill {
+  transition: all 0.3s ease;
+}
+
+.scenario-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.scenario-pill.picked {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: rgba(216, 180, 254, 0.9);
+}
+
+.scenario-pill.answered {
+  background: rgba(52, 211, 153, 0.08);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: rgba(52, 211, 153, 0.7);
+}

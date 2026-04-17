@@ -1,0 +1,246 @@
+/* ═══════════════════════════════════════════════════════════════
+   LEAFLET DARK THEME OVERRIDES
+   Glass-morphism dark theme matching MedPod NEXUS design
+   ═══════════════════════════════════════════════════════════════ */
+
+.leaflet-map-dark {
+  background-color: #020205;
+}
+
+/* ── Zoom Controls ───────────────────────────────────────────── */
+.leaflet-control-zoom {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  margin: 16px !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: transparent !important;
+  color: #22c55e !important;
+  font-weight: 700;
+  border: 1px solid rgba(34, 197, 94, 0.2) !important;
+  border-radius: 6px !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #22c55e !important;
+  border-color: rgba(34, 197, 94, 0.5) !important;
+}
+
+.leaflet-control-zoom-in:active,
+.leaflet-control-zoom-out:active {
+  background: rgba(34, 197, 94, 0.2) !important;
+}
+
+/* ── Attribution Control ─────────────────────────────────────── */
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 10px !important;
+  padding: 6px 8px !important;
+  margin: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-control-attribution a {
+  color: #22c55e !important;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.leaflet-control-attribution a:hover {
+  color: #16a34a !important;
+  text-decoration: underline;
+}
+
+/* ── Popups ──────────────────────────────────────────────────── */
+.leaflet-popup-content-wrapper {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+  padding: 12px !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  color: #fff !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(0, 0, 0, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── Containers and Panes ────────────────────────────────────── */
+.leaflet-container {
+  background-color: #020205;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-shadow-pane,
+.leaflet-overlay-pane,
+.leaflet-marker-pane,
+.leaflet-tooltip-pane,
+.leaflet-popup-pane {
+  z-index: auto;
+}
+
+/* ── Markers ─────────────────────────────────────────────────── */
+.ambulance-marker {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.hospital-marker {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.pulse-marker img {
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+@keyframes pulse-scale {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px rgba(34, 197, 94, 0.4));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px rgba(34, 197, 94, 0.4));
+  }
+}
+
+/* ── Tooltips ────────────────────────────────────────────────── */
+.leaflet-tooltip {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  padding: 6px 8px !important;
+  font-size: 11px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+/* ── Other Controls ──────────────────────────────────────────── */
+.leaflet-control {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-control a {
+  color: #22c55e;
+  background: transparent;
+}
+
+.leaflet-control a:hover {
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.leaflet-bar {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.leaflet-bar a {
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.leaflet-bar a:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.leaflet-bar a:last-child {
+  border-radius: 0 0 8px 8px;
+  border-bottom: none;
+}
+
+.leaflet-bar a:hover {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+/* ── Draw Controls (if used) ─────────────────────────────────── */
+.leaflet-draw-toolbar {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.leaflet-draw-toolbar a {
+  background: transparent;
+  color: #22c55e;
+}
+
+.leaflet-draw-toolbar a:hover {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* ── Loading animation ───────────────────────────────────────── */
+.leaflet-loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive adjustments ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .leaflet-control-zoom {
+    margin: 8px !important;
+  }
+
+  .leaflet-control-attribution {
+    display: none;
+  }
+}

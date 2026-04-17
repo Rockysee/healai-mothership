@@ -1,0 +1,16 @@
+node_modules/
+.git/
+.next/
+dist/
+build/
+*.log
+.DS_Store
+.env*
+../node_modules/
+../venv/
+../silos/
+../.git/
+../ICSE_Class_10/
+../mothership-build/
+../dist/
+../.next/
