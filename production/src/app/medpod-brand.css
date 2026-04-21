@@ -1,0 +1,441 @@
+/* ════════════════════════════════════════════════════════════════════
+ *  MEDPOD — Uyire brand pass
+ *  Scoped to :is(.uyire-surface, .medpod-shell) only. Other pages (AssessHub, Mentor,
+ *  Longevity) inherit the original dark theme from globals.css.
+ *
+ *  To revert: stop importing this file in MedPodNexus.jsx and remove
+ *  the :is(.uyire-surface, .medpod-shell) wrapper from MedPodNexus.jsx's root <div>.
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* Newsreader + DM Sans + JetBrains Mono are loaded via next/font in
+ * src/app/layout.tsx. No @import needed here — keeping this as a comment
+ * so future readers don't re-add the @import (which would be invalid when
+ * this file is @import-ed from globals.css). */
+
+:is(.uyire-surface, .medpod-shell) {
+  /* ── Uyire palette ───────────────────────────────────────────── */
+  --life:   #d24b3a;   /* Life Red — critical / P1 / cardiac */
+  --health: #2e7bc4;   /* Health Blue — primary accent / nav */
+  --ink:    #2a2320;   /* Body text + headings */
+  --cream:  #faf6f1;   /* Page background */
+  --warm:   #f3ece0;   /* Card surface / borders */
+  --muted:  #8a7e70;   /* Secondary text */
+
+  /* ── Coordinated accents (tuned) ──────────────────────────────
+   * Display colour = ink-brown (not pure black) for warmth.
+   * Display-life  = hand-lettered hero warmth for big moments.
+   * Display-muted = paper-pencil feel for quieter lines. */
+  --display:       #2a2320;
+  --display-life:  #b8403a;                /* softened Life Red for display */
+  --display-hint:  #6f645a;                /* warmer muted for sub-copy */
+
+  /* Derived softer tints */
+  --life-12:   color-mix(in srgb, var(--life) 12%, transparent);
+  --life-25:   color-mix(in srgb, var(--life) 25%, transparent);
+  --health-08: color-mix(in srgb, var(--health) 8%, transparent);
+  --health-12: color-mix(in srgb, var(--health) 12%, transparent);
+  --health-25: color-mix(in srgb, var(--health) 25%, transparent);
+  --warm-50:   color-mix(in srgb, var(--warm) 50%, transparent);
+  --line:      color-mix(in srgb, var(--ink) 8%, transparent);
+
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Paint the cream all the way to the viewport bottom even when content
+   * is shorter than one screen. `min-height: 100dvh` on the shell alone
+   * isn't enough because the parent <main> can still clip. Force a
+   * document-level cream when medpod is active. */
+  min-height: 100dvh;
+  width: 100%;
+  padding-top: 8px;
+}
+
+/* When the shell is on screen, paint cream behind main/body too so that
+ * scroll overruns (or short pages) never flash the dark Mothership BG. */
+html:has(:is(.uyire-surface, .medpod-shell)),
+body:has(:is(.uyire-surface, .medpod-shell)),
+main:has(:is(.uyire-surface, .medpod-shell)) {
+  background: #faf6f1;
+}
+
+/* ── Wider real estate on desktop ────────────────────────────── */
+:is(.uyire-surface, .medpod-shell) .medpod-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16px 18px 32px;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-content {
+    max-width: 960px;
+    padding: 24px 32px 48px;
+  }
+}
+@media (min-width: 1280px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-content {
+    max-width: 1320px;
+    padding: 32px 48px 56px;
+  }
+}
+@media (min-width: 1600px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-content {
+    max-width: 1480px;
+    padding: 40px 64px 64px;
+  }
+}
+
+/* ── Cards ───────────────────────────────────────────────────── */
+:is(.uyire-surface, .medpod-shell) .glass-card,
+:is(.uyire-surface, .medpod-shell) .glass-panel {
+  background: #ffffff;
+  border: 1px solid var(--warm);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 1px 0 rgba(42, 35, 32, 0.02), 0 4px 16px -8px rgba(42, 35, 32, 0.06);
+}
+:is(.uyire-surface, .medpod-shell) .glass-hover:hover {
+  background: var(--cream);
+  border-color: color-mix(in srgb, var(--health) 30%, var(--warm));
+  box-shadow: 0 2px 0 rgba(42, 35, 32, 0.03), 0 8px 24px -8px rgba(46, 123, 196, 0.12);
+}
+
+/* ── Silo-level dark-theme overrides ───────────────────────────
+ * Silos (LongevityOS, AIMentorChat, VoiceMoodCheck, ResilienceTracker,
+ * GuardianShield) were originally dark-themed. Catch the most common
+ * Tailwind dark-BG utility classes so their internal cards harmonize
+ * with the cream surface. Inline-styled black/dark backgrounds are
+ * handled by the attribute selectors below. */
+:is(.uyire-surface, .medpod-shell) .bg-black,
+:is(.uyire-surface, .medpod-shell) [class*="bg-black/"],
+:is(.uyire-surface, .medpod-shell) .bg-gray-900,
+:is(.uyire-surface, .medpod-shell) .bg-gray-800,
+:is(.uyire-surface, .medpod-shell) .bg-slate-900,
+:is(.uyire-surface, .medpod-shell) .bg-slate-800,
+:is(.uyire-surface, .medpod-shell) .bg-zinc-900,
+:is(.uyire-surface, .medpod-shell) .bg-zinc-800,
+:is(.uyire-surface, .medpod-shell) .bg-neutral-900,
+:is(.uyire-surface, .medpod-shell) .bg-neutral-800,
+:is(.uyire-surface, .medpod-shell) .bg-stone-900,
+:is(.uyire-surface, .medpod-shell) .bg-stone-800,
+:is(.uyire-surface, .medpod-shell) [class*="bg-[#0"],
+:is(.uyire-surface, .medpod-shell) [class*="bg-[#1"],
+:is(.uyire-surface, .medpod-shell) [class*="bg-[#2"]:not([class*="bg-[#2e7bc4"]):not([class*="bg-[#2a2320"]) {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid var(--warm);
+  color: var(--ink);
+}
+
+/* Dark inline-style backgrounds → white card (same rule for style attribute). */
+:is(.uyire-surface, .medpod-shell) [style*="background: #020205"],
+:is(.uyire-surface, .medpod-shell) [style*="background:#020205"],
+:is(.uyire-surface, .medpod-shell) [style*="background: #0a0a"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0,0,0,0.5"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0,0,0,0.6"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0,0,0,0.7"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0,0,0,0.8"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0,0,0,0.9"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0, 0, 0, 0.5"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0, 0, 0, 0.6"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0, 0, 0, 0.7"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(0, 0, 0, 0.8"] {
+  background: #ffffff !important;
+  border: 1px solid var(--warm);
+  color: var(--ink);
+}
+
+/* Gradient backgrounds — tone them down toward cream */
+:is(.uyire-surface, .medpod-shell) [style*="linear-gradient"][style*="#000"],
+:is(.uyire-surface, .medpod-shell) [style*="linear-gradient"][style*="rgba(0, 0, 0"],
+:is(.uyire-surface, .medpod-shell) [style*="linear-gradient"][style*="rgba(0,0,0"] {
+  background: #ffffff !important;
+  color: var(--ink);
+}
+
+/* ── Light-on-dark text patterns — invert to ink on cream ────────
+ * React serializes inline `color:"#F0F0F0"` to `color: rgb(240,240,240)`
+ * in the rendered style attribute, so we match rgb() form (not hex). */
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(240, 240, 240)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(224, 224, 224)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(208, 208, 208)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(204, 204, 204)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(200, 200, 200)"] {
+  color: var(--ink) !important;
+}
+
+/* Mid-grey text (#555, #666, #777, #888) → muted ink.
+ * rgb() form: rgb(85,85,85) = #555, rgb(102,102,102) = #666, etc. */
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(68, 68, 68)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(85, 85, 85)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(102, 102, 102)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(119, 119, 119)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(136, 136, 136)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(153, 153, 153)"] {
+  color: var(--muted) !important;
+}
+
+/* Semi-transparent white cards on dark backgrounds (rgba(255,255,255,0.02–0.1))
+ * render as almost-invisible on cream. Force them to white with warm border. */
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.02"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.02"],
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.03"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.03"],
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.04"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.04"],
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.05"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.05"],
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.06"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.06"],
+:is(.uyire-surface, .medpod-shell) [style*="background:\"rgba(255,255,255,0.08"],
+:is(.uyire-surface, .medpod-shell) [style*="background: rgba(255,255,255,0.08"] {
+  background: #ffffff !important;
+  border: 1px solid var(--warm) !important;
+}
+
+/* ── Typography — handwriting display + coordinated colours ──
+ * Display (h1/h2/h3) uses Caveat: reads as a warm hand-lettered note.
+ * Body stays DM Sans, data stays JetBrains Mono.
+ *
+ * Weight + size bumped per user feedback: "darker and bit larger" —
+ * default is now 700 across all display levels (was 600 h2/h3, 700 h1).
+ * Individual components can still override size.
+ */
+:is(.uyire-surface, .medpod-shell) h1,
+:is(.uyire-surface, .medpod-shell) h2,
+:is(.uyire-surface, .medpod-shell) h3 {
+  font-family: var(--font-caveat, 'Caveat'), var(--font-kalam, 'Kalam'), 'Segoe Script', cursive;
+  font-weight: 700;                     /* darker default — was 600 */
+  letter-spacing: -0.005em;
+  color: var(--display);
+  line-height: 1.08;
+}
+:is(.uyire-surface, .medpod-shell) h1 {
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 72px);    /* was implicit → now explicit +15% */
+}
+:is(.uyire-surface, .medpod-shell) h2 {
+  font-weight: 700;
+  font-size: clamp(28px, 3.6vw, 40px);
+}
+:is(.uyire-surface, .medpod-shell) h3 {
+  font-weight: 700;
+  font-size: clamp(22px, 2.4vw, 28px);
+}
+
+/* Any inline style that asked for 'Newsreader' now gets Caveat-first */
+:is(.uyire-surface, .medpod-shell) [style*="Newsreader"] {
+  font-family: var(--font-caveat, 'Caveat'), var(--font-kalam, 'Kalam'), 'Segoe Script', cursive !important;
+  font-style: normal !important;                /* remove italic — Caveat is already slanted */
+}
+
+/* Any element that dialled in italic Georgia / serif stacks gets the
+ * same treatment so legacy pages pick up the new display automatically. */
+:is(.uyire-surface, .medpod-shell) [style*="Georgia"],
+:is(.uyire-surface, .medpod-shell) [style*="serif"]:not([style*="sans-serif"]):not([style*="monospace"]) {
+  font-family: var(--font-caveat, 'Caveat'), var(--font-kalam, 'Kalam'), 'Segoe Script', cursive !important;
+}
+
+/* Tamil/Hindi flourish uses Kalam (supports Devanagari + Tamil-adjacent). */
+:is(.uyire-surface, .medpod-shell) .uyire-script,
+:is(.uyire-surface, .medpod-shell) [lang="ta"],
+:is(.uyire-surface, .medpod-shell) [lang="hi"] {
+  font-family: var(--font-kalam, 'Kalam'), serif !important;
+}
+
+/* The hand-rolled "section header" pattern in MedPodNexus uses inline
+ * styles, so we use attribute selectors for the recognizable strings.
+ * Best-effort surgical hits only. */
+:is(.uyire-surface, .medpod-shell) [style*="textTransform"][style*="uppercase"][style*="letterSpacing"] {
+  color: var(--muted) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+:is(.uyire-surface, .medpod-shell) input,
+:is(.uyire-surface, .medpod-shell) select,
+:is(.uyire-surface, .medpod-shell) textarea {
+  font-family: 'DM Sans', sans-serif;
+  background: #ffffff !important;
+  color: var(--ink) !important;
+  border-color: var(--warm) !important;
+}
+:is(.uyire-surface, .medpod-shell) input::placeholder,
+:is(.uyire-surface, .medpod-shell) textarea::placeholder { color: var(--muted) !important; }
+
+:is(.uyire-surface, .medpod-shell) .font-mono,
+:is(.uyire-surface, .medpod-shell) [style*="SF Mono"],
+:is(.uyire-surface, .medpod-shell) [style*="monospace"] {
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* ── Surgical accent rewrites ────────────────────────────────────
+ * MedPodNexus inline-styles a few signature greens for "active" UI.
+ * We swap the most visible ones to Health Blue via CSS layer overrides.
+ * This is best-effort — inline `style=` wins specificity, so we use
+ * attribute selectors with !important. Anything we miss falls back
+ * gracefully and still works, just looks emerald. */
+
+/* Emerald active-tab background → health blue */
+:is(.uyire-surface, .medpod-shell) button[style*="rgba(34,197,94,0.12)"] {
+  background: var(--health-12) !important;
+  border-color: var(--health-25) !important;
+  color: var(--health) !important;
+}
+:is(.uyire-surface, .medpod-shell) button[style*="rgba(34,197,94,0.3)"] {
+  border-color: var(--health-25) !important;
+}
+
+/* Online status dot shifts cyan → health blue */
+:is(.uyire-surface, .medpod-shell) [style*="background: rgb(34, 197, 94)"][style*="border-radius"][style*="50%"],
+:is(.uyire-surface, .medpod-shell) [style*="background: #22c55e"][style*="border-radius"][style*="50%"] {
+  background: var(--health) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--health) 60%, transparent) !important;
+}
+
+/* Default white-on-black text → ink */
+:is(.uyire-surface, .medpod-shell) [style*="color: rgb(255, 255, 255)"]:not([style*="background"]),
+:is(.uyire-surface, .medpod-shell) [style*="color: #fff"]:not([style*="background"]),
+:is(.uyire-surface, .medpod-shell) [style*="color:#fff"]:not([style*="background"]) {
+  color: var(--ink) !important;
+}
+
+/* Muted variants of white → muted ink */
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255,255,255,0.4)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255,255,255,0.45)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255,255,255,0.5)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255, 255, 255, 0.4)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255, 255, 255, 0.45)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255, 255, 255, 0.5)"] {
+  color: var(--muted) !important;
+}
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255,255,255,0.35)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255,255,255,0.3)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255, 255, 255, 0.35)"],
+:is(.uyire-surface, .medpod-shell) [style*="color: rgba(255, 255, 255, 0.3)"] {
+  color: color-mix(in srgb, var(--muted) 75%, var(--cream)) !important;
+}
+
+/* Text-base white-on-cream readability */
+:is(.uyire-surface, .medpod-shell) .text-white { color: var(--ink) !important; }
+:is(.uyire-surface, .medpod-shell) .text-emerald-400 { color: var(--health) !important; }
+
+/* Top status "NEXUS ONLINE" — emerald → health */
+:is(.uyire-surface, .medpod-shell) span[style*="color: rgb(34, 197, 94)"],
+:is(.uyire-surface, .medpod-shell) span[style*="color: #22c55e"] {
+  color: var(--health) !important;
+}
+
+/* ── Borders ─────────────────────────────────────────────────── */
+:is(.uyire-surface, .medpod-shell) [style*="rgba(255,255,255,0.06)"][style*="border"],
+:is(.uyire-surface, .medpod-shell) [style*="rgba(255,255,255,0.08)"][style*="border"],
+:is(.uyire-surface, .medpod-shell) [style*="rgba(255,255,255,0.1)"][style*="border"] {
+  border-color: var(--warm) !important;
+}
+
+/* ── Section dividers between tabs ───────────────────────────── */
+:is(.uyire-surface, .medpod-shell) .silo-content > * + * { margin-top: 8px; }
+
+/* ── Brand chip on top-left of MedPod tab ───────────────────── */
+:is(.uyire-surface, .medpod-shell) .medpod-brand-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--health-08);
+  border: 1px solid var(--health-25);
+  color: var(--health);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+:is(.uyire-surface, .medpod-shell) .medpod-brand-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--life);
+  box-shadow: 0 0 6px var(--life);
+}
+
+/* ── Big section headlines ───────────────────────────────────── */
+:is(.uyire-surface, .medpod-shell) .medpod-page-title {
+  font-family: var(--font-caveat, 'Caveat'), var(--font-kalam, 'Kalam'), 'Segoe Script', cursive;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+:is(.uyire-surface, .medpod-shell) .medpod-page-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ── Tab bar polish ──────────────────────────────────────────── */
+/* Silent scrollbar on the underlined tab strip — chrome stays calm
+ * even when the strip overflows on narrow viewports. */
+:is(.uyire-surface, .medpod-shell) .medpod-tabstrip {
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;         /* IE/Edge legacy */
+}
+:is(.uyire-surface, .medpod-shell) .medpod-tabstrip::-webkit-scrollbar {
+  display: none;                    /* Chromium / Safari */
+}
+:is(.uyire-surface, .medpod-shell) .medpod-tabstrip {
+  border-bottom-color: var(--warm) !important;
+}
+
+/* Tabular-nums on stat numerals so columns of digits align */
+:is(.uyire-surface, .medpod-shell) .medpod-stat-value {
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Promoted stat card — Active Trips reads as the primary signal */
+:is(.uyire-surface, .medpod-shell) .medpod-stat-hero {
+  grid-column: span 2;
+  background: linear-gradient(180deg, #ffffff 0%, var(--warm-50) 100%) !important;
+  border-color: var(--warm) !important;
+}
+:is(.uyire-surface, .medpod-shell) .medpod-stat-hero .medpod-stat-value {
+  font-size: 56px !important;
+  line-height: 1;
+}
+
+/* Clean stat grid — 6 cards become a hero (2-col) + 4 supporting (1-col each)
+ * on desktop. Mobile stacks 1-up for the hero, 2-up for the others. */
+:is(.uyire-surface, .medpod-shell) .medpod-stat-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-stat-grid { grid-template-columns: repeat(4, 1fr); }
+  :is(.uyire-surface, .medpod-shell) .medpod-stat-grid > .medpod-stat-hero { grid-column: span 2; grid-row: span 2; }
+}
+
+/* Live ops grid — Active Emergencies sidebar (left) + FleetMap (centre).
+ * Mobile (< 900 px) stacks vertically so the map still gets full width.
+ * Desktop (≥ 900 px) shows a 300-px sidebar + flex-grow map. */
+:is(.uyire-surface, .medpod-shell) .medpod-ops-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  :is(.uyire-surface, .medpod-shell) .medpod-ops-grid {
+    grid-template-columns: 300px 1fr;
+    align-items: stretch;
+  }
+}

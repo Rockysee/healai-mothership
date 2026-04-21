@@ -22,6 +22,7 @@ import HealthLandingPage  from "@/components/HealthLandingPage";
 import SettingsPanel      from "@/components/SettingsPanel";
 import MedPodNexus        from "@/components/MedPodNexus";
 import EinsteinProvider   from "@/components/EinsteinProvider";
+import UyireMark          from "@/components/UyireMark";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // THE MOTHERSHIP — Main App Shell v3.0 (Healthcare + MedPod Edition)
@@ -218,12 +219,18 @@ export default function MothershipPage() {
     );
   }
 
+  // Uyire cream surface — unified across every silo.
+  // (Earlier this was gated by state.view === 'medpod'; now all pages share
+  //  the same brand palette for consistency.)
+
   return (
     <EinsteinProvider currentView={state.view} onNavigateToMentor={() => navigate("mentor")}>
-    <main className="min-h-dvh bg-[#020205] text-white font-sans relative overflow-x-hidden selection:bg-emerald-500/30">
-      {/* Decorative Aurora Glows */}
-      <div className="fixed -top-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] animate-pulse-glow pointer-events-none" />
-      <div className="fixed top-1/2 -right-24 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] animate-pulse-glow [animation-delay:2s] pointer-events-none" />
+    <main
+      className="uyire-surface min-h-dvh font-sans relative overflow-x-hidden text-[#2a2320] selection:bg-[rgba(46,123,196,0.25)]"
+      style={{ background: '#faf6f1' }}
+    >
+      {/* Aurora decorative glows removed — editorial calm is the brand direction
+          (see UYIRE_DESIGN_DIRECTION.md · principle #5 "Generous, not lavish"). */}
 
       {/* ── Persistent top bar — logo + settings gear ── */}
       <div
@@ -235,32 +242,24 @@ export default function MothershipPage() {
           paddingBottom: '8px',
           paddingLeft: 'calc(16px + env(safe-area-inset-left, 0px))',
           paddingRight: 'calc(16px + env(safe-area-inset-right, 0px))',
-          background: 'linear-gradient(180deg, rgba(2,2,5,0.95) 0%, transparent 100%)',
+          background: 'linear-gradient(180deg, rgba(250,246,241,0.95) 0%, rgba(250,246,241,0) 100%)',
           pointerEvents: 'none',
         }}
       >
-        {/* Logo — tap to go home */}
+        {/* Uyire wordmark — tap to go home */}
         <button
           onClick={goHome}
           style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
+            display: 'flex', alignItems: 'center', gap: '0',
             background: 'none', border: 'none', cursor: 'pointer',
             padding: '4px 8px 4px 4px',
             borderRadius: '10px',
             pointerEvents: 'all',
             WebkitTapHighlightColor: 'transparent',
           }}
+          aria-label="Uyire — go home"
         >
-          <div style={{
-            width: '30px', height: '30px', borderRadius: '9px',
-            background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '15px', color: '#fff', fontWeight: 800,
-            boxShadow: '0 2px 12px rgba(34,197,94,0.4)',
-          }}>✦</div>
-          <span style={{ fontSize: '15px', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Healai
-          </span>
+          <UyireMark size={42} variant="full" wordmarkColor="#2a2320" />
         </button>
 
         {/* Settings gear — 44×44 touch target */}
@@ -269,17 +268,19 @@ export default function MothershipPage() {
           style={{
             pointerEvents: 'all',
             width: '44px', height: '44px', borderRadius: '12px',
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            background: 'rgba(42,35,32,0.04)',
+            border: '1px solid rgba(42,35,32,0.08)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', fontSize: '18px',
             WebkitTapHighlightColor: 'transparent',
             transition: 'background 0.15s',
             flexShrink: 0,
+            color: '#2a2320',
           }}
           title="Settings"
+          aria-label="Settings"
         >
-          ⚙️
+          ⚙
         </button>
       </div>
 
@@ -296,27 +297,33 @@ export default function MothershipPage() {
       )}
 
       {/* ── Bottom Navigation ──────────────────────────────────────── */}
-      {/* bottom nav — floats above iOS home indicator via safe-area-inset-bottom */}
+      {/* bottom nav — cream-glass, floats above iOS home indicator. */}
       <nav
-        className="fixed left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl glass-panel rounded-3xl p-1.5 shadow-2xl border-white/5"
-        style={{ bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
+        className="fixed left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl rounded-3xl p-1.5"
+        style={{
+          bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          background: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(42,35,32,0.08)',
+          boxShadow: '0 8px 32px -12px rgba(42,35,32,0.12), 0 1px 0 rgba(42,35,32,0.04)',
+        }}
       >
         <div className="flex justify-around items-center">
           {NAV_ITEMS.map((item) => {
             const Icon  = item.icon;
             const active = state.view === item.id;
             const isCore = (item as any).core !== false;
+            const cls = active
+              ? "text-[#2e7bc4] bg-[#2e7bc41a] py-3"
+              : isCore
+                ? "text-[#8a7e70] hover:text-[#2a2320] py-3"
+                : "text-[#8a7e7099] hover:text-[#2a2320] py-2";
             return (
               <button
                 key={item.id}
                 onClick={() => navigate(item.id)}
-                className={`relative flex-1 flex flex-col items-center gap-0.5 transition-all duration-300 rounded-2xl ${
-                  active
-                    ? "text-emerald-400 bg-white/5 shadow-inner py-3"
-                    : isCore
-                      ? "text-white/35 hover:text-white/55 py-3"
-                      : "text-white/18 hover:text-white/35 py-2"
-                }`}
+                className={`relative flex-1 flex flex-col items-center gap-0.5 transition-all duration-300 rounded-2xl ${cls}`}
               >
                 <Icon className={`transition-transform duration-300 ${
                   active ? "w-5 h-5 scale-110" : isCore ? "w-5 h-5" : "w-4 h-4"
@@ -325,7 +332,7 @@ export default function MothershipPage() {
                   active ? "text-[9px]" : isCore ? "text-[9px]" : "text-[8px]"
                 }`}>{item.label}</span>
                 {active && (
-                  <span className="absolute -bottom-1 w-1 h-1 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                  <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-[#d24b3a] shadow-[0_0_10px_rgba(210,75,58,0.8)]" />
                 )}
               </button>
             );
@@ -337,7 +344,7 @@ export default function MothershipPage() {
       <div
         style={{
           paddingTop:    'calc(3.5rem + env(safe-area-inset-top, 0px))',
-          paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(5.5rem + env(safe-area-inset-bottom, 0px))',
         }}
       >
         {state.view === "assess" && (
