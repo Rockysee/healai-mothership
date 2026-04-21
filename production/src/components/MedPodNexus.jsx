@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import {
   Activity, Truck, Users, Package, Brain, MapPin, Clock,
@@ -12,9 +12,11 @@ import {
   ChevronDown, ChevronUp, Eye, Edit3, Save, X,
   Layers, Target, Gauge, Bell, Hospital, Briefcase,
   GraduationCap, BookOpen, MessageCircle, Send, Bot, Lightbulb,
-  Flame, Award, HelpCircle, RotateCcw,
+  Flame, Award, HelpCircle, RotateCcw, Scan,
 } from "lucide-react";
 import "../styles/leaflet-overrides.css";
+// NB: medpod-brand.css is now imported globally from src/app/globals.css
+// so the Uyire palette applies across every silo, not just MedPod.
 import {
   useCommandData, useDispatchData, useFleetData, useCrewData,
   useHospitalData, useStockData, useCRMData, usePCRData, useBrainData,
@@ -22,8 +24,16 @@ import {
   usePaymentData, useBroadcastData, useMentorData,
 } from "../hooks/useNexusData";
 import GsplPcrForm from "./nexus/GsplPcrForm";
-import DriverApp from "./nexus/DriverApp";
-import ParamedicApp from "./nexus/ParamedicApp";
+import FieldEntry from "./nexus/FieldEntry";
+import IndiaCoverageMap from "./nexus/IndiaCoverageMap";
+import BarcodeScanPanel from "./nexus/BarcodeScanPanel";
+import DispatchQuickCreate from "./nexus/DispatchQuickCreate";
+import InlineEditRow from "./nexus/InlineEditRow";
+import AadhaarAttestPanel from "./nexus/AadhaarAttestPanel";
+import DocumentsPanel from "./nexus/DocumentsPanel";
+import EmergencyFloater from "./nexus/EmergencyFloater";
+import AdminPanel from "./nexus/AdminPanel";
+import { useNexusAudit } from "../hooks/useNexusAudit";
 
 // Dynamically import FleetMap to handle SSR
 const FleetMap = dynamic(() => import("./nexus/FleetMap"), {
@@ -87,21 +97,50 @@ function Pill({ color, bg, children, pulse }) {
   );
 }
 
-function StatCard({ icon: Icon, label, value, accent = "#22c55e", sub, onClick }) {
+function StatCard({ icon: Icon, label, value, accent = "#22c55e", sub, onClick, hero = false }) {
   return (
-    <div className="glass-card" onClick={onClick} style={{
-      borderRadius: 14, padding: "14px 16px",
-      display: "flex", flexDirection: "column", gap: 6,
-      minWidth: 0, flex: "1 1 0",
-      cursor: onClick ? "pointer" : "default",
-      transition: "all 0.2s",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <Icon size={14} style={{ color: accent, opacity: 0.8 }} />
-        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</span>
+    <div
+      className={`glass-card${hero ? " medpod-stat-hero" : ""}`}
+      onClick={onClick}
+      style={{
+        borderRadius: 14,
+        padding: hero ? "24px 28px" : "16px 18px",
+        display: "flex", flexDirection: "column",
+        gap: hero ? 16 : 8,
+        minWidth: 0,
+        cursor: onClick ? "pointer" : "default",
+        transition: "all 0.2s",
+        justifyContent: hero ? "space-between" : "flex-start",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <Icon size={hero ? 18 : 14} style={{ color: accent, opacity: 0.85 }} />
+        <span style={{
+          fontSize: hero ? 12 : 10,
+          color: "rgba(255,255,255,0.45)",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: hero ? "0.12em" : "0.08em",
+        }}>{label}</span>
       </div>
-      <span style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.03em" }}>{value}</span>
-      {sub && <span style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>{sub}</span>}
+      <span
+        className="medpod-stat-value"
+        style={{
+          fontSize: hero ? 56 : 28,
+          fontWeight: 700,
+          color: "#fff",
+          letterSpacing: "-0.03em",
+          lineHeight: 1,
+        }}
+      >{value}</span>
+      {sub && (
+        <span style={{
+          fontSize: hero ? 12 : 10,
+          color: "rgba(255,255,255,0.35)",
+          fontFamily: "'JetBrains Mono', monospace",
+          letterSpacing: "0.02em",
+        }}>{sub}</span>
+      )}
     </div>
   );
 }
@@ -175,72 +214,253 @@ async function nexusFetch(path, opts = {}) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// TAB CONFIG
+// TAB CONFIG — Two-level navigation
+//
+// 18 destinations grouped under 5 functional clusters. Group strip
+// is the primary nav; sub-tab strip appears under the active group.
+// Default landing: Live Ops → Command. Sticky-per-group via
+// localStorage so a returning operator lands where they left off.
 // ═══════════════════════════════════════════════════════════════
-const TABS = [
-  { id: "command",    label: "Command",    icon: Target },
-  { id: "dispatch",   label: "Dispatch",   icon: Siren },
-  { id: "fleet",      label: "Fleet",      icon: Truck },
-  { id: "crew",       label: "HRMS",       icon: UserCog },
-  { id: "hospitals",  label: "Hospitals",  icon: Building2 },
-  { id: "stock",      label: "Inventory",  icon: Package },
-  { id: "crm",        label: "CRM",        icon: Briefcase },
-  { id: "patients",   label: "Patients",   icon: Heart },
-  { id: "pcr",        label: "PCR",        icon: Clipboard },
-  { id: "billing",    label: "Billing",    icon: DollarSign },
-  { id: "payments",   label: "Payments",   icon: Zap },
-  { id: "compliance", label: "Compliance", icon: Shield },
-  { id: "broadcasts", label: "Broadcasts", icon: Radio },
-  { id: "audit",      label: "Audit Log",  icon: Eye },
-  { id: "mentor",     label: "Mentor",     icon: GraduationCap },
-  { id: "brain",      label: "AI Brain",   icon: Brain },
-  { id: "driver",    label: "Driver",     icon: Navigation },
-  { id: "paramedic", label: "Paramedic",  icon: Stethoscope },
+const TAB_GROUPS = [
+  {
+    id: "live",
+    label: "Live Ops",
+    icon: Siren,
+    accent: "#ef4444",
+    tabs: [
+      { id: "command",    label: "Command",    icon: Target },
+      { id: "dispatch",   label: "Dispatch",   icon: Siren },
+      { id: "field",      label: "Field",      icon: Users },
+      { id: "broadcasts", label: "Broadcasts", icon: Radio },
+    ],
+  },
+  {
+    id: "fleet",
+    label: "Fleet & Crew",
+    icon: Truck,
+    accent: "#3b82f6",
+    tabs: [
+      { id: "fleet",      label: "Fleet",      icon: Truck },
+      { id: "crew",       label: "HRMS",       icon: UserCog },
+      { id: "stock",      label: "Inventory",  icon: Package },
+      { id: "compliance", label: "Compliance", icon: Shield },
+    ],
+  },
+  {
+    id: "care",
+    label: "Care & Hospitals",
+    icon: Building2,
+    accent: "#06b6d4",
+    tabs: [
+      { id: "hospitals",  label: "Hospitals",  icon: Building2 },
+      { id: "pcr",        label: "PCR",        icon: Clipboard },
+      { id: "patients",   label: "Patients",   icon: Heart },
+    ],
+  },
+  {
+    id: "biz",
+    label: "Business",
+    icon: Briefcase,
+    accent: "#8b5cf6",
+    tabs: [
+      { id: "crm",      label: "CRM",      icon: Briefcase },
+      { id: "billing",  label: "Billing",  icon: DollarSign },
+      { id: "payments", label: "Payments", icon: Zap },
+      { id: "mentor",   label: "Mentor",   icon: GraduationCap },
+    ],
+  },
+  {
+    id: "intel",
+    label: "AI & Audit",
+    icon: Brain,
+    accent: "#22c55e",
+    tabs: [
+      { id: "india", label: "India",     icon: MapPin },
+      { id: "brain", label: "AI Brain",  icon: Brain },
+      { id: "audit", label: "Audit Log", icon: Eye },
+      { id: "admin", label: "Admin",     icon: Shield },
+    ],
+  },
 ];
+
+// Flat lookup for legacy tab-id callers (CommandCenter onNavigate, etc.)
+const TAB_LOOKUP = TAB_GROUPS.reduce((acc, g) => {
+  g.tabs.forEach((t) => { acc[t.id] = { ...t, groupId: g.id, accent: g.accent }; });
+  return acc;
+}, {});
+
+const GROUP_STICKY_KEY = "medpod.nexus.lastTab";
+function loadStickyTab() {
+  if (typeof window === "undefined") return { group: "live", tab: "command" };
+  try {
+    const raw = window.localStorage.getItem(GROUP_STICKY_KEY);
+    if (!raw) return { group: "live", tab: "command" };
+    const parsed = JSON.parse(raw);
+    if (TAB_LOOKUP[parsed.tab]) {
+      return { group: TAB_LOOKUP[parsed.tab].groupId, tab: parsed.tab };
+    }
+  } catch {}
+  return { group: "live", tab: "command" };
+}
+function saveStickyTab(tab) {
+  if (typeof window === "undefined") return;
+  try { window.localStorage.setItem(GROUP_STICKY_KEY, JSON.stringify({ tab })); } catch {}
+}
 
 // ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
 export default function MedPodNexus() {
   const { stats, recentTrips, loading: cmdLoading, error: cmdError, refresh } = useCommandData();
-  const [tab, setTab] = useState("command");
+  // Read sticky tab synchronously during state init so the correct tab
+  // renders on paint 1 — no flash of the default tab before settle.
+  const [tab, setTabRaw] = useState(() => {
+    if (typeof window === "undefined") return "command";
+    return loadStickyTab().tab;
+  });
+  const [groupId, setGroupId] = useState(() => {
+    if (typeof window === "undefined") return "live";
+    return loadStickyTab().group;
+  });
+  const setTab = useCallback((nextTab) => {
+    const meta = TAB_LOOKUP[nextTab];
+    if (meta) {
+      setGroupId(meta.groupId);
+      setTabRaw(nextTab);
+      saveStickyTab(nextTab);
+    } else {
+      setTabRaw(nextTab);
+    }
+  }, []);
+  // When the group changes via the primary strip, jump to its first tab
+  const switchGroup = useCallback((nextGroupId) => {
+    const grp = TAB_GROUPS.find((g) => g.id === nextGroupId);
+    if (!grp) return;
+    setGroupId(nextGroupId);
+    const firstTab = grp.tabs[0]?.id;
+    if (firstTab) {
+      setTabRaw(firstTab);
+      saveStickyTab(firstTab);
+    }
+  }, []);
+  const activeGroup = TAB_GROUPS.find((g) => g.id === groupId) || TAB_GROUPS[0];
   const online = !cmdError && stats !== null;
   const loading = cmdLoading;
   const lastSync = new Date();
 
   return (
-    <div className="silo-content" style={{ padding: "0 16px", paddingBottom: 20 }}>
-      {/* Status Bar */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0", marginBottom: 8 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: online ? "#22c55e" : "#ef4444", boxShadow: online ? "0 0 8px rgba(34,197,94,0.6)" : "0 0 8px rgba(239,68,68,0.6)" }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: online ? "#22c55e" : "#ef4444", fontFamily: "'SF Mono', monospace", letterSpacing: "0.04em" }}>
-            {online ? "NEXUS ONLINE" : "NEXUS OFFLINE"}
-          </span>
+    <div className="medpod-shell">
+    <div className="silo-content medpod-content">
+      {/* Brand header — Healai product (under Uyire umbrella) */}
+      <div style={{
+        display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+        gap: 16, marginBottom: 24, flexWrap: "wrap",
+      }}>
+        <div style={{ flex: 1, minWidth: 280 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <span className="medpod-brand-chip">
+              {online ? "NEXUS ONLINE" : "NEXUS OFFLINE"}
+            </span>
+            <span style={{
+              fontSize: 10, color: "var(--muted)",
+              fontFamily: "'JetBrains Mono', monospace",
+              letterSpacing: "0.12em", textTransform: "uppercase",
+            }}>
+              a uyire product
+            </span>
+          </div>
+          <h1 className="medpod-page-title" style={{ marginTop: 4 }}>
+            <span style={{ fontStyle: "normal", fontWeight: 600 }}>Healai</span>
+            <span style={{ color: "var(--muted)", fontWeight: 400 }}> · </span>
+            <span>MedPod</span>
+          </h1>
+          <p className="medpod-page-sub" style={{ maxWidth: 560 }}>
+            <span style={{ fontWeight: 700, color: "var(--ink)" }}>3 Easy Clicks. Save a Life.</span>
+            <span style={{ color: "var(--muted)" }}> — emergency-management platform. MARS-proven, NABH-aligned, ready for hospital-scale deployment.</span>
+            {lastSync && (
+              <span style={{ marginLeft: 10, fontFamily: "'JetBrains Mono', monospace", fontSize: 11 }}>
+                · sync {lastSync.toLocaleTimeString()}
+              </span>
+            )}
+          </p>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          {lastSync && <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "monospace" }}>{lastSync.toLocaleTimeString()}</span>}
-          <button onClick={refresh} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff" }}>
-            <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
-          </button>
-        </div>
+        <button onClick={refresh} style={{
+          background: "var(--health-08, rgba(46,123,196,0.08))",
+          border: "1px solid var(--health-25, rgba(46,123,196,0.25))",
+          borderRadius: 10, padding: "10px 16px",
+          display: "flex", alignItems: "center", gap: 8,
+          cursor: "pointer", color: "var(--health, #2e7bc4)",
+          fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
+          fontFamily: "'JetBrains Mono', monospace",
+        }}>
+          <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
+          REFRESH
+        </button>
       </div>
 
-      {/* Tab Bar — scrollable */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 16, overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: 2 }}>
-        {TABS.map(t => {
-          const Icon = t.icon;
+      {/* PRIMARY group strip — 5 functional clusters. Icons + labels.
+          Cards-not-tabs visual to read as the spine of the console. */}
+      <div className="medpod-tabstrip" style={{
+        display: "flex", gap: 6, marginBottom: 10,
+        overflowX: "auto", WebkitOverflowScrolling: "touch",
+        paddingBottom: 4, marginLeft: -8, paddingLeft: 8,
+        marginRight: -8, paddingRight: 8,
+      }}>
+        {TAB_GROUPS.map((g) => {
+          const Icon = g.icon;
+          const active = groupId === g.id;
+          return (
+            <button key={g.id} onClick={() => switchGroup(g.id)} style={{
+              padding: "10px 14px",
+              border: `1px solid ${active ? g.accent : "var(--warm, rgba(0,0,0,0.08))"}`,
+              borderRadius: 12,
+              background: active ? `${g.accent}14` : "rgba(255,255,255,0.5)",
+              color: active ? g.accent : "var(--ink, #2a2320)",
+              fontSize: 12,
+              fontWeight: active ? 800 : 600,
+              fontFamily: "'DM Sans', sans-serif",
+              letterSpacing: "0.01em",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              display: "flex", alignItems: "center", gap: 8,
+              transition: "all 0.18s",
+              flexShrink: 0,
+            }}>
+              <Icon size={14} style={{ color: g.accent }} />
+              {g.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* SECONDARY sub-tab strip — children of the active group only */}
+      <div className="medpod-tabstrip" style={{
+        display: "flex", gap: 2, marginBottom: 24,
+        overflowX: "auto", WebkitOverflowScrolling: "touch",
+        paddingBottom: 4, marginLeft: -8, paddingLeft: 8,
+        marginRight: -8, paddingRight: 8,
+        borderBottom: "1px solid var(--warm, rgba(0,0,0,0.06))",
+      }}>
+        {activeGroup.tabs.map((t) => {
           const active = tab === t.id;
           return (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              display: "flex", alignItems: "center", gap: 5,
-              padding: "7px 12px", borderRadius: 10,
-              background: active ? "rgba(34,197,94,0.12)" : "rgba(255,255,255,0.03)",
-              border: `1px solid ${active ? "rgba(34,197,94,0.3)" : "rgba(255,255,255,0.06)"}`,
-              color: active ? "#22c55e" : "rgba(255,255,255,0.45)",
-              fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s",
+              padding: "8px 12px",
+              border: "none",
+              borderBottom: `2px solid ${active ? activeGroup.accent : "transparent"}`,
+              borderRadius: 0,
+              background: "transparent",
+              color: active ? activeGroup.accent : "var(--muted, rgba(0,0,0,0.45))",
+              fontSize: 11,
+              fontWeight: active ? 700 : 500,
+              fontFamily: "'DM Sans', sans-serif",
+              letterSpacing: "0.02em",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              transition: "color 0.18s, border-color 0.18s",
+              marginBottom: -1,
             }}>
-              <Icon size={13} />{t.label}
+              {t.label}
             </button>
           );
         })}
@@ -248,6 +468,7 @@ export default function MedPodNexus() {
 
       {/* Tab Content */}
       {tab === "command"   && <CommandCenter stats={stats} recentTrips={recentTrips} onNavigate={setTab} />}
+      {tab === "india"     && <IndiaCoverageMap />}
       {tab === "dispatch"  && <DispatchBoard onRefresh={refresh} />}
       {tab === "fleet"     && <FleetPanel />}
       {tab === "crew"      && <HRMSPanel />}
@@ -263,10 +484,20 @@ export default function MedPodNexus() {
       {tab === "audit"      && <AuditLogPanel />}
       {tab === "mentor"     && <MentorPanel />}
       {tab === "brain"      && <BrainPanel />}
-      {tab === "driver"     && <DriverApp />}
-      {tab === "paramedic"  && <ParamedicApp />}
+      {tab === "field"      && <FieldEntry />}
+      {tab === "admin"      && <AdminPanel />}
+    </div>
+    {/* Persistent Emergency floater — global on every MedPod tab */}
+    <MedPodEmergencyFloater />
     </div>
   );
+}
+
+// Lightweight wrapper so the floater can reach useDispatchData().createTrip
+// without turning the main MedPodNexus function into a mega-context mess.
+function MedPodEmergencyFloater() {
+  const { createTrip } = useDispatchData();
+  return <EmergencyFloater createTrip={createTrip} />;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -274,35 +505,294 @@ export default function MedPodNexus() {
 // ═══════════════════════════════════════════════════════════════
 function CommandCenter({ stats, recentTrips, onNavigate }) {
   const s = stats || {};
+  const { expiringItems = [] } = useStockData();
+  const { crew = [] } = useCrewData();
+  const { ambulances = [] } = useFleetData();
+
+  // Shelf-life triage — red < 7d, amber 8-14d, green 15-30d
+  const expiringBuckets = useMemo(() => {
+    const now = Date.now();
+    const buckets = { red: 0, amber: 0, green: 0 };
+    for (const item of expiringItems) {
+      const exp = item?.expiry_date ? new Date(item.expiry_date).getTime() : null;
+      if (!exp) continue;
+      const days = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+      if (days <= 7)       buckets.red   += 1;
+      else if (days <= 14) buckets.amber += 1;
+      else if (days <= 30) buckets.green += 1;
+    }
+    return buckets;
+  }, [expiringItems]);
+
+  // Federal-compliance expiry rollup: crew licenses + vehicle fitness/permit/insurance/PUC
+  const complianceBuckets = useMemo(() => {
+    const now = Date.now();
+    const buckets = { expired: 0, red: 0, amber: 0, green: 0 };
+    const check = (dateStr) => {
+      if (!dateStr) return;
+      const t = new Date(dateStr).getTime();
+      if (Number.isNaN(t)) return;
+      const days = Math.ceil((t - now) / (1000 * 60 * 60 * 24));
+      if (days < 0) buckets.expired += 1;
+      else if (days <= 30) buckets.red   += 1;
+      else if (days <= 90) buckets.amber += 1;
+      else buckets.green += 1;
+    };
+    for (const m of crew) {
+      check(m.certification_expiry);
+      check(m.license_expiry);
+    }
+    for (const a of ambulances) {
+      check(a.fitness_expiry);
+      check(a.permit_expiry);
+      check(a.insurance_expiry);
+      check(a.puc_expiry);
+    }
+    return buckets;
+  }, [crew, ambulances]);
+
+  const expiringAccent = expiringBuckets.red > 0 ? "#ef4444"
+                        : expiringBuckets.amber > 0 ? "#f59e0b"
+                        : "#22c55e";
+  const expiringTotal = expiringBuckets.red + expiringBuckets.amber + expiringBuckets.green;
+  const expiringSub = expiringBuckets.red > 0
+    ? `${expiringBuckets.red} within 7 days · ${expiringBuckets.amber} in 14`
+    : expiringBuckets.amber > 0
+      ? `${expiringBuckets.amber} within 14 days`
+      : `${expiringBuckets.green} within 30 days`;
+
+  // Compliance expiry card
+  const complianceAccent = complianceBuckets.expired > 0 ? "#ef4444"
+                         : complianceBuckets.red > 0    ? "#ef4444"
+                         : complianceBuckets.amber > 0  ? "#f59e0b"
+                         : "#22c55e";
+  const complianceTotal = complianceBuckets.expired + complianceBuckets.red + complianceBuckets.amber;
+  const complianceSub = complianceBuckets.expired > 0
+    ? `${complianceBuckets.expired} EXPIRED · ${complianceBuckets.red} due <30d`
+    : complianceBuckets.red > 0
+      ? `${complianceBuckets.red} due within 30 days`
+      : complianceBuckets.amber > 0
+        ? `${complianceBuckets.amber} due within 90 days`
+        : "All current";
 
   return (
     <div>
       <SectionHeader icon={Target} title="Command Center" accent="#22c55e" />
 
-      {/* Row 1: Active Ops */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12, overflowX: "auto" }}>
-        <StatCard icon={Siren} label="Active Trips" value={s.active_trips || 0} accent="#ef4444" sub={`of ${s.total_trips || 0} total`} onClick={() => onNavigate("dispatch")} />
+      {/* Stat grid — Active Trips reads as the hero (2x), supporting cards
+          flow around it. Per design direction §"Stat card hierarchy". */}
+      <div className="medpod-stat-grid" style={{ marginBottom: 24 }}>
+        <StatCard
+          hero
+          icon={Siren}
+          label="Active Trips"
+          value={s.active_trips || 0}
+          accent="#ef4444"
+          sub={`of ${s.total_trips || 0} total · ${s.trips_pending || 0} pending`}
+          onClick={() => onNavigate("dispatch")}
+        />
         <StatCard icon={Truck} label="Fleet" value={s.fleet_available || 0} accent="#3b82f6" sub={`of ${s.fleet_total || 0} units`} onClick={() => onNavigate("fleet")} />
         <StatCard icon={Users} label="Crew" value={s.crew_available || 0} accent="#8b5cf6" sub={`${s.crew_on_duty || 0} on duty`} onClick={() => onNavigate("crew")} />
-      </div>
-
-      {/* Row 2: Resources */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12, overflowX: "auto" }}>
         <StatCard icon={Building2} label="Beds" value={s.hospital_beds_available || 0} accent="#06b6d4" sub={`${s.hospitals || 0} hospitals`} onClick={() => onNavigate("hospitals")} />
-        <StatCard icon={AlertTriangle} label="Low Stock" value={s.stock_low || 0} accent="#f59e0b" sub={`${s.stock_items || 0} total items`} onClick={() => onNavigate("stock")} />
-        <StatCard icon={Briefcase} label="Operators" value={s.operators || 0} accent="#22c55e" sub={`${s.patients || 0} patients`} onClick={() => onNavigate("crm")} />
+        <StatCard icon={AlertTriangle} label="Low Stock" value={s.stock_low || 0} accent="#f59e0b" sub={`${s.stock_items || 0} items`} onClick={() => onNavigate("stock")} />
+        <StatCard
+          icon={Clock}
+          label="Expiring Soon"
+          value={expiringTotal}
+          accent={expiringAccent}
+          sub={expiringSub}
+          onClick={() => onNavigate("stock")}
+        />
+        <StatCard
+          icon={Shield}
+          label="Compliance"
+          value={complianceTotal}
+          accent={complianceAccent}
+          sub={complianceSub}
+          onClick={() => onNavigate("crew")}
+        />
       </div>
 
-      {/* Fleet Map — Full Leaflet Map */}
-      <div style={{ marginBottom: 16 }}>
-        <SectionHeader icon={MapPin} title="Fleet Positions" accent="#3b82f6" />
-        <div style={{ borderRadius: 14, overflow: "hidden" }}>
-          <FleetMap height="600px" />
+      {/* Live Operations · pending & ongoing trips on the left,
+          fleet map in the centre. Stacks vertically on small screens. */}
+      <div className="medpod-ops-grid" style={{ marginBottom: 16 }}>
+        <ActiveTripsSidebar onNavigate={onNavigate} />
+        <div>
+          <SectionHeader icon={MapPin} title="Fleet Positions" accent="#3b82f6" />
+          <div style={{ borderRadius: 14, overflow: "hidden" }}>
+            <FleetMap height="540px" />
+          </div>
         </div>
       </div>
 
       {/* Recent Activity */}
       <RecentTripsWidget trips={recentTrips} />
+    </div>
+  );
+}
+
+// ── Active Trips Sidebar — Pending + Ongoing ────────────────────
+// Filters out completed/cancelled. Red dot = P1, orange = P2/3,
+// slate = P4. Tap a trip to jump to Dispatch tab.
+function ActiveTripsSidebar({ onNavigate }) {
+  const { trips } = useDispatchData();
+  const active = useMemo(
+    () => (trips || []).filter((t) => !["completed", "cancelled"].includes(t.status)),
+    [trips]
+  );
+  const pendingCount  = active.filter((t) => t.status === "pending").length;
+  const ongoingCount  = active.length - pendingCount;
+
+  const priorityDot = (p) => {
+    if (p === 1) return "#ef4444";
+    if (p === 2 || p === 3) return "#f59e0b";
+    return "#64748b";
+  };
+  const statusColor = (s) => ({
+    pending:       "#ef4444",
+    dispatched:    "#3b82f6",
+    en_route:      "#3b82f6",
+    on_scene:      "#f59e0b",
+    transporting:  "#8b5cf6",
+    at_hospital:   "#06b6d4",
+  }[s] || "#8a7e70");
+
+  const timeAgo = (iso) => {
+    if (!iso) return "";
+    const m = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 60000));
+    if (m < 1)  return "just now";
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    return `${Math.floor(h / 24)}d ago`;
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: 540 }}>
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        marginBottom: 10,
+      }}>
+        <SectionHeader icon={Siren} title="Active Emergencies" accent="#ef4444" />
+        <div style={{ display: "flex", gap: 4, marginTop: -6 }}>
+          {pendingCount > 0 && (
+            <span style={{
+              padding: "2px 7px", borderRadius: 999,
+              background: "rgba(239,68,68,0.14)", color: "#ef4444",
+              fontSize: 9, fontWeight: 900, letterSpacing: "0.08em",
+            }}>
+              {pendingCount} NEW
+            </span>
+          )}
+          {ongoingCount > 0 && (
+            <span style={{
+              padding: "2px 7px", borderRadius: 999,
+              background: "rgba(59,130,246,0.14)", color: "#3b82f6",
+              fontSize: 9, fontWeight: 900, letterSpacing: "0.08em",
+            }}>
+              {ongoingCount} LIVE
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div style={{
+        flex: 1, overflowY: "auto",
+        display: "flex", flexDirection: "column", gap: 6,
+        paddingRight: 4,
+        maxHeight: 540,
+      }}>
+        {active.length === 0 ? (
+          <div style={{
+            padding: "24px 14px", borderRadius: 12,
+            background: "rgba(34,197,94,0.06)",
+            border: "1px dashed rgba(34,197,94,0.25)",
+            fontSize: 11, color: "#16a34a", textAlign: "center", lineHeight: 1.6,
+          }}>
+            ✓ No pending or ongoing emergencies
+            <br />
+            <span style={{ fontSize: 10, color: "#8a7e70", fontWeight: 600 }}>
+              Fleet is idle · all clear
+            </span>
+          </div>
+        ) : (
+          active.map((t) => {
+            const dot = priorityDot(t.priority);
+            const sColor = statusColor(t.status);
+            return (
+              <button
+                key={t.id}
+                onClick={() => onNavigate("dispatch")}
+                style={{
+                  textAlign: "left", cursor: "pointer",
+                  padding: "10px 12px", borderRadius: 12,
+                  background: "white", border: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex", flexDirection: "column", gap: 4,
+                  transition: "transform 0.12s, border-color 0.12s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${sColor}55`;
+                  e.currentTarget.style.transform = "translateX(2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)";
+                  e.currentTarget.style.transform = "translateX(0)";
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{
+                    width: 10, height: 10, borderRadius: "50%",
+                    background: dot, flexShrink: 0,
+                    boxShadow: t.priority === 1 ? `0 0 0 3px ${dot}22` : "none",
+                    animation: t.priority === 1 ? "pulse-g 1.5s ease-in-out infinite" : "none",
+                  }} />
+                  <span style={{ fontSize: 11, fontWeight: 800, color: "#2a2320", textTransform: "capitalize" }}>
+                    {(t.emergency_type || "emergency").replace(/_/g, " ")}
+                  </span>
+                  <span style={{ marginLeft: "auto", fontSize: 9, color: "#8a7e70", fontFamily: "'JetBrains Mono', monospace" }}>
+                    {String(t.id).slice(0, 8)}
+                  </span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                  <span style={{
+                    fontSize: 9, fontWeight: 800, letterSpacing: "0.06em",
+                    padding: "2px 7px", borderRadius: 4,
+                    background: `${sColor}18`, color: sColor,
+                    textTransform: "uppercase",
+                  }}>
+                    {(t.status || "").replace(/_/g, " ")}
+                  </span>
+                  <span style={{ fontSize: 10, color: "#8a7e70" }}>
+                    {timeAgo(t.created_at || t.dispatch_created_at)}
+                  </span>
+                </div>
+                <div style={{ fontSize: 10, color: "#8a7e70", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {t.incident_address || t.location || "Location pending"}
+                </div>
+                {t.ambulance?.call_sign && (
+                  <div style={{ fontSize: 10, color: "#3b82f6", fontWeight: 700 }}>
+                    🚑 {t.ambulance.call_sign}
+                  </div>
+                )}
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      <button
+        onClick={() => onNavigate("dispatch")}
+        style={{
+          marginTop: 10, padding: "10px 14px", borderRadius: 10,
+          background: "rgba(239,68,68,0.08)",
+          border: "1px solid rgba(239,68,68,0.25)",
+          color: "#ef4444", fontSize: 11, fontWeight: 800,
+          letterSpacing: "0.06em", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+        }}
+      >
+        OPEN DISPATCH BOARD →
+      </button>
     </div>
   );
 }
@@ -353,6 +843,7 @@ function RecentTripsWidget({ trips: propTrips }) {
 function DispatchBoard({ onRefresh }) {
   const { trips: dispatchTrips, loading: dLoading, refresh: dRefresh, createTrip, updateTripStatus, assignAmbulance } = useDispatchData();
   const [creating, setCreating] = useState(false);
+  const [advancedMode, setAdvancedMode] = useState(false);
   const [selected, setSelected] = useState(null);
   const EMPTY_FORM = {
     caller_phone: "", incident_address: "", priority: 2,
@@ -375,159 +866,269 @@ function DispatchBoard({ onRefresh }) {
     onRefresh();
   };
 
-  const activeTrips = dispatchTrips.filter(t => !["completed", "cancelled"].includes(t.status));
-  const doneTrips = dispatchTrips.filter(t => t.status === "completed").slice(0, 5);
+  const handleQuickCreate = async (body) => {
+    const resp = await createTrip(body);
+    onRefresh();
+    return resp;
+  };
 
+  const activeTrips = dispatchTrips.filter(t => !["completed", "cancelled"].includes(t.status));
+  const doneTrips   = dispatchTrips.filter(t => t.status === "completed").slice(0, 5);
   const NEXT_STATUS = { pending: "dispatched", dispatched: "en_route", en_route: "on_scene", on_scene: "transporting", transporting: "at_hospital", at_hospital: "completed" };
 
   return (
     <div>
-      <SectionHeader icon={Siren} title="Emergency Dispatch" accent="#ef4444"
-        action={
-          <button onClick={() => setCreating(!creating)} style={{
-            display: "flex", alignItems: "center", gap: 4,
-            padding: "6px 12px", borderRadius: 8,
-            background: creating ? "rgba(239,68,68,0.25)" : "rgba(239,68,68,0.12)",
-            border: "1px solid rgba(239,68,68,0.3)",
-            color: "#ef4444", fontSize: 10, fontWeight: 700, cursor: "pointer",
-          }}>
-            {creating ? <X size={12} /> : <Plus size={12} />}
-            {creating ? "CANCEL" : "NEW EMERGENCY"}
-          </button>
-        }
-      />
+      <SectionHeader icon={Siren} title="Emergency Dispatch" accent="#d24b3a" />
 
-      {/* Emergency Creation Form */}
-      {creating && (
-        <div className="glass-card" style={{ borderRadius: 14, padding: 16, marginBottom: 14, borderLeft: "3px solid #ef4444" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#ef4444", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            Emergency Registration
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <Input placeholder="Caller phone" value={form.caller_phone} onChange={e => setForm(f => ({ ...f, caller_phone: e.target.value }))} />
-            <Select value={form.emergency_type} onChange={e => setForm(f => ({ ...f, emergency_type: e.target.value }))}>
-              {EMERGENCY_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, " ")}</option>)}
-            </Select>
-            <div style={{ gridColumn: "1 / -1" }}>
-              <Input placeholder="Incident address (pickup)" value={form.incident_address} onChange={e => setForm(f => ({ ...f, incident_address: e.target.value }))} />
-            </div>
-            <div style={{ gridColumn: "1 / -1" }}>
-              <Input placeholder="Drop-off address" value={form.drop_address} onChange={e => setForm(f => ({ ...f, drop_address: e.target.value }))} />
-            </div>
-            <Select value={form.requester_type} onChange={e => setForm(f => ({ ...f, requester_type: e.target.value }))}>
-              <option value="user">User / Caller</option>
-              <option value="hospital">Hospital</option>
-              <option value="operator">Operator</option>
-            </Select>
-            <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(255,255,255,0.5)", cursor: "pointer" }}>
-              <input type="checkbox" checked={form.is_scheduled} onChange={e => setForm(f => ({ ...f, is_scheduled: e.target.checked }))} style={{ accentColor: "#22c55e" }} />
-              Scheduled transport
-            </label>
-            <Input placeholder="Patient name" value={form.patient_name} onChange={e => setForm(f => ({ ...f, patient_name: e.target.value }))} />
-            <Input placeholder="Patient phone" value={form.patient_contact} onChange={e => setForm(f => ({ ...f, patient_contact: e.target.value }))} />
-            <Input placeholder="Relative name" value={form.relative_name} onChange={e => setForm(f => ({ ...f, relative_name: e.target.value }))} />
-            <Input placeholder="Relative phone" value={form.relative_contact} onChange={e => setForm(f => ({ ...f, relative_contact: e.target.value }))} />
-          </div>
-          <div style={{ display: "flex", gap: 6, margin: "10px 0" }}>
-            {[1, 2, 3, 4].map(p => (
-              <button key={p} onClick={() => setForm(f => ({ ...f, priority: p }))} style={{
-                flex: 1, padding: "6px 0", borderRadius: 6, fontSize: 10, fontWeight: 700,
-                background: form.priority === p ? PRIORITY_MAP[p].bg : "rgba(255,255,255,0.03)",
-                border: `1px solid ${form.priority === p ? PRIORITY_MAP[p].color + "50" : "rgba(255,255,255,0.06)"}`,
-                color: form.priority === p ? PRIORITY_MAP[p].color : "rgba(255,255,255,0.4)",
-                cursor: "pointer",
-              }}>
-                P{p}
+      {/* Ops grid — sidebar left · map right (mirrors Command Center) */}
+      <div className="medpod-ops-grid">
+
+        {/* ── LEFT SIDEBAR ──────────────────────────────────────────── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+
+          {/* Action bar */}
+          <div style={{ display: "flex", gap: 6 }}>
+            <button
+              onClick={() => { setCreating(!creating); setAdvancedMode(false); }}
+              style={{
+                flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                padding: "10px 0", borderRadius: 10,
+                background: creating ? "rgba(210,75,58,0.18)" : "#d24b3a",
+                border: `1.5px solid ${creating ? "rgba(210,75,58,0.4)" : "#d24b3a"}`,
+                color: creating ? "#d24b3a" : "#fff",
+                fontSize: 12, fontWeight: 800, cursor: "pointer",
+                letterSpacing: "0.05em",
+                boxShadow: creating ? "none" : "0 4px 14px rgba(210,75,58,0.3)",
+                transition: "all 0.2s",
+              }}
+            >
+              {creating ? <X size={14} /> : <Plus size={14} />}
+              {creating ? "CANCEL" : "NEW EMERGENCY"}
+            </button>
+            {creating && (
+              <button
+                onClick={() => setAdvancedMode(!advancedMode)}
+                style={{
+                  padding: "10px 12px", borderRadius: 10,
+                  background: advancedMode ? "rgba(46,123,196,0.12)" : "#f3ece0",
+                  border: `1.5px solid ${advancedMode ? "rgba(46,123,196,0.3)" : "#e8dfd2"}`,
+                  color: advancedMode ? "#2e7bc4" : "#8a7e70",
+                  fontSize: 10, fontWeight: 700, cursor: "pointer", letterSpacing: "0.04em",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {advancedMode ? "QUICK" : "ADVANCED"}
               </button>
-            ))}
+            )}
           </div>
-          <button onClick={handleCreate} style={{
-            width: "100%", padding: "10px", borderRadius: 8, fontWeight: 700, fontSize: 12,
-            background: "linear-gradient(135deg, #ef4444, #dc2626)",
-            border: "none", color: "#fff", cursor: "pointer",
-            boxShadow: "0 4px 16px rgba(239,68,68,0.3)",
+
+          {/* 3-Click Quick Create */}
+          {creating && !advancedMode && (
+            <DispatchQuickCreate onCreate={handleQuickCreate} onCancel={() => setCreating(false)} />
+          )}
+
+          {/* Advanced 11-field form */}
+          {creating && advancedMode && (
+            <div style={{
+              background: "#fff", border: "1.5px solid #f3ece0", borderLeft: "3px solid #d24b3a",
+              borderRadius: 12, padding: 14,
+            }}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "#d24b3a", marginBottom: 10, letterSpacing: "0.08em" }}>
+                EMERGENCY REGISTRATION
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7 }}>
+                <Input placeholder="Caller phone" value={form.caller_phone} onChange={e => setForm(f => ({ ...f, caller_phone: e.target.value }))} />
+                <Select value={form.emergency_type} onChange={e => setForm(f => ({ ...f, emergency_type: e.target.value }))}>
+                  {EMERGENCY_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, " ")}</option>)}
+                </Select>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <Input placeholder="Incident address (pickup)" value={form.incident_address} onChange={e => setForm(f => ({ ...f, incident_address: e.target.value }))} />
+                </div>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <Input placeholder="Drop-off address" value={form.drop_address} onChange={e => setForm(f => ({ ...f, drop_address: e.target.value }))} />
+                </div>
+                <Select value={form.requester_type} onChange={e => setForm(f => ({ ...f, requester_type: e.target.value }))}>
+                  <option value="user">User / Caller</option>
+                  <option value="hospital">Hospital</option>
+                  <option value="operator">Operator</option>
+                </Select>
+                <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "#8a7e70", cursor: "pointer" }}>
+                  <input type="checkbox" checked={form.is_scheduled} onChange={e => setForm(f => ({ ...f, is_scheduled: e.target.checked }))} style={{ accentColor: "#2e7bc4" }} />
+                  Scheduled transport
+                </label>
+                <Input placeholder="Patient name"  value={form.patient_name}    onChange={e => setForm(f => ({ ...f, patient_name: e.target.value }))} />
+                <Input placeholder="Patient phone" value={form.patient_contact} onChange={e => setForm(f => ({ ...f, patient_contact: e.target.value }))} />
+                <Input placeholder="Relative name" value={form.relative_name}   onChange={e => setForm(f => ({ ...f, relative_name: e.target.value }))} />
+                <Input placeholder="Relative phone" value={form.relative_contact} onChange={e => setForm(f => ({ ...f, relative_contact: e.target.value }))} />
+              </div>
+              {/* Priority selector */}
+              <div style={{ display: "flex", gap: 5, margin: "10px 0 8px" }}>
+                {[1, 2, 3, 4].map(p => (
+                  <button key={p} onClick={() => setForm(f => ({ ...f, priority: p }))} style={{
+                    flex: 1, padding: "6px 0", borderRadius: 6, fontSize: 10, fontWeight: 700,
+                    background: form.priority === p ? PRIORITY_MAP[p].bg : "#f3ece0",
+                    border: `1.5px solid ${form.priority === p ? PRIORITY_MAP[p].color + "60" : "#e8dfd2"}`,
+                    color: form.priority === p ? PRIORITY_MAP[p].color : "#8a7e70",
+                    cursor: "pointer",
+                  }}>P{p}</button>
+                ))}
+              </div>
+              <button onClick={handleCreate} style={{
+                width: "100%", padding: "10px", borderRadius: 8, fontWeight: 800, fontSize: 12,
+                background: "#d24b3a", border: "none", color: "#fff", cursor: "pointer",
+                boxShadow: "0 4px 14px rgba(210,75,58,0.3)", letterSpacing: "0.05em",
+              }}>
+                DISPATCH EMERGENCY
+              </button>
+            </div>
+          )}
+
+          {/* ── Active Trips ───────────────────────────────────── */}
+          <div style={{
+            fontSize: 10, fontWeight: 700, color: "#8a7e70",
+            letterSpacing: "0.09em", textTransform: "uppercase",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
           }}>
-            DISPATCH EMERGENCY
-          </button>
-        </div>
-      )}
+            <span>Active · {activeTrips.length}</span>
+            <button onClick={() => { dRefresh(); onRefresh?.(); }} style={{
+              background: "none", border: "none", color: "#2e7bc4",
+              fontSize: 10, fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em",
+            }}>↻ REFRESH</button>
+          </div>
 
-      {/* Active Trips */}
-      {activeTrips.length === 0 ? (
-        <EmptyState icon={CheckCircle2} message="All clear — no active dispatches" sub="Create a new emergency or waiting for calls" />
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {activeTrips.map(trip => {
-            const pr = PRIORITY_MAP[trip.priority] || PRIORITY_MAP[3];
-            const st = STATUS_COLOR[trip.status] || STATUS_COLOR.pending;
-            const next = NEXT_STATUS[trip.status];
-            const isOpen = selected === trip.id;
+          <div style={{
+            display: "flex", flexDirection: "column", gap: 7,
+            overflowY: "auto", maxHeight: 460,
+            paddingRight: 2,
+          }}>
+            {activeTrips.length === 0 ? (
+              <div style={{
+                padding: "20px 14px", borderRadius: 12, textAlign: "center",
+                background: "#f3ece0", border: "1px solid #e8dfd2",
+              }}>
+                <div style={{ fontSize: 20, marginBottom: 6 }}>✓</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#2a2320" }}>All clear</div>
+                <div style={{ fontSize: 10, color: "#8a7e70", marginTop: 3 }}>No active dispatches</div>
+              </div>
+            ) : (
+              activeTrips.map(trip => {
+                const pr   = PRIORITY_MAP[trip.priority] || PRIORITY_MAP[3];
+                const st   = STATUS_COLOR[trip.status]   || STATUS_COLOR.pending;
+                const next = NEXT_STATUS[trip.status];
+                const isOpen = selected === trip.id;
 
-            return (
-              <div key={trip.id} className="glass-card glass-hover" onClick={() => setSelected(isOpen ? null : trip.id)}
-                style={{ borderRadius: 14, padding: "12px 14px", cursor: "pointer", borderLeft: `3px solid ${pr.color}`, transition: "all 0.25s" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 12, fontWeight: 800, color: "#fff", fontFamily: "monospace" }}>
-                      {trip.episode_id?.slice(0, 8) || `#${trip.id?.toString().slice(0, 6)}`}
-                    </span>
-                    <Pill color={pr.color} bg={pr.bg} pulse={pr.pulse}>{pr.label}</Pill>
+                return (
+                  <div
+                    key={trip.id}
+                    onClick={() => setSelected(isOpen ? null : trip.id)}
+                    style={{
+                      background: "#fff", borderRadius: 12, padding: "11px 13px",
+                      border: "1px solid #f3ece0", borderLeft: `3px solid ${pr.color}`,
+                      cursor: "pointer", transition: "box-shadow 0.2s",
+                      boxShadow: isOpen ? `0 4px 16px ${pr.color}18` : "0 1px 0 rgba(42,35,32,0.02)",
+                    }}
+                  >
+                    {/* Row 1: ID + priority + status */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 5 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 800, color: "#2a2320", fontFamily: "monospace" }}>
+                          {trip.episode_id?.slice(0, 8) || `#${trip.id?.toString().slice(0, 6)}`}
+                        </span>
+                        <Pill color={pr.color} bg={pr.bg} pulse={pr.pulse}>{pr.label}</Pill>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: st.dot }} />
+                        <span style={{ fontSize: 9, fontWeight: 700, color: st.dot }}>{st.label}</span>
+                      </div>
+                    </div>
+
+                    {/* Row 2: type + address */}
                     {trip.emergency_type && (
-                      <span style={{ fontSize: 9, color: "rgba(255,255,255,0.35)", textTransform: "uppercase" }}>{trip.emergency_type}</span>
+                      <div style={{ fontSize: 9, fontWeight: 700, color: pr.color, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 3 }}>
+                        {trip.emergency_type.replace(/_/g, " ")}
+                      </div>
+                    )}
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 5, marginBottom: 4 }}>
+                      <MapPin size={10} style={{ color: "#8a7e70", flexShrink: 0, marginTop: 1 }} />
+                      <span style={{ fontSize: 10, color: "#8a7e70", lineHeight: 1.4 }}>
+                        {trip.incident_address || "Address pending"}
+                      </span>
+                    </div>
+
+                    {/* Row 3: meta pills */}
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                      {trip.caller_phone  && <MetaItem icon={Phone} text={trip.caller_phone} />}
+                      {trip.patient_name  && <MetaItem icon={Heart} text={trip.patient_name} />}
+                      {trip.ambulance?.call_sign && <MetaItem icon={Truck} text={trip.ambulance.call_sign} color="#2e7bc4" />}
+                    </div>
+
+                    {/* Expanded: advance + cancel buttons */}
+                    {isOpen && (
+                      <div style={{ marginTop: 9, paddingTop: 9, borderTop: "1px solid #f3ece0", display: "flex", flexDirection: "column", gap: 6 }}>
+                        {next && (
+                          <button
+                            onClick={e => { e.stopPropagation(); updateTripStatus(trip.id, next); }}
+                            style={{
+                              width: "100%", padding: "8px 0", borderRadius: 8,
+                              background: `${st.dot}14`, border: `1.5px solid ${st.dot}40`,
+                              color: st.dot, fontSize: 11, fontWeight: 700, cursor: "pointer",
+                              display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+                              letterSpacing: "0.05em",
+                            }}
+                          >
+                            <ArrowUpRight size={12} />
+                            ADVANCE → {(STATUS_COLOR[next]?.label || next).toUpperCase()}
+                          </button>
+                        )}
+                        <button
+                          onClick={e => { e.stopPropagation(); updateTripStatus(trip.id, "cancelled"); }}
+                          style={{
+                            width: "100%", padding: "7px 0", borderRadius: 8,
+                            background: "transparent", border: "1.5px solid #f3ece0",
+                            color: "#8a7e70", fontSize: 10, fontWeight: 700, cursor: "pointer",
+                            letterSpacing: "0.05em",
+                          }}
+                        >
+                          CANCEL TRIP
+                        </button>
+                      </div>
                     )}
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: st.dot, boxShadow: `0 0 6px ${st.dot}80` }} />
-                    <span style={{ fontSize: 10, fontWeight: 600, color: st.dot }}>{st.label}</span>
-                  </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                  <MapPin size={11} style={{ color: "rgba(255,255,255,0.3)", flexShrink: 0 }} />
-                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}>{trip.incident_address || "Address pending"}</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-                  {trip.caller_phone && <MetaItem icon={Phone} text={trip.caller_phone} />}
-                  {trip.patient_name && <MetaItem icon={Heart} text={trip.patient_name} />}
-                  {trip.ambulance?.call_sign && <MetaItem icon={Truck} text={trip.ambulance.call_sign} color="#3b82f6" />}
-                </div>
+                );
+              })
+            )}
+          </div>
 
-                {isOpen && next && (
-                  <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                    <button onClick={(e) => { e.stopPropagation(); updateTripStatus(trip.id, next); }}
-                      style={{
-                        width: "100%", padding: "8px 0", borderRadius: 8,
-                        background: `${st.dot}18`, border: `1px solid ${st.dot}40`,
-                        color: st.dot, fontSize: 11, fontWeight: 700,
-                        cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                        textTransform: "uppercase", letterSpacing: "0.06em",
-                      }}>
-                      <ArrowUpRight size={13} />Advance to {STATUS_COLOR[next]?.label || next}
-                    </button>
-                  </div>
-                )}
+          {/* ── Completed (mini log) ───────────────────────────── */}
+          {doneTrips.length > 0 && (
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#8a7e70", letterSpacing: "0.09em", textTransform: "uppercase", marginBottom: 6 }}>
+                Completed · {doneTrips.length}
               </div>
-            );
-          })}
-        </div>
-      )}
-
-      {doneTrips.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-          <SectionHeader icon={CheckCircle2} title="Completed" accent="#22c55e" />
-          {doneTrips.map(trip => (
-            <div key={trip.id} className="glass-card" style={{ borderRadius: 10, padding: "8px 14px", marginBottom: 4, opacity: 0.5, display: "flex", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 10, color: "#fff", fontFamily: "monospace" }}>{trip.episode_id?.slice(0, 8)}</span>
-              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)" }}>{trip.completed_at ? new Date(trip.completed_at).toLocaleString() : ""}</span>
+              {doneTrips.map(trip => (
+                <div key={trip.id} style={{
+                  borderRadius: 8, padding: "7px 12px", marginBottom: 4,
+                  background: "#f3ece0", border: "1px solid #e8dfd2",
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: "#2a2320", fontFamily: "monospace" }}>
+                    {trip.episode_id?.slice(0, 8) || `#${trip.id?.toString().slice(0, 6)}`}
+                  </span>
+                  <span style={{ fontSize: 9, color: "#8a7e70" }}>
+                    {trip.completed_at ? new Date(trip.completed_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "done"}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-      )}
 
-      {/* Dispatch Map — Compact view for ambulance selection */}
-      <div style={{ marginTop: 20 }}>
-        <SectionHeader icon={MapPin} title="Dispatch Context Map" accent="#3b82f6" />
-        <div style={{ borderRadius: 14, overflow: "hidden" }}>
-          <FleetMap height="400px" compact={true} />
+        {/* ── RIGHT: Fleet Map ────────────────────────────────── */}
+        <div>
+          <SectionHeader icon={MapPin} title="Live Fleet Positions" accent="#2e7bc4" />
+          <div style={{ borderRadius: 14, overflow: "hidden" }}>
+            <FleetMap height="540px" />
+          </div>
         </div>
       </div>
     </div>
@@ -547,10 +1148,38 @@ function MetaItem({ icon: Icon, text, color = "rgba(255,255,255,0.25)" }) {
 // FLEET PANEL — Asset management
 // ═══════════════════════════════════════════════════════════════
 function FleetPanel() {
-  const { ambulances, locations, onlineCount, availableCount, loading, refresh, createAmbulance } = useFleetData();
+  const { ambulances, locations, onlineCount, availableCount, loading, refresh, createAmbulance, updateAmbulance } = useFleetData();
   const [feedUnits, setFeedUnits] = useState([]);
   const [feedFiles, setFeedFiles] = useState([]);
   const [creating, setCreating] = useState(false);
+  const [docsUnit, setDocsUnit] = useState(null);
+  const [checkingRc, setCheckingRc] = useState(null);
+
+  const runParivahanCheck = async (unit) => {
+    if (!unit?.registration_number) return;
+    setCheckingRc(unit.id);
+    try {
+      const res = await fetch("/api/nexus/federal/parivahan/rc-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vehicle_no: unit.registration_number }),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        await updateAmbulance(unit.id, {
+          fitness_expiry:   json.data.fitness_expiry,
+          permit_expiry:    json.data.permit_expiry,
+          insurance_expiry: json.data.insurance_expiry,
+          puc_expiry:       json.data.puc_expiry,
+          rc_last_checked_at: json.data.checked_at,
+        });
+      }
+    } catch (e) {
+      console.warn("[fleet] parivahan check failed", e);
+    } finally {
+      setCheckingRc(null);
+    }
+  };
   const [form, setForm] = useState({
     call_sign: "", vehicle_type: "", registration_number: "", station_id: "",
     operator_id: "", permit_no: "", permit_expiry: "", year_of_make: "",
@@ -665,35 +1294,162 @@ function FleetPanel() {
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {units.map((amb, i) => {
             const color = AMB_STATUS[amb.status] || "#6b7280";
+            // Feed-only units (from /api/medpods/tracking) have no DB id → not editable
+            const hasId = !!amb.id && typeof amb.id === "string" && amb.id.startsWith("amb");
+
+            // Nearest compliance deadline across fitness / permit / insurance / puc
+            const deadlines = [
+              amb.fitness_expiry, amb.permit_expiry, amb.insurance_expiry, amb.puc_expiry,
+            ].filter(Boolean);
+            let nearestDeadline = null;
+            let nearestLabel = null;
+            for (const d of deadlines) {
+              const t = new Date(d).getTime();
+              if (Number.isNaN(t)) continue;
+              if (nearestDeadline == null || t < nearestDeadline) {
+                nearestDeadline = t;
+                nearestLabel = d === amb.fitness_expiry ? "FIT"
+                             : d === amb.permit_expiry ? "PER"
+                             : d === amb.insurance_expiry ? "INS" : "PUC";
+              }
+            }
+            const nearestDays = nearestDeadline != null ? Math.ceil((nearestDeadline - Date.now()) / 86400000) : null;
+            const rcColor = nearestDays == null ? null
+                          : nearestDays < 0 ? "#ef4444"
+                          : nearestDays <= 30 ? "#ef4444"
+                          : nearestDays <= 90 ? "#f59e0b"
+                          : "#22c55e";
+
             return (
-              <div key={amb.id || i} className="glass-card glass-hover" style={{ borderRadius: 12, padding: "12px 14px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 38, height: 38, borderRadius: 10, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Truck size={18} style={{ color }} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{amb.call_sign || `Unit #${amb.id}`}</div>
-                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>
-                        {amb.vehicle_type || amb.type || "ALS"} · {amb.registration_number || ""} {amb.operator_id ? `· Op #${amb.operator_id}` : ""}
+            <div key={amb.id || i} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <InlineEditRow
+                row={amb}
+                accent="#3b82f6"
+                canEdit={hasId}
+                fields={[
+                  { key: "call_sign",           label: "Call sign",    type: "text",   editable: true },
+                  { key: "vehicle_type",        label: "Type",         type: "select", editable: true,
+                    options: [
+                      { value: "BLS",     label: "BLS · Basic" },
+                      { value: "ALS",     label: "ALS · Advanced" },
+                      { value: "MICU",    label: "MICU · Mobile ICU" },
+                      { value: "Cardiac", label: "Cardiac" },
+                      { value: "Neonatal",label: "Neonatal" },
+                    ] },
+                  { key: "status",              label: "Status",       type: "select", editable: true,
+                    options: [
+                      { value: "available",   label: "Available" },
+                      { value: "dispatched",  label: "Dispatched" },
+                      { value: "maintenance", label: "Maintenance" },
+                      { value: "offline",     label: "Offline" },
+                    ] },
+                  { key: "registration_number", label: "Reg #",        type: "text",   editable: true },
+                  { key: "permit_no",           label: "Permit #",     type: "text",   editable: true },
+                  { key: "permit_expiry",       label: "Permit expiry",type: "date",   editable: true },
+                  { key: "year_of_make",        label: "Year",         type: "number", editable: true },
+                  { key: "station_id",          label: "Station",      type: "text",   editable: true },
+                ]}
+                onSave={(id, patch) => updateAmbulance(id, patch)}
+                renderView={(r) => (
+                  <div style={{ borderRadius: 12, padding: "12px 14px", background: "white", border: "1px solid rgba(0,0,0,0.08)" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingRight: hasId ? 34 : 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 38, height: 38, borderRadius: 10, background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <Truck size={18} style={{ color }} />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 13, fontWeight: 800, color: "#2a2320" }}>
+                            {r.call_sign || `Unit #${r.id}`}
+                          </div>
+                          <div style={{ fontSize: 10, color: "#8a7e70" }}>
+                            {r.vehicle_type || r.type || "ALS"}
+                            {r.registration_number && ` · ${r.registration_number}`}
+                            {r.operator_id && ` · Op #${r.operator_id}`}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                        {rcColor && (
+                          <span
+                            title="Nearest compliance deadline (Fitness/Permit/Insurance/PUC)"
+                            style={{
+                              fontSize: 9, fontWeight: 800, letterSpacing: "0.04em",
+                              padding: "3px 8px", borderRadius: 999,
+                              background: `${rcColor}18`, color: rcColor,
+                            }}
+                          >
+                            {nearestLabel} {nearestDays < 0 ? `EXPIRED ${-nearestDays}d` : `${nearestDays}d`}
+                          </span>
+                        )}
+                        <Pill color={color} bg={`${color}18`}>{r.status || "unknown"}</Pill>
                       </div>
                     </div>
-                  </div>
-                  <Pill color={color} bg={`${color}15`}>{amb.status || "unknown"}</Pill>
-                </div>
-                {(amb.current_lat || amb.lat) && (
-                  <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 8 }}>
-                    <Navigation size={10} style={{ color: "rgba(255,255,255,0.25)" }} />
-                    <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "monospace" }}>
-                      {Number(amb.current_lat || amb.lat).toFixed(4)}, {Number(amb.current_lng || amb.lng).toFixed(4)}
-                    </span>
-                    {amb.permit_no && <span style={{ fontSize: 9, color: "rgba(255,255,255,0.2)" }}>Permit: {amb.permit_no}</span>}
+                    {(r.current_lat || r.lat) && (
+                      <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                        <Navigation size={10} style={{ color: "#8a7e70" }} />
+                        <span style={{ fontSize: 9, color: "#8a7e70", fontFamily: "'JetBrains Mono', monospace" }}>
+                          {Number(r.current_lat || r.lat).toFixed(4)}, {Number(r.current_lng || r.lng).toFixed(4)}
+                        </span>
+                        {r.permit_no && <span style={{ fontSize: 9, color: "#8a7e70" }}>Permit: {r.permit_no}</span>}
+                        {r.rc_last_checked_at && (
+                          <span style={{ fontSize: 9, color: "#16a34a" }}>
+                            ✓ Parivahan {new Date(r.rc_last_checked_at).toLocaleDateString("en-IN")}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
-              </div>
+              />
+              {/* Federal-compliance action bar */}
+              {hasId && (
+                <div style={{ display: "flex", gap: 6, paddingLeft: 6 }}>
+                  <button
+                    onClick={() => runParivahanCheck(amb)}
+                    disabled={!amb.registration_number || checkingRc === amb.id}
+                    style={{
+                      padding: "5px 10px", borderRadius: 8,
+                      background: "rgba(46,123,196,0.08)",
+                      border: "1px solid rgba(46,123,196,0.3)",
+                      color: "#2e7bc4", fontSize: 10, fontWeight: 800, letterSpacing: "0.04em",
+                      cursor: checkingRc === amb.id ? "wait" : "pointer",
+                      opacity: amb.registration_number ? 1 : 0.4,
+                      display: "flex", alignItems: "center", gap: 4,
+                    }}
+                  >
+                    🚗 {checkingRc === amb.id ? "CHECKING PARIVAHAN…" : "CHECK PARIVAHAN RC"}
+                  </button>
+                  <button
+                    onClick={() => setDocsUnit(amb)}
+                    style={{
+                      padding: "5px 10px", borderRadius: 8,
+                      background: "rgba(139,92,246,0.08)",
+                      border: "1px solid rgba(139,92,246,0.3)",
+                      color: "#8b5cf6", fontSize: 10, fontWeight: 800, letterSpacing: "0.04em",
+                      cursor: "pointer",
+                      display: "flex", alignItems: "center", gap: 4,
+                    }}
+                  >
+                    📄 DOCUMENTS {Array.isArray(amb.documents) && amb.documents.length > 0 ? `(${amb.documents.length})` : ""}
+                  </button>
+                </div>
+              )}
+            </div>
             );
           })}
         </div>
+      )}
+
+      {/* Fleet documents modal */}
+      {docsUnit && (
+        <DocumentsPanel
+          entity="fleet"
+          entityId={docsUnit.id}
+          entityName={docsUnit.call_sign || `Unit ${docsUnit.id}`}
+          documents={Array.isArray(docsUnit.documents) ? docsUnit.documents : []}
+          onSave={(patch) => updateAmbulance(docsUnit.id, patch)}
+          onClose={() => setDocsUnit(null)}
+        />
       )}
     </div>
   );
@@ -703,7 +1459,27 @@ function FleetPanel() {
 // HRMS PANEL — Crew management
 // ═══════════════════════════════════════════════════════════════
 function HRMSPanel() {
-  const { crew, availableCount, onDutyCount, loading, refresh, createCrewMember } = useCrewData();
+  const { crew, availableCount, onDutyCount, loading, refresh, createCrewMember, updateCrewMember } = useCrewData();
+  const [attestingMember, setAttestingMember] = useState(null);    // crew row
+  const [docsMember, setDocsMember] = useState(null);              // crew row
+
+  const handleAttested = async (kyc) => {
+    if (!attestingMember) return setAttestingMember(null);
+    try {
+      await updateCrewMember(attestingMember.id, {
+        aadhaar_ref_id:       kyc.aadhaar_ref_id,
+        aadhaar_masked:       kyc.aadhaar_masked,
+        aadhaar_verified_at:  kyc.verified_at,
+        kyc_name:             kyc.name,
+        kyc_dob:              kyc.dob,
+        kyc_gender:           kyc.gender,
+      });
+    } catch (e) {
+      console.warn("[HRMS] attest save failed", e);
+    } finally {
+      setAttestingMember(null);
+    }
+  };
   const [filter, setFilter] = useState("all");
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({
@@ -803,40 +1579,155 @@ function HRMSPanel() {
           {filtered.map((m, i) => {
             const statusColor = CREW_STATUS[m.status] || "#6b7280";
             const roleColor = ROLES[m.role] || "#6b7280";
+
+            // License / cert expiry in days
+            const expiryDate = m.certification_expiry || m.license_expiry || null;
+            const expiryDays = expiryDate ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / 86400000) : null;
+            const expiryColor =
+              expiryDays == null ? null
+              : expiryDays < 0 ? "#ef4444"
+              : expiryDays <= 30 ? "#ef4444"
+              : expiryDays <= 90 ? "#f59e0b"
+              : "#22c55e";
+            const isAttested = !!m.aadhaar_verified_at;
+
             return (
-              <div key={m.id || i} className="glass-card glass-hover" style={{ borderRadius: 12, padding: "12px 14px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${roleColor}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: roleColor }}>
-                      {(m.name || "?").charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{m.name || `Crew #${m.id}`}</div>
-                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>
-                        {m.employee_id || ""} · {m.role || "EMT"}
+            <div key={m.id || i} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <InlineEditRow
+                row={m}
+                accent="#8b5cf6"
+                fields={[
+                  { key: "full_name",      label: "Name",          type: "text",   editable: true },
+                  { key: "role",           label: "Role",          type: "select", editable: true,
+                    options: [
+                      { value: "paramedic", label: "Paramedic" },
+                      { value: "emt",       label: "EMT" },
+                      { value: "driver",    label: "Driver" },
+                      { value: "doctor",    label: "Doctor" },
+                      { value: "nurse",     label: "Nurse" },
+                    ] },
+                  { key: "status",         label: "Status",        type: "select", editable: true,
+                    options: [
+                      { value: "available",  label: "Available" },
+                      { value: "on_duty",    label: "On duty" },
+                      { value: "off_duty",   label: "Off duty" },
+                      { value: "on_leave",   label: "On leave" },
+                    ] },
+                  { key: "phone",                label: "Phone",              type: "tel",    editable: true },
+                  { key: "email",                label: "Email",              type: "email",  editable: true },
+                  { key: "license_number",       label: "License #",          type: "text",   editable: true },
+                  { key: "certification_expiry", label: "Cert expiry",        type: "date",   editable: true },
+                  { key: "station_id",           label: "Station",            type: "text",   editable: true },
+                ]}
+                onSave={(id, patch) => updateCrewMember(id, patch)}
+                renderView={(r) => {
+                  const displayName = r.kyc_name || r.full_name || r.name || `Crew #${r.id}`;
+                  return (
+                    <div style={{ borderRadius: 12, padding: "12px 14px", background: "white", border: "1px solid rgba(0,0,0,0.08)" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6, paddingRight: 34 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${roleColor}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: roleColor }}>
+                            {displayName.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                              <span style={{ fontSize: 13, fontWeight: 800, color: "#2a2320" }}>{displayName}</span>
+                              {isAttested && (
+                                <span
+                                  title={`UIDAI verified · ${new Date(r.aadhaar_verified_at).toLocaleDateString("en-IN")}`}
+                                  style={{
+                                    padding: "1px 6px", borderRadius: 4,
+                                    background: "rgba(34,197,94,0.14)", color: "#16a34a",
+                                    fontSize: 8, fontWeight: 900, letterSpacing: "0.08em",
+                                    display: "inline-flex", alignItems: "center", gap: 3,
+                                  }}
+                                >
+                                  ✓ AADHAAR
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: 10, color: "#8a7e70" }}>
+                              {r.role || "EMT"}{r.station_id ? ` · ${r.station_id}` : ""}
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                          {expiryColor && (
+                            <span style={{
+                              fontSize: 9, fontWeight: 800, letterSpacing: "0.04em",
+                              padding: "3px 8px", borderRadius: 999,
+                              background: `${expiryColor}18`, color: expiryColor,
+                            }}>
+                              {expiryDays < 0 ? `EXPIRED ${-expiryDays}d` : `LIC ${expiryDays}d`}
+                            </span>
+                          )}
+                          <Pill color={statusColor} bg={`${statusColor}18`}>{r.status || "—"}</Pill>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontSize: 10, color: "#8a7e70" }}>
+                        {r.phone && <span>📞 {r.phone}</span>}
+                        {r.email && <span>✉️ {r.email}</span>}
+                        {r.license_number && <span>Lic: {r.license_number}</span>}
+                        {r.aadhaar_masked && <span style={{ color: "#16a34a", fontFamily: "'JetBrains Mono', monospace" }}>🆔 {r.aadhaar_masked}</span>}
                       </div>
                     </div>
-                  </div>
-                  <Pill color={statusColor} bg={`${statusColor}15`}>{m.status || "—"}</Pill>
-                </div>
-                {/* HRMS Details */}
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  {m.phone && <MetaItem icon={Phone} text={m.phone} />}
-                  {m.email && <MetaItem icon={Activity} text={m.email} />}
-                  {m.blood_group && <MetaItem icon={Heart} text={m.blood_group} color="#ef4444" />}
-                  {m.license_number && <MetaItem icon={FileText} text={`Lic: ${m.license_number}`} />}
-                </div>
-                {m.certifications && Array.isArray(m.certifications) && m.certifications.length > 0 && (
-                  <div style={{ marginTop: 6, display: "flex", gap: 4, flexWrap: "wrap" }}>
-                    {m.certifications.map((cert, ci) => (
-                      <span key={ci} style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: "rgba(139,92,246,0.08)", color: "#8b5cf6", fontWeight: 600 }}>{cert}</span>
-                    ))}
-                  </div>
-                )}
+                  );
+                }}
+              />
+              {/* Federal-compliance action bar */}
+              <div style={{ display: "flex", gap: 6, paddingLeft: 6 }}>
+                <button
+                  onClick={() => setAttestingMember(m)}
+                  style={{
+                    padding: "5px 10px", borderRadius: 8,
+                    background: isAttested ? "rgba(34,197,94,0.08)" : "rgba(46,123,196,0.08)",
+                    border: `1px solid ${isAttested ? "rgba(34,197,94,0.3)" : "rgba(46,123,196,0.3)"}`,
+                    color: isAttested ? "#16a34a" : "#2e7bc4",
+                    fontSize: 10, fontWeight: 800, cursor: "pointer", letterSpacing: "0.04em",
+                    display: "flex", alignItems: "center", gap: 4,
+                  }}
+                >
+                  🛡 {isAttested ? "RE-ATTEST AADHAAR" : "ATTEST AADHAAR"}
+                </button>
+                <button
+                  onClick={() => setDocsMember(m)}
+                  style={{
+                    padding: "5px 10px", borderRadius: 8,
+                    background: "rgba(139,92,246,0.08)",
+                    border: "1px solid rgba(139,92,246,0.3)",
+                    color: "#8b5cf6",
+                    fontSize: 10, fontWeight: 800, cursor: "pointer", letterSpacing: "0.04em",
+                    display: "flex", alignItems: "center", gap: 4,
+                  }}
+                >
+                  📄 DOCUMENTS {Array.isArray(m.documents) && m.documents.length > 0 ? `(${m.documents.length})` : ""}
+                </button>
               </div>
+            </div>
             );
           })}
         </div>
+      )}
+
+      {/* Attestation modal */}
+      {attestingMember && (
+        <AadhaarAttestPanel
+          prefillName={attestingMember.full_name || attestingMember.name}
+          onComplete={handleAttested}
+          onCancel={() => setAttestingMember(null)}
+        />
+      )}
+
+      {/* Documents modal */}
+      {docsMember && (
+        <DocumentsPanel
+          entity="crew"
+          entityId={docsMember.id}
+          entityName={docsMember.full_name || docsMember.name || `Crew #${docsMember.id}`}
+          documents={Array.isArray(docsMember.documents) ? docsMember.documents : []}
+          onSave={(patch) => updateCrewMember(docsMember.id, patch)}
+          onClose={() => setDocsMember(null)}
+        />
       )}
     </div>
   );
@@ -846,7 +1737,7 @@ function HRMSPanel() {
 // HOSPITAL PANEL
 // ═══════════════════════════════════════════════════════════════
 function HospitalPanel() {
-  const { hospitals, totalBeds, availableBeds, loading, refresh, createHospital } = useHospitalData();
+  const { hospitals, totalBeds, availableBeds, loading, refresh, createHospital, updateHospital } = useHospitalData();
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({
     name: "", type: "", phone: "", emergency_contact: "", bed_capacity: "",
@@ -924,32 +1815,52 @@ function HospitalPanel() {
             const bedPct = h.bed_capacity ? Math.round((h.available_beds / h.bed_capacity) * 100) : 0;
             const bedColor = bedPct > 30 ? "#22c55e" : bedPct > 10 ? "#f59e0b" : "#ef4444";
             return (
-              <div key={h.id || i} className="glass-card glass-hover" style={{ borderRadius: 12, padding: "14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{h.name}</div>
-                    <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>{h.type || "General"} · {h.address || ""}</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: bedColor }}>{h.available_beds || 0}</div>
-                    <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>of {h.bed_capacity || 0} beds</div>
-                  </div>
-                </div>
-                <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
-                  <div style={{ height: "100%", borderRadius: 2, background: bedColor, width: `${bedPct}%`, transition: "width 0.3s" }} />
-                </div>
-                {h.capabilities && Array.isArray(h.capabilities) && (
-                  <div style={{ marginTop: 8, display: "flex", gap: 4, flexWrap: "wrap" }}>
-                    {h.capabilities.map((cap, ci) => (
-                      <span key={ci} style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: "rgba(6,182,212,0.08)", color: "#06b6d4", fontWeight: 600 }}>{cap}</span>
-                    ))}
+              <InlineEditRow
+                key={h.id || i}
+                row={h}
+                accent="#06b6d4"
+                fields={[
+                  { key: "name",              label: "Name",            type: "text",   editable: true },
+                  { key: "area",              label: "Area",            type: "text",   editable: true },
+                  { key: "city",              label: "City",            type: "text",   editable: true },
+                  { key: "bed_capacity",      label: "Bed capacity",    type: "number", editable: true },
+                  { key: "available_beds",    label: "Available beds",  type: "number", editable: true },
+                  { key: "phone",             label: "Phone",           type: "tel",    editable: true },
+                  { key: "rating",            label: "Rating",          type: "number", editable: true },
+                  { key: "fee",               label: "Consult fee",     type: "number", editable: true },
+                  { key: "website",           label: "Website",         type: "text",   editable: true },
+                ]}
+                onSave={(id, patch) => updateHospital(id, patch)}
+                renderView={(r) => (
+                  <div style={{ borderRadius: 12, padding: 14, background: "white", border: "1px solid rgba(0,0,0,0.08)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, paddingRight: 34 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 14, fontWeight: 800, color: "#2a2320" }}>{r.name}</div>
+                        <div style={{ fontSize: 10, color: "#8a7e70", marginTop: 2 }}>
+                          {[r.area, r.city].filter(Boolean).join(" · ") || "—"}
+                          {r.rating != null && <span> · ★ {r.rating}</span>}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: 18, fontWeight: 800, color: bedColor }}>{r.available_beds || 0}</div>
+                        <div style={{ fontSize: 9, color: "#8a7e70", letterSpacing: "0.04em" }}>of {r.bed_capacity || 0} beds</div>
+                      </div>
+                    </div>
+                    <div style={{ height: 4, borderRadius: 2, background: "rgba(0,0,0,0.06)" }}>
+                      <div style={{ height: "100%", borderRadius: 2, background: bedColor, width: `${bedPct}%`, transition: "width 0.3s" }} />
+                    </div>
+                    {(r.phone || r.fee || r.specialties) && (
+                      <div style={{ marginTop: 8, display: "flex", gap: 12, fontSize: 10, color: "#8a7e70", flexWrap: "wrap" }}>
+                        {r.phone && <span>📞 {r.phone}</span>}
+                        {r.fee != null && <span>💰 ₹{r.fee}</span>}
+                        {Array.isArray(r.specialties) && r.specialties.length > 0 && (
+                          <span>· {r.specialties.slice(0, 3).join(", ")}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
-                <div style={{ marginTop: 6, display: "flex", gap: 10 }}>
-                  {h.phone && <MetaItem icon={Phone} text={h.phone} />}
-                  {h.emergency_contact && <MetaItem icon={Siren} text={h.emergency_contact} color="#ef4444" />}
-                </div>
-              </div>
+              />
             );
           })}
         </div>
@@ -962,9 +1873,11 @@ function HospitalPanel() {
 // STOCK / INVENTORY PANEL
 // ═══════════════════════════════════════════════════════════════
 function StockPanel() {
-  const { items, lowStockItems, expiringItems, loading, refresh, createStockItem } = useStockData();
+  const { items, lowStockItems, expiringItems, loading, refresh, createStockItem, updateStockItem } = useStockData();
   const [filter, setFilter] = useState("all");
   const [creating, setCreating] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [scanHint, setScanHint] = useState(null);
   const [form, setForm] = useState({
     name: "", category: "", sku: "", quantity_on_hand: "", reorder_level: "",
     unit: "", expiry_date: "", manufacturer: "", unit_cost: "", batch_number: "",
@@ -974,7 +1887,29 @@ function StockPanel() {
     if (!form.name || !form.category || !form.sku) return;
     await createStockItem(form);
     setCreating(false);
+    setScanHint(null);
     setForm({ name: "", category: "", sku: "", quantity_on_hand: "", reorder_level: "", unit: "", expiry_date: "", manufacturer: "", unit_cost: "", batch_number: "" });
+  };
+
+  const handleScanDetect = (parsed /* { gtin, lot, expiry_date, name?, manufacturer?, category?, unit? } */) => {
+    setScanning(false);
+    setCreating(true);
+    setForm((f) => ({
+      ...f,
+      name:         parsed.name         || f.name,
+      manufacturer: parsed.manufacturer || f.manufacturer,
+      category:     parsed.category     || f.category,
+      unit:         parsed.unit         || f.unit,
+      sku:          parsed.gtin         || f.sku,
+      expiry_date:  parsed.expiry_date  || f.expiry_date,
+      batch_number: parsed.lot          || f.batch_number,
+    }));
+    setScanHint({
+      matched: !!parsed.name,
+      gtin: parsed.gtin,
+      lot: parsed.lot,
+      expiry: parsed.expiry_date,
+    });
   };
 
   const stock = items;
@@ -987,18 +1922,56 @@ function StockPanel() {
     <div>
       <SectionHeader icon={Package} title="Inventory Management" accent="#22c55e"
         action={
-          <button onClick={() => setCreating(!creating)} style={{
-            display: "flex", alignItems: "center", gap: 4,
-            padding: "6px 12px", borderRadius: 8,
-            background: creating ? "rgba(34,197,94,0.25)" : "rgba(34,197,94,0.12)",
-            border: "1px solid rgba(34,197,94,0.3)",
-            color: "#22c55e", fontSize: 10, fontWeight: 700, cursor: "pointer",
-          }}>
-            {creating ? <X size={12} /> : <Plus size={12} />}
-            {creating ? "CANCEL" : "NEW ITEM"}
-          </button>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button onClick={() => setScanning(true)} style={{
+              display: "flex", alignItems: "center", gap: 4,
+              padding: "6px 12px", borderRadius: 8,
+              background: "rgba(46,123,196,0.14)",
+              border: "1px solid rgba(46,123,196,0.3)",
+              color: "#2e7bc4", fontSize: 10, fontWeight: 700, cursor: "pointer",
+              letterSpacing: "0.04em",
+            }}>
+              <Scan size={12} /> SCAN BARCODE
+            </button>
+            <button onClick={() => setCreating(!creating)} style={{
+              display: "flex", alignItems: "center", gap: 4,
+              padding: "6px 12px", borderRadius: 8,
+              background: creating ? "rgba(34,197,94,0.25)" : "rgba(34,197,94,0.12)",
+              border: "1px solid rgba(34,197,94,0.3)",
+              color: "#22c55e", fontSize: 10, fontWeight: 700, cursor: "pointer",
+            }}>
+              {creating ? <X size={12} /> : <Plus size={12} />}
+              {creating ? "CANCEL" : "NEW ITEM"}
+            </button>
+          </div>
         }
       />
+
+      {scanning && (
+        <BarcodeScanPanel
+          onDetect={handleScanDetect}
+          onCancel={() => setScanning(false)}
+        />
+      )}
+
+      {scanHint && (
+        <div style={{
+          marginBottom: 12, padding: "10px 14px", borderRadius: 10,
+          background: scanHint.matched ? "rgba(34,197,94,0.08)" : "rgba(46,123,196,0.08)",
+          border: `1px solid ${scanHint.matched ? "rgba(34,197,94,0.25)" : "rgba(46,123,196,0.25)"}`,
+          fontSize: 11, color: scanHint.matched ? "#16a34a" : "#2e7bc4",
+          display: "flex", alignItems: "center", gap: 8, fontWeight: 600,
+        }}>
+          <CheckCircle2 size={13} />
+          <span>
+            {scanHint.matched ? "Catalog match · " : "Scanned · "}
+            GTIN {scanHint.gtin}
+            {scanHint.expiry && ` · expires ${scanHint.expiry}`}
+            {scanHint.lot && ` · lot ${scanHint.lot}`}
+            {" — fields below auto-filled. Add quantity + save."}
+          </span>
+        </div>
+      )}
 
       {creating && (
         <div className="glass-card" style={{ borderRadius: 14, padding: 16, marginBottom: 14, borderLeft: "3px solid #22c55e" }}>
@@ -1070,7 +2043,7 @@ function StockPanel() {
       {filtered.length === 0 ? (
         <EmptyState icon={Package} message="No stock data" />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {filtered.map((item, i) => {
             const qty = item.quantity_on_hand ?? 0;
             const reorder = item.reorder_level || 5;
@@ -1078,23 +2051,64 @@ function StockPanel() {
             const barColor = qty <= reorder ? "#ef4444" : pct < 50 ? "#f59e0b" : "#22c55e";
             const catColor = CATS[item.category] || "#6b7280";
             return (
-              <div key={item.id || i} className="glass-card" style={{ borderRadius: 10, padding: "10px 14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#fff" }}>{item.name}</span>
-                    <span style={{ fontSize: 8, padding: "1px 5px", borderRadius: 4, background: `${catColor}15`, color: catColor, fontWeight: 700, textTransform: "uppercase" }}>{item.category}</span>
-                  </div>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: barColor }}>{qty} <span style={{ fontSize: 9, fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>{item.unit || "units"}</span></span>
-                </div>
-                <div style={{ height: 3, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
-                  <div style={{ height: "100%", borderRadius: 2, background: barColor, width: `${pct}%` }} />
-                </div>
-                {item.expiry_date && (
-                  <div style={{ marginTop: 4, fontSize: 9, color: "rgba(255,255,255,0.25)" }}>
-                    Expires: {new Date(item.expiry_date).toLocaleDateString()} {item.manufacturer ? `· ${item.manufacturer}` : ""}
-                  </div>
-                )}
-              </div>
+              <InlineEditRow
+                key={item.id || i}
+                row={item}
+                accent="#22c55e"
+                fields={[
+                  { key: "name",              label: "Name",         type: "text",   editable: true },
+                  { key: "category",          label: "Category",     type: "select", editable: true,
+                    options: [
+                      { value: "medicine",    label: "Medicine" },
+                      { value: "equipment",   label: "Equipment" },
+                      { value: "consumable",  label: "Consumable" },
+                    ] },
+                  { key: "quantity",          label: "Quantity",     type: "number", editable: true },
+                  { key: "reorder_threshold", label: "Reorder at",   type: "number", editable: true },
+                  { key: "unit",              label: "Unit",         type: "text",   editable: true },
+                  { key: "expiry_date",       label: "Expiry",       type: "date",   editable: true },
+                  { key: "supplier",          label: "Supplier",     type: "text",   editable: true },
+                  { key: "cost_per_unit",     label: "Cost / unit",  type: "number", editable: true },
+                  { key: "sku",               label: "SKU / GTIN",   type: "text",   editable: true },
+                ]}
+                onSave={(id, patch) => updateStockItem(id, patch)}
+                renderView={(r) => {
+                  const q = r.quantity ?? r.quantity_on_hand ?? 0;
+                  const reorder = r.reorder_threshold ?? r.reorder_level ?? 5;
+                  const pctLocal = Math.min(100, (q / (reorder * 3)) * 100);
+                  const barLocal = q <= reorder ? "#ef4444" : pctLocal < 50 ? "#f59e0b" : "#22c55e";
+                  return (
+                    <div style={{
+                      borderRadius: 12, padding: "12px 14px",
+                      background: "white", border: "1px solid rgba(0,0,0,0.08)",
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, paddingRight: 34 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#2a2320", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {r.name}
+                          </span>
+                          <span style={{ fontSize: 9, padding: "2px 7px", borderRadius: 4, background: `${catColor}15`, color: catColor, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                            {r.category}
+                          </span>
+                        </div>
+                        <span style={{ fontSize: 14, fontWeight: 800, color: barLocal }}>
+                          {q} <span style={{ fontSize: 10, fontWeight: 500, color: "#8a7e70" }}>{r.unit || "units"}</span>
+                        </span>
+                      </div>
+                      <div style={{ height: 3, borderRadius: 2, background: "rgba(0,0,0,0.06)" }}>
+                        <div style={{ height: "100%", borderRadius: 2, background: barLocal, width: `${pctLocal}%` }} />
+                      </div>
+                      {(r.expiry_date || r.supplier || r.sku) && (
+                        <div style={{ marginTop: 6, fontSize: 10, color: "#8a7e70", display: "flex", gap: 10, flexWrap: "wrap" }}>
+                          {r.expiry_date && <span>Exp: {new Date(r.expiry_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>}
+                          {r.supplier    && <span>· {r.supplier}</span>}
+                          {r.sku         && <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>· {r.sku}</span>}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }}
+              />
             );
           })}
         </div>
@@ -1348,6 +2362,7 @@ function CRMPanel() {
 
 function PCRPanel() {
   const { pcrs, selectedPcr, loading, fetchPcr, updateSection, createPcr } = usePCRData();
+  const { writeAudit } = useNexusAudit({ role: "operator" });
   const [tripId, setTripId] = useState("");
   const [loadedData, setLoadedData] = useState(null);
   const [mode, setMode] = useState("lookup"); // "lookup" | "form"
@@ -1495,6 +2510,11 @@ function PCRPanel() {
 
   const loadPcr = async (id) => {
     const r = await fetchPcr(id);
+    writeAudit({
+      event: "PCR_OPENED",
+      module: "NEXUS-PCR",
+      payload: { pcr_id: id, found: !!r },
+    });
     if (r) {
       setLoadedData(flattenPcrSections(r));
       setMode("form");
@@ -1504,12 +2524,22 @@ function PCRPanel() {
   const handleSave = async (formData) => {
     if (!selectedPcr?.id) return;
     const sections = splitToSections(formData);
-    // Save each non-empty section
+    const sectionsTouched = [];
     for (const [sectionName, data] of Object.entries(sections)) {
       if (Object.keys(data).length > 0) {
         await updateSection(selectedPcr.id, sectionName, data);
+        sectionsTouched.push(sectionName);
       }
     }
+    writeAudit({
+      event: "PCR_SECTIONS_SAVED",
+      module: "NEXUS-PCR",
+      payload: {
+        pcr_id: selectedPcr.id,
+        sections_touched: sectionsTouched,
+        section_count: sectionsTouched.length,
+      },
+    });
   };
 
   const startNewPcr = () => {
@@ -2513,6 +3543,35 @@ function BrainPanel() {
   const [activeFunc, setActiveFunc] = useState(null);
   const [result, setResult] = useState(results);
   const [running, setRunning] = useState(loading);
+  // Two session tokens — operator covers triage/dispatch/stock, auditor
+  // covers pcr-anomaly (clinical-reviewer cohort, paramedic|physician|auditor).
+  // Both auto-issued on mount so the user can press any button immediately.
+  const [opToken, setOpToken] = useState(null);
+  const [auditorToken, setAuditorToken] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    const day = new Date().toISOString().slice(0, 10);
+    async function issue(role, setter) {
+      try {
+        const res = await fetch("/api/nexus/episode-tokens", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            episode_id: `${role}-session-${day}`,
+            patient_ref: `${role}-console`,
+            role,
+            consent: { ai_triage_opt_in: true },
+          }),
+        });
+        if (!res.ok || cancelled) return;
+        const t = await res.json();
+        setter(t.token);
+      } catch { /* offline ok */ }
+    }
+    issue("operator", setOpToken);
+    issue("auditor", setAuditorToken);
+    return () => { cancelled = true; };
+  }, []);
 
   // Payloads match validated FormRequest schemas exactly
   const FUNCTIONS = [
@@ -2573,7 +3632,10 @@ function BrainPanel() {
 
   const run = async (func) => {
     setActiveFunc(func.id);
-    const r = await func.handler(func.payload);
+    // PCR anomaly needs the auditor token (clinical reviewer cohort).
+    // Triage / dispatch / stock all accept the operator token.
+    const tok = func.id === "pcr" ? auditorToken : opToken;
+    const r = await func.handler(func.payload, tok ? { token: tok } : {});
     setResult(r);
   };
 
