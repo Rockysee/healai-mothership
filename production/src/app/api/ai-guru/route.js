@@ -209,6 +209,12 @@ export async function POST(request) {
     const body = await request.json();
     const { messages = [], context = {}, persona = 'fox' } = body;
 
+    if (!ANTHROPIC_API_KEY) {
+      return new Response(JSON.stringify({ error: 'AI service not configured', hint: 'Set ANTHROPIC_API_KEY in environment variables' }), {
+        status: 503, headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     if (!messages.length) {
       return new Response(JSON.stringify({ error: 'No messages provided' }), {
         status: 400, headers: { 'Content-Type': 'application/json' },
